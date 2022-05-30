@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_ics_flutter/core/helpers/constants.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({Key? key}) : super(key: key);
