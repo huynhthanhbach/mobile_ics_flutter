@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mobile_ics_flutter/core/helpers/constants.dart';
+import 'package:mobile_ics_flutter/core/widgets/kcolors.dart';
 import 'package:mobile_ics_flutter/views/dashboard/dashboard_screen.dart';
 import 'package:mobile_ics_flutter/views/news_management/news_management_screen.dart';
 import 'package:mobile_ics_flutter/views/operator/operator_screen.dart';
@@ -25,16 +25,6 @@ class HomeController extends GetxController {
   List<PersistentBottomNavBarItem> navBarItems() {
     return [
       PersistentBottomNavBarItem(
-        icon: const Icon(Icons.dashboard_rounded),
-        title: 'Dashboard',
-        textStyle: const TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 13,
-        ),
-        activeColorPrimary: gradientFirst,
-        inactiveColorPrimary: gradientSecond,
-      ),
-      PersistentBottomNavBarItem(
         icon: const Icon(Icons.folder_copy_rounded),
         title: 'Quản lý bản tin',
         textStyle: const TextStyle(
@@ -54,14 +44,24 @@ class HomeController extends GetxController {
         activeColorPrimary: gradientFirst,
         inactiveColorPrimary: gradientSecond,
       ),
+      PersistentBottomNavBarItem(
+        icon: const Icon(Icons.dashboard_rounded),
+        title: 'Dashboard',
+        textStyle: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 13,
+        ),
+        activeColorPrimary: gradientFirst,
+        inactiveColorPrimary: gradientSecond,
+      ),
     ];
   }
 
   List<Widget> buildPages() {
     return const [
-      DashboardScreen(),
       NewsManagementScreen(),
       OperatorScreen(),
+      DashboardScreen(),
     ];
   }
 }

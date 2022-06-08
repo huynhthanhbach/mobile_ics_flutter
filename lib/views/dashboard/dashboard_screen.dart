@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:mobile_ics_flutter/controllers/dashboard_controllers/dashboard_controller.dart';
 
-class DashboardScreen extends StatelessWidget {
+class DashboardScreen extends GetWidget<DashboardController> {
   const DashboardScreen({Key? key}) : super(key: key);
 
   @override
@@ -80,15 +82,16 @@ class DashboardScreen extends StatelessWidget {
                           height: 219,
                           margin: const EdgeInsets.symmetric(horizontal: 15),
                           decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(15),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.1),
-                                  offset: const Offset(4, 4),
-                                  blurRadius: 4,
-                                ),
-                              ]),
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(15),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                offset: const Offset(4, 4),
+                                blurRadius: 4,
+                              ),
+                            ],
+                          ),
                         ),
                       )
                     ],

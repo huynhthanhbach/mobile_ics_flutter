@@ -1,6 +1,7 @@
 import 'package:flutter/animation.dart';
 
 import 'package:get/get.dart';
+import 'package:mobile_ics_flutter/views/dashboard/dashboard_screen.dart';
 import 'package:mobile_ics_flutter/views/home/home_screen.dart';
 
 part 'routes.dart';
@@ -14,6 +15,12 @@ class Pages {
     GetPage(
         name: Routes.home,
         page: () => const HomeScreen(),
+        transition: Transition.fadeIn,
+        curve: Curves.easeIn,
+        transitionDuration: _timeAnimation),
+    GetPage(
+        name: Routes.dashboard,
+        page: () => const DashboardScreen(),
         transition: Transition.fadeIn,
         curve: Curves.easeIn,
         transitionDuration: _timeAnimation),
