@@ -10,6 +10,9 @@ class ThemeConfig {
   static const Color lightBG = Colors.white;
   static const Color darkBG = Color(0xff121212);
   static const Color bgAccent = Color(0xFF81D4FA);
+  static final colorWhite85 = Colors.white.withOpacity(0.85);
+  static final colorWhite90 = Colors.white.withOpacity(0.90);
+  static const tCol = Color(0xff5A6C64);
 
   static ThemeData lightThemeData = themeData(lightColorScheme, lightAccent);
   static ThemeData darkThemeData = themeData(darkColorScheme, darkAccent);
@@ -18,7 +21,6 @@ class ThemeConfig {
     return ThemeData(
         textTheme: GoogleFonts.sourceSansProTextTheme(),
         colorScheme: colorScheme,
-
         // Matches manifest.json colors and background color.
         primaryColor: const Color(0xFF030303),
         appBarTheme: AppBarTheme(
@@ -27,7 +29,7 @@ class ThemeConfig {
           iconTheme: IconThemeData(color: colorScheme.primary),
         ),
         iconTheme: IconThemeData(color: colorScheme.onPrimary),
-        canvasColor: colorScheme.background,
+        canvasColor: Colors.white,
         scaffoldBackgroundColor: colorScheme.background,
         highlightColor: Colors.transparent,
         focusColor: focusColor,
