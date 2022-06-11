@@ -37,6 +37,7 @@ dependencies:
   flutter_smart_dialog: ^4.5.1
   oktoast: ^3.2.0
   connectivity_plus: ^2.3.3
+  cached_network_image: ^3.2.1
 
   # Google font
   google_fonts: ^3.0.1
