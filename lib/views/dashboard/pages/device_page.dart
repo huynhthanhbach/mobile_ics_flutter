@@ -1,22 +1,21 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first, avoid_print
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mobile_ics_flutter/controllers/dashboard_controllers/dashboard_controller.dart';
-import 'package:mobile_ics_flutter/controllers/dashboard_controllers/news_page_controller.dart';
+import 'package:mobile_ics_flutter/controllers/dashboard_controllers/device_controller.dart';
 import 'package:mobile_ics_flutter/core/utils/constants.dart';
 import 'package:mobile_ics_flutter/core/widgets/widget.dart';
 import 'package:mobile_ics_flutter/views/dashboard/components/component.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-class NewsPage extends StatelessWidget {
-  const NewsPage({super.key});
+class DevicePage extends StatelessWidget {
+  const DevicePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     final dashBoardController = Get.find<DashboardController>();
-    return GetBuilder<NewsPageController>(
-      init: NewsPageController(),
+    return GetBuilder<DeviceController>(
+      init: DeviceController(),
       builder: (controller) => SafeArea(
         child: Scaffold(
           appBar: PreferredSize(
@@ -52,7 +51,7 @@ class NewsPage extends StatelessWidget {
                             ),
                             const Expanded(
                               child: KText(
-                                text: "Bản tin",
+                                text: "Thiết bị",
                                 size: 34,
                                 tColor: kBackgroundTitle,
                                 isCenter: true,
@@ -139,8 +138,8 @@ class NewsPage extends StatelessWidget {
                               context,
                               BottomSheetFilter(
                                 onPress: () {
-                                  controller.changList();
                                   Get.back();
+                                  controller.changList();
                                 },
                               ),
                             );
@@ -173,7 +172,7 @@ class NewsPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: const [
                         KText(
-                          text: "Số lượng bản tin phân theo loại",
+                          text: "Số lượng thiết bị phân theo loại",
                           tColor: kSubTitleMainColor,
                           size: 16,
                           fontWeight: Constants.kRegular,
@@ -217,7 +216,7 @@ class NewsPage extends StatelessWidget {
                                 tColor: kBackgroundTitle,
                               ),
                               KText(
-                                text: "Bản tin phân theo loại",
+                                text: "Thiết bị phân theo loại",
                                 size: 16,
                                 fontWeight: Constants.kRegular,
                                 tColor: Color(0xFFBCBEC3),
@@ -230,19 +229,24 @@ class NewsPage extends StatelessWidget {
                             controller.series,
                             animate: true,
                             animationDuration: Constants.dur500,
-                            barRendererDecorator:
-                                charts.BarLabelDecorator<String>(
-                              insideLabelStyleSpec: const charts.TextStyleSpec(
-                                color: charts.Color.white,
-                                fontSize: 13,
-                                fontWeight: 'w500',
-                                fontFamily: 'SourceSansPro',
-                              ),
-                              outsideLabelStyleSpec: const charts.TextStyleSpec(
-                                color: charts.Color.black,
-                                fontSize: 13,
-                                fontWeight: 'w500',
-                                fontFamily: 'SourceSansPro',
+                            defaultRenderer: charts.BarRendererConfig(
+                              maxBarWidthPx: 40,
+                              barRendererDecorator:
+                                  charts.BarLabelDecorator<String>(
+                                insideLabelStyleSpec:
+                                    const charts.TextStyleSpec(
+                                  color: charts.Color.white,
+                                  fontSize: 13,
+                                  fontWeight: 'w500',
+                                  fontFamily: 'SourceSansPro',
+                                ),
+                                outsideLabelStyleSpec:
+                                    const charts.TextStyleSpec(
+                                  color: charts.Color.black,
+                                  fontSize: 13,
+                                  fontWeight: 'w500',
+                                  fontFamily: 'SourceSansPro',
+                                ),
                               ),
                             ),
                             domainAxis: charts.OrdinalAxisSpec(
@@ -293,7 +297,7 @@ class NewsPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: const [
                         KText(
-                          text: "Số lượng bản tin phân theo trạng thái",
+                          text: "Số lượng thiết bị phân theo trạng thái",
                           tColor: kSubTitleMainColor,
                           size: 16,
                           fontWeight: Constants.kRegular,
@@ -305,7 +309,7 @@ class NewsPage extends StatelessWidget {
                   ),
                   const SizedBox(height: Constants.dkp * .25),
                   Container(
-                    height: 250,
+                    height: 300,
                     padding: const EdgeInsets.symmetric(
                       horizontal: Constants.dkp * .5,
                       vertical: Constants.dkp * .5,
@@ -337,7 +341,7 @@ class NewsPage extends StatelessWidget {
                                 tColor: kBackgroundTitle,
                               ),
                               KText(
-                                text: "Bản tin phân theo trạng thái",
+                                text: "Thiết bị phân theo trạng thái",
                                 size: 16,
                                 fontWeight: Constants.kRegular,
                                 tColor: Color(0xFFBCBEC3),
@@ -345,19 +349,55 @@ class NewsPage extends StatelessWidget {
                             ],
                           ),
                         ),
+                        const SizedBox(height: Constants.dkp),
                         Expanded(
-                          child: SfCircularChart(
-                            series: controller.seriesPie,
-                            tooltipBehavior: controller.tooltipBehavior,
-                            legend: Legend(
-                              isVisible: true,
-                              overflowMode: LegendItemOverflowMode.wrap,
-                              textStyle: const TextStyle(
-                                fontSize: 15,
-                                fontWeight: Constants.kRegular,
-                                color: Color(0xFFBCBEC3),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                height: 200,
+                                width: Constants.screenWidth * .43,
+                                alignment: Alignment.center,
+                                child: SfCircularChart(
+                                  series: controller.seriesPie,
+                                  tooltipBehavior: controller.tooltipBehavior1,
+                                  legend: Legend(
+                                    isVisible: true,
+                                    position: LegendPosition.bottom,
+                                    overflowMode: LegendItemOverflowMode.wrap,
+                                    textStyle: const TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: Constants.kRegular,
+                                      color: Color(0xFFBCBEC3),
+                                    ),
+                                    height: '40%',
+                                    alignment: ChartAlignment.center,
+                                  ),
+                                ),
                               ),
-                            ),
+                              Container(
+                                height: 200,
+                                width: Constants.screenWidth * .43,
+                                alignment: Alignment.center,
+                                child: SfCircularChart(
+                                  series: controller.seriesPie,
+                                  tooltipBehavior: controller.tooltipBehavior2,
+                                  legend: Legend(
+                                    isVisible: true,
+                                    position: LegendPosition.bottom,
+                                    overflowMode: LegendItemOverflowMode.wrap,
+                                    textStyle: const TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: Constants.kRegular,
+                                      color: Color(0xFFBCBEC3),
+                                    ),
+                                    alignment: ChartAlignment.center,
+                                    height: '40%',
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],

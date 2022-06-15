@@ -71,7 +71,7 @@ class BottomSheetFilter extends StatelessWidget {
                 ),
               ),
               const KText(
-                text: "Sắp xếp",
+                text: "Lọc",
                 fontWeight: Constants.kSemiBold,
                 tColor: kBackgroundTitle,
               ),
@@ -151,7 +151,7 @@ class BottomSheetFilter extends StatelessWidget {
                 Row(
                   children: const [
                     KText(
-                      text: "Khoản thời gian",
+                      text: "Khoảng thời gian",
                       size: 14,
                       tColor: Color(0xFFBCBEC3),
                       isBold: true,

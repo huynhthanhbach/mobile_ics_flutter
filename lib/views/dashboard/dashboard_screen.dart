@@ -6,7 +6,7 @@ import 'package:mobile_ics_flutter/controllers/dashboard_controllers/dashboard_c
 import 'package:mobile_ics_flutter/core/utils/constants.dart';
 import 'package:mobile_ics_flutter/core/widgets/widget.dart';
 import 'package:mobile_ics_flutter/views/dashboard/components/component.dart';
-import 'package:mobile_ics_flutter/views/dashboard/pages/news_page.dart';
+import 'package:mobile_ics_flutter/views/dashboard/pages/page.dart';
 
 class DashboardScreen extends GetWidget<DashboardController> {
   const DashboardScreen({Key? key}) : super(key: key);
@@ -151,7 +151,14 @@ class DashboardScreen extends GetWidget<DashboardController> {
                                     image: 'assets/icons/calendar.png',
                                   ),
                                   ButtonDashboardFeature(
-                                    onPress: () {},
+                                    onPress: () {
+                                      Get.to(
+                                        transition: Transition.fade,
+                                        curve: Curves.easeInQuad,
+                                        duration: Constants.dur500,
+                                        () => const DevicePage(),
+                                      );
+                                    },
                                     title: "Thiết bị",
                                     backgroundColorOut: const Color(0xFFE7EBFB),
                                     backgroundColorIn: const Color(0xFFE7EBFB),
@@ -165,7 +172,14 @@ class DashboardScreen extends GetWidget<DashboardController> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   ButtonDashboardFeature(
-                                    onPress: () {},
+                                    onPress: () {
+                                      Get.to(
+                                        transition: Transition.fade,
+                                        curve: Curves.easeInQuad,
+                                        duration: Constants.dur500,
+                                        () => const WarningPage(),
+                                      );
+                                    },
                                     title: "Cảnh báo",
                                     backgroundColorOut: const Color(0xFFF1ECFD),
                                     backgroundColorIn: const Color(0xFFF1ECFD),

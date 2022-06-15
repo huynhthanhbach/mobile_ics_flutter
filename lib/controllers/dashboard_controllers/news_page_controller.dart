@@ -5,6 +5,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mobile_ics_flutter/core/utils/constants.dart';
+import 'package:mobile_ics_flutter/core/widgets/widget.dart';
 import 'package:mobile_ics_flutter/models/news_model.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -77,7 +78,8 @@ class NewsPageController extends GetxController {
         domainFn: (NewsModel pops, _) => pops.type,
         measureFn: (NewsModel pops, _) => pops.amount,
         colorFn: (NewsModel pops, _) =>
-            charts.ColorUtil.fromDartColor(pops.barColor),
+            charts.ColorUtil.fromDartColor(kBackgroundTitle),
+        labelAccessorFn: (NewsModel pops, _) => pops.amount.toString(),
       ),
     ];
 
@@ -86,7 +88,7 @@ class NewsPageController extends GetxController {
         dataSource: newsListPie,
         xValueMapper: (NewsModel news, _) => news.status,
         yValueMapper: (NewsModel news, _) => news.amount,
-        radius: '100%',
+        radius: '120%',
         dataLabelSettings: const DataLabelSettings(
           isVisible: true,
           textStyle: TextStyle(
@@ -169,7 +171,8 @@ class NewsPageController extends GetxController {
           domainFn: (NewsModel pops, _) => pops.type,
           measureFn: (NewsModel pops, _) => pops.amount,
           colorFn: (NewsModel pops, _) =>
-              charts.ColorUtil.fromDartColor(pops.barColor),
+              charts.ColorUtil.fromDartColor(kBackgroundTitle),
+          labelAccessorFn: (NewsModel pops, _) => pops.amount.toString(),
         ),
       ];
       seriesPie = [
@@ -177,7 +180,7 @@ class NewsPageController extends GetxController {
           dataSource: newsListPie,
           xValueMapper: (NewsModel news, _) => news.status,
           yValueMapper: (NewsModel news, _) => news.amount,
-          radius: '100%',
+          radius: '120%',
           dataLabelSettings: const DataLabelSettings(
             isVisible: true,
             textStyle: TextStyle(
