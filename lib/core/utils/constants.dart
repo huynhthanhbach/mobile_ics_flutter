@@ -104,4 +104,12 @@ class Constants {
   //default padding
   static const double dkp = 20.0;
   const Constants._();
+
+  //default font weight
+  static const FontWeight kExtraLight = FontWeight.w100;
+  static const FontWeight kLight = FontWeight.w300;
+  static const FontWeight kRegular = FontWeight.w400;
+  static const FontWeight kSemiBold = FontWeight.w600;
+  static const FontWeight kBold = FontWeight.w700;
+  static const FontWeight kBlack = FontWeight.w900;
 }

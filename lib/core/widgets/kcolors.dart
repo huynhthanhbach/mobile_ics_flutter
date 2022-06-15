@@ -12,7 +12,17 @@ const Color kBlueLight = Color(0xFFEDF4FE);
 const Color kBlue = Color(0xFFE1EDFC);
 const Color kBlueDark = Color(0xFFC0D3F8);
 
-const Color kBackground = Color(0xFF1393F4);
+const Color kBackgroundTitle = Color(0xFF1393F4);
+const Color kBackground = Color(0xFFFCFCFC);
 
-const gradientFirst = Color(0xff0f17ad);
-const gradientSecond = Color(0xFF6985e8);
+const Color kBackgroundTag = Color(0xFFECF4FF);
+const Color kBackgroundTag2 = Color(0xFFD9D9D9);
+
+const Color kTextTag = Color(0xFF1491FF);
+
+const kGradientFirst = Color(0xff0f17ad);
+const kGradientSecond = Color(0xFF6985e8);
+
+const kTitleMainColor = Colors.white;
+const kSubTitleMainColor = Color(0xFF6A6A72);
+const kTitleButtonColor = Color(0xFFABAEB7);

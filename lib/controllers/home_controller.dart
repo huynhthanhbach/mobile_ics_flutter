@@ -31,8 +31,8 @@ class HomeController extends GetxController {
           fontWeight: FontWeight.bold,
           fontSize: 13,
         ),
-        activeColorPrimary: gradientFirst,
-        inactiveColorPrimary: gradientSecond,
+        activeColorPrimary: kGradientFirst,
+        inactiveColorPrimary: kGradientSecond,
       ),
       PersistentBottomNavBarItem(
         icon: const Icon(Icons.newspaper_rounded),
@@ -41,8 +41,8 @@ class HomeController extends GetxController {
           fontWeight: FontWeight.bold,
           fontSize: 13,
         ),
-        activeColorPrimary: gradientFirst,
-        inactiveColorPrimary: gradientSecond,
+        activeColorPrimary: kGradientFirst,
+        inactiveColorPrimary: kGradientSecond,
       ),
       PersistentBottomNavBarItem(
         icon: const Icon(Icons.dashboard_rounded),
@@ -51,8 +51,8 @@ class HomeController extends GetxController {
           fontWeight: FontWeight.bold,
           fontSize: 13,
         ),
-        activeColorPrimary: gradientFirst,
-        inactiveColorPrimary: gradientSecond,
+        activeColorPrimary: kGradientFirst,
+        inactiveColorPrimary: kGradientSecond,
       ),
     ];
   }
