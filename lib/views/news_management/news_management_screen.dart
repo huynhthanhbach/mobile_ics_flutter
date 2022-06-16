@@ -30,7 +30,7 @@ class NewsManagementScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         // Icon tiêu đề
-                        Image.asset('assets/icons/folder-title.png'),
+                        Image.asset('assets/icons/nm_folder-title.png'),
                         // Tiêu đề
                         const Text(
                           "Quản lí bản tin",
@@ -40,7 +40,7 @@ class NewsManagementScreen extends StatelessWidget {
                               color: kWhite),
                         ),
                         // Icon User
-                        Image.asset('assets/icons/avatar.png'),
+                        Image.asset('assets/icons/nm_avatar.png'),
                       ]),
                 ),
                 const SizedBox(height: 20),
@@ -126,7 +126,7 @@ class NewsManagementScreen extends StatelessWidget {
   Widget bottomSheetFloatingButton(
           BuildContext context, FileManagerController controller) =>
       FloatingActionButton(
-        child: Image.asset('assets/icons/floatingbutton-action-folder.png'),
+        child: Image.asset('assets/icons/nm_floatingbutton-action.png'),
         // Gọi hàm xử lí hiện buttom sheet lên khi nhấn vào
         onPressed: () {
           floatingButtonAction(context, controller);
@@ -212,7 +212,7 @@ class Folder extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
       child: Column(children: <Widget>[
-        Image.asset('assets/icons/folder.png',
+        Image.asset('assets/icons/nm_folder.png',
             width: 60, height: 60, fit: BoxFit.fitWidth),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -231,7 +231,7 @@ class Folder extends StatelessWidget {
               onTap: () {
                 press(); //Gọi lại hàm press()
               },
-              child: Image.asset('assets/icons/icon-three-dots.png'),
+              child: Image.asset('assets/icons/nm_icon-three-dots.png'),
             ),
           ],
         ),
@@ -335,7 +335,7 @@ class BottomSheetActionFolder extends StatelessWidget {
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.only(right: 30),
-                    child: Image.asset('assets/icons/changename.png'),
+                    child: Image.asset('assets/icons/nm_changename.png'),
                   ),
                   const Text('Đổi tên', style: textStyle1),
                 ],
@@ -350,7 +350,7 @@ class BottomSheetActionFolder extends StatelessWidget {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.only(right: 30),
-                  child: Image.asset('assets/icons/move.png'),
+                  child: Image.asset('assets/icons/nm_move.png'),
                 ),
                 const Text('Di chuyển', style: textStyle1)
               ],
@@ -368,7 +368,7 @@ class BottomSheetActionFolder extends StatelessWidget {
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.only(right: 30),
-                    child: Image.asset('assets/icons/delete.png'),
+                    child: Image.asset('assets/icons/nm_delete.png'),
                   ),
                   const Text('Xóa', style: textStyle1),
                 ],
@@ -388,7 +388,7 @@ class BottomSheetActionFolder extends StatelessWidget {
           content: TextField(
             autofocus: true,
             decoration: InputDecoration(
-              icon: Image.asset('assets/icons/changename.png'),
+              icon: Image.asset('assets/icons/nm_changename.png'),
               fillColor: kShadow,
               filled: true,
               hintText: 'Nhập tên mới',
