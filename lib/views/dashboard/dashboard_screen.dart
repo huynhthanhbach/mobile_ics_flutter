@@ -143,7 +143,14 @@ class DashboardScreen extends GetWidget<DashboardController> {
                                       },
                                       title: "Bản tin"),
                                   ButtonDashboardFeature(
-                                    onPress: () {},
+                                    onPress: () {
+                                      Get.to(
+                                        transition: Transition.fade,
+                                        curve: Curves.easeInQuad,
+                                        duration: Constants.dur500,
+                                        () => const CalendarPage(),
+                                      );
+                                    },
                                     title: "Lịch",
                                     backgroundColorOut: const Color(0xFFE2F3FE),
                                     backgroundColorIn: const Color(0xFFE2F3FE),
