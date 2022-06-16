@@ -92,14 +92,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
      - assets/images/
-     - assets/icons/nm_avatar.png
-     - assets/icons/nm_folder-title.png
-     - assets/icons/nm_folder.png
-     - assets/icons/nm_icon-three-dots.png
-     - assets/icons/nm_move.png
-     - assets/icons/nm_delete.png
-     - assets/icons/nm_changename.png
-     - assets/icons/nm_floatingbutton-action.png
+     - assets/icons/
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

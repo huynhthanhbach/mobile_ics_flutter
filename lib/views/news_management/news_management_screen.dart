@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
 import 'package:mobile_ics_flutter/controllers/file_manager.dart';
-import 'constants.dart';
-import 'kcolors.dart';
 
 import 'package:flutter/material.dart';
+import 'package:mobile_ics_flutter/views/news_management/constants.dart';
+import 'package:mobile_ics_flutter/views/news_management/kcolors.dart';
 
 class NewsManagementScreen extends StatelessWidget {
   const NewsManagementScreen({Key? key}) : super(key: key);
@@ -35,9 +35,10 @@ class NewsManagementScreen extends StatelessWidget {
                         const Text(
                           "Quản lí bản tin",
                           style: TextStyle(
-                              fontSize: 34,
-                              fontFamily: 'Source Sans Pro',
-                              color: kWhite),
+                            fontSize: 34,
+                            color: kWhite,
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
                         // Icon User
                         Image.asset('assets/icons/nm_avatar.png'),
@@ -126,8 +127,11 @@ class NewsManagementScreen extends StatelessWidget {
   Widget bottomSheetFloatingButton(
           BuildContext context, FileManagerController controller) =>
       FloatingActionButton(
-        child: Image.asset('assets/icons/nm_floatingbutton-action.png'),
-        // Gọi hàm xử lí hiện buttom sheet lên khi nhấn vào
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: Image.asset('assets/icons/nm_floatingbutton-action.png'),
+        ),
+        // Gọi hàm xử lí hiện bottom sheet lên khi nhấn vào
         onPressed: () {
           floatingButtonAction(context, controller);
         },
@@ -193,7 +197,7 @@ class NewsManagementScreen extends StatelessWidget {
   }
 }
 
-// Lớp xây dựng tạo item folder trong gridview với icon, tên và button dấu 3 chấm
+// Lớp xây dựng tạo item folder trong gridView với icon, tên và button dấu 3 chấm
 class Folder extends StatelessWidget {
   const Folder({
     Key? key,
