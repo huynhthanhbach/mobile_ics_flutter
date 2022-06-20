@@ -27,8 +27,8 @@ class HomeController extends GetxController {
   List<PersistentBottomNavBarItem> navBarItems() {
     return [
       PersistentBottomNavBarItem(
-        icon: const Icon(Icons.folder_copy_rounded),
-        title: 'Quản lý bản tin',
+        icon: const Icon(Icons.dashboard_rounded),
+        title: 'Dashboard',
         textStyle: const TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 13,
@@ -47,8 +47,8 @@ class HomeController extends GetxController {
         inactiveColorPrimary: kGradientSecond,
       ),
       PersistentBottomNavBarItem(
-        icon: const Icon(Icons.dashboard_rounded),
-        title: 'Dashboard',
+        icon: const Icon(Icons.folder_copy_rounded),
+        title: 'Quản lý bản tin',
         textStyle: const TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 13,
@@ -61,9 +61,9 @@ class HomeController extends GetxController {
 
   List<Widget> buildPages() {
     return const [
-      NewsManagementScreen(),
-      OperatorScreen(),
       DashboardScreen(),
+      OperatorScreen(),
+      NewsManagementScreen(),
     ];
   }
 }
