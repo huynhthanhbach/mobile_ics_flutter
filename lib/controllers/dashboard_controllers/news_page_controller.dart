@@ -1,7 +1,6 @@
 // ignore_for_file: avoid_print
 
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mobile_ics_flutter/core/utils/constants.dart';
@@ -12,6 +11,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 
 class NewsPageController extends GetxController {
   late TooltipBehavior tooltipBehavior;
+
   List<NewsModel> newsList = [
     NewsModel(
         type: "Thể thao",
@@ -71,6 +71,7 @@ class NewsPageController extends GetxController {
   @override
   void onInit() {
     tooltipBehavior = TooltipBehavior(enable: true);
+
     series = [
       charts.Series(
         id: "News Type",
@@ -112,7 +113,7 @@ class NewsPageController extends GetxController {
     random5 = random.nextInt(100);
     newsList.clear();
     newsListPie.clear();
-    print(newsList.length);
+
     if (newsList.isEmpty) {
       series.clear();
       newsList = [

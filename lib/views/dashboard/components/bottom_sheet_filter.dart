@@ -86,7 +86,7 @@ class BottomSheetFilter extends StatelessWidget {
                       width: 40,
                       child: IconButton(
                         onPressed: () async {
-                          dashBoardController.updateCheckSize();
+                          // dashBoardController.updateCheckSize();
                         },
                         icon: const Icon(
                           Icons.change_circle_rounded,
@@ -114,38 +114,40 @@ class BottomSheetFilter extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: Constants.dkp),
-                CustomRadioButton(
-                  elevation: 0,
-                  absoluteZeroSpacing: true,
-                  height: 30,
-                  autoWidth: true,
-                  enableShape: true,
-                  unSelectedColor: kBackgroundTag2,
-                  selectedColor: kBackgroundTitle,
-                  unSelectedBorderColor: kBackgroundTag2,
-                  selectedBorderColor: kBackgroundTitle,
-                  radius: 15,
-                  shapeRadius: 15,
-                  defaultSelected: "District",
-                  buttonLables: const [
-                    'Cấp huyện',
-                    'Cấp xã',
-                  ],
-                  buttonValues: const [
-                    "District",
-                    "Village",
-                  ],
-                  buttonTextStyle: ButtonTextStyle(
-                    selectedColor: Colors.white,
-                    unSelectedColor: Colors.black.withOpacity(.5),
-                    textStyle: const TextStyle(
-                        fontSize: 16, fontWeight: Constants.kSemiBold),
+                GetBuilder<DashboardController>(
+                  builder: (_) => CustomRadioButton(
+                    elevation: 0,
+                    absoluteZeroSpacing: true,
+                    height: 30,
+                    autoWidth: true,
+                    enableShape: true,
+                    unSelectedColor: kBackgroundTag2,
+                    selectedColor: kBackgroundTitle,
+                    unSelectedBorderColor: kBackgroundTag2,
+                    selectedBorderColor: kBackgroundTitle,
+                    radius: 15,
+                    shapeRadius: 15,
+                    defaultSelected: _.valueLocation,
+                    buttonLables: const [
+                      'Cấp Xã',
+                      'Cấp Huyện',
+                    ],
+                    buttonValues: const [
+                      "Village",
+                      "District",
+                    ],
+                    buttonTextStyle: ButtonTextStyle(
+                      selectedColor: Colors.white,
+                      unSelectedColor: Colors.black.withOpacity(.5),
+                      textStyle: const TextStyle(
+                          fontSize: 16, fontWeight: Constants.kSemiBold),
+                    ),
+                    radioButtonValue: (value) {
+                      _.onChangeLocation(value.toString());
+                    },
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: Constants.dkp),
                   ),
-                  radioButtonValue: (value) {
-                    // ignore: avoid_print
-                    print(value);
-                  },
-                  margin: const EdgeInsets.symmetric(horizontal: Constants.dkp),
                 ),
                 const SizedBox(height: Constants.dkp),
                 Row(
@@ -189,19 +191,16 @@ class BottomSheetFilter extends StatelessWidget {
                       ),
                       isExpanded: true,
                       value: _.valueTime,
-                      onChanged: (value) {
-                        _.valueTime = value!;
-                        _.update();
-                      },
+                      onChanged: (value) => _.onChangeTime(value!),
                       items: const [
                         DropdownMenuItem(
-                            value: '1', child: Text('Một ngày trước')),
+                            value: 'day ago', child: Text('Một ngày trước')),
                         DropdownMenuItem(
-                            value: '2', child: Text('Một tuần trước')),
+                            value: 'week ago', child: Text('Một tuần trước')),
                         DropdownMenuItem(
-                            value: '3', child: Text('Một tháng trước')),
+                            value: 'month ago', child: Text('Một tháng trước')),
                         DropdownMenuItem(
-                            value: '4', child: Text('Một năm trước')),
+                            value: 'year ago', child: Text('Một năm trước')),
                       ],
                     ),
                   ),
@@ -220,8 +219,8 @@ class BottomSheetFilter extends StatelessWidget {
                         ),
                         child: TextButton(
                           onPressed: () {
-                            // dashBoardController.updateCheckSize(); // test
-                            onPress();
+                            dashBoardController.filterData();
+                            onPress(); // test
                           },
                           child: const KText(
                             text: "Xác nhận lọc",

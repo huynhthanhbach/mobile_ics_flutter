@@ -1,9 +1,16 @@
+// ignore_for_file: avoid_print
+
+import 'dart:async';
+
 import 'package:get/get.dart';
+import 'package:mobile_ics_flutter/core/utils/constants.dart';
 import 'package:mobile_ics_flutter/core/widgets/widget.dart';
 import 'package:mobile_ics_flutter/models/bandwidth_model.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'dart:math' as math;
 
 class BandwidthController extends GetxController {
+  late ChartSeriesController chartSeriesController;
   List<BandwidthModel> dataBandwidth = [
     BandwidthModel(time: 0, value: 42),
     BandwidthModel(time: 01, value: 47),
@@ -27,18 +34,38 @@ class BandwidthController extends GetxController {
   ];
 
   List<LineSeries<BandwidthModel, int>> seriesLive = [];
+  // int nowDataValue = 0;
+  int time = 19;
 
   @override
   void onInit() {
+    // nowDataValue = dataBandwidth.last.value;
     seriesLive = [
       LineSeries(
         dataSource: dataBandwidth,
         // color: const Color.fromRGBO(192, 108, 132, 1),
+        onRendererCreated: (ChartSeriesController controller) =>
+            chartSeriesController = controller,
         color: kBackgroundTitle,
         xValueMapper: (BandwidthModel live, _) => live.time,
         yValueMapper: (BandwidthModel live, _) => live.value,
       ),
     ];
+
+    Timer.periodic(Constants.dur1000, updateDataSource);
     super.onInit();
+  }
+
+  void updateDataSource(Timer timer) {
+    dataBandwidth.add(
+      BandwidthModel(time: time++, value: math.Random().nextInt(60) + 30),
+    );
+    dataBandwidth.removeAt(0);
+    chartSeriesController.updateDataSource(
+      addedDataIndex: dataBandwidth.length - 1,
+      removedDataIndex: 0,
+    );
+    // nowDataValue = dataBandwidth.last.value;
+    // update();
   }
 }

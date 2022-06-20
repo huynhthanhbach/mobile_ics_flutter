@@ -65,10 +65,7 @@ class DashboardScreen extends GetWidget<DashboardController> {
                                               height: 30,
                                               fit: BoxFit.fill,
                                             ),
-                                            onTap: () {
-                                              // print('Menu slide bar');
-                                              controller.updateCheckSize();
-                                            },
+                                            onTap: () {},
                                           ),
                                           const SizedBox(
                                             width: Constants.dkp,
