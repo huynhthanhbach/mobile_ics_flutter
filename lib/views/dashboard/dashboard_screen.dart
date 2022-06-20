@@ -194,7 +194,14 @@ class DashboardScreen extends GetWidget<DashboardController> {
                                     image: 'assets/icons/warning.png',
                                   ),
                                   ButtonDashboardFeature(
-                                    onPress: () {},
+                                    onPress: () {
+                                      Get.to(
+                                        transition: Transition.fade,
+                                        curve: Curves.easeInQuad,
+                                        duration: Constants.dur500,
+                                        () => const BandwidthPage(),
+                                      );
+                                    },
                                     title: "Băng thông",
                                     backgroundColorOut: const Color(0xFFFBE0EC),
                                     backgroundColorIn: const Color(0xFFFBE0EC),
@@ -231,7 +238,7 @@ class DashboardScreen extends GetWidget<DashboardController> {
                               isCenter: true,
                               // tColor: Color(C),
                             ),
-                            GestureDetector(
+                            InkWell(
                               onTap: () {},
                               child: Container(
                                 height: 20,
@@ -293,7 +300,7 @@ class DashboardScreen extends GetWidget<DashboardController> {
                               isCenter: true,
                               // tColor: Color(C),
                             ),
-                            GestureDetector(
+                            InkWell(
                               onTap: () {},
                               child: Container(
                                 height: 20,

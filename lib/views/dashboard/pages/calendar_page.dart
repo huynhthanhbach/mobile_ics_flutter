@@ -6,6 +6,7 @@ import 'package:mobile_ics_flutter/core/utils/constants.dart';
 import 'package:mobile_ics_flutter/core/widgets/widget.dart';
 import 'package:mobile_ics_flutter/views/dashboard/components/component.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class CalendarPage extends StatelessWidget {
   const CalendarPage({super.key});
@@ -137,6 +138,7 @@ class CalendarPage extends StatelessWidget {
                               context,
                               BottomSheetFilter(
                                 onPress: () {
+                                  controller.changList();
                                   Get.back();
                                 },
                               ),
@@ -167,9 +169,9 @@ class CalendarPage extends StatelessWidget {
                   SizedBox(
                     height: 20,
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: const [
-                        KText(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const KText(
                           text: "Bản tin trong ngày",
                           tColor: kSubTitleMainColor,
                           size: 16,
@@ -177,6 +179,26 @@ class CalendarPage extends StatelessWidget {
                           isCenter: true,
                           // tColor: Color(C),
                         ),
+                        InkWell(
+                          onTap: () {
+                            controller.jumpNewsPlaying();
+                          },
+                          child: Container(
+                            height: 20,
+                            width: 80,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: kBackgroundTag,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Image.asset(
+                              'assets/icons/music-playing.png',
+                              width: 35,
+                              fit: BoxFit.fitWidth,
+                              color: kTextTag,
+                            ),
+                          ),
+                        )
                       ],
                     ),
                   ),
@@ -184,7 +206,7 @@ class CalendarPage extends StatelessWidget {
                   Container(
                     height: 300,
                     padding: const EdgeInsets.symmetric(
-                      horizontal: Constants.dkp * .5,
+                      horizontal: Constants.dkp * .25,
                       vertical: Constants.dkp * .5,
                     ),
                     decoration: BoxDecoration(
@@ -245,17 +267,15 @@ class CalendarPage extends StatelessWidget {
                                   itemScrollController:
                                       controller.itemController,
                                   itemCount: controller.listNews!.length,
+                                  itemPositionsListener:
+                                      controller.itemListener,
                                   itemBuilder: (context, index) {
                                     if (controller.listNews![index]['status'] ==
                                         'Đang phát') {
-                                      // WidgetsBinding.instance
-                                      //     .addPostFrameCallback((_) {
-                                      //   Future.delayed(
-                                      //       const Duration(milliseconds: 500),
-                                      //       () {
-                                      //     controller.scrollToItem(index);
-                                      //   });
-                                      // });
+                                      return NewsTimeLine(
+                                        details: controller.listNews![index],
+                                        isNow: true,
+                                      );
                                     }
                                     return NewsTimeLine(
                                       details: controller.listNews![index],
@@ -266,20 +286,84 @@ class CalendarPage extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      TextButton(
-                        onPressed: () async {
-                          controller.changeStatus(3);
-                        },
-                        child: Image.asset(
-                          'assets/icons/music-playing.png',
-                          width: 35,
+                  const SizedBox(height: Constants.dkp * .5),
+                  SizedBox(
+                    height: 20,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: const [
+                        KText(
+                          text:
+                              "Số lượng lịch phát bản tin phân theo trạng thái",
+                          tColor: kSubTitleMainColor,
+                          size: 16,
+                          fontWeight: Constants.kRegular,
+                          isCenter: true,
+                          // tColor: Color(C),
                         ),
-                      ),
-                    ],
-                  )
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: Constants.dkp * .25),
+                  Container(
+                    height: 250,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: Constants.dkp * .5,
+                      vertical: Constants.dkp * .5,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(15),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          offset: const Offset(4, 4),
+                          blurRadius: 4,
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: 60,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: const [
+                              KText(
+                                text: "1000",
+                                size: 30,
+                                fontWeight: Constants.kRegular,
+                                tColor: kBackgroundTitle,
+                              ),
+                              KText(
+                                text: "Bản tin phân theo trạng thái",
+                                size: 16,
+                                fontWeight: Constants.kRegular,
+                                tColor: Color(0xFFBCBEC3),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: SfCircularChart(
+                            series: controller.seriesPie,
+                            tooltipBehavior: controller.tooltipBehavior,
+                            legend: Legend(
+                              isVisible: true,
+                              overflowMode: LegendItemOverflowMode.wrap,
+                              textStyle: const TextStyle(
+                                fontSize: 15,
+                                fontWeight: Constants.kRegular,
+                                color: Color(0xFFBCBEC3),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
