@@ -127,11 +127,7 @@ class NewsManagementScreen extends StatelessWidget {
   Widget bottomSheetFloatingButton(
           BuildContext context, FileManagerController controller) =>
       FloatingActionButton(
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(20),
-          child: Image.asset('assets/icons/nm_floatingbutton-action.png'),
-        ),
-        // Gọi hàm xử lí hiện bottom sheet lên khi nhấn vào
+        child: const Icon(Icons.add, color: Colors.white, size: 35),
         onPressed: () {
           floatingButtonAction(context, controller);
         },
@@ -398,7 +394,7 @@ class BottomSheetActionFolder extends StatelessWidget {
               hintText: 'Nhập tên mới',
             ),
           ),
-          actions: [
+          actions: [  
             Padding(
               padding: const EdgeInsets.only(left: 40, right: 40),
               child: Row(
