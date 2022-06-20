@@ -31,6 +31,11 @@ class Constants {
   static const Duration dur300 = Duration(milliseconds: 300);
   static const Duration dur400 = Duration(milliseconds: 400);
   static const Duration dur500 = Duration(milliseconds: 500);
+  static const Duration dur600 = Duration(milliseconds: 600);
+  static const Duration dur700 = Duration(milliseconds: 700);
+  static const Duration dur800 = Duration(milliseconds: 800);
+  static const Duration dur900 = Duration(milliseconds: 900);
+  static const Duration dur1000 = Duration(milliseconds: 1000);
 
   static Widget boxPadding({double width = 0, double height = 0}) {
     return SizedBox(
