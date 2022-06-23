@@ -43,7 +43,7 @@
 //     );
 //   }
 // }
-import 'operator_components.dart';
+import 'component.dart';
 
 class Volume extends StatefulWidget {
   const Volume({Key? key}) : super(key: key);

@@ -102,50 +102,52 @@ class CalendarPage extends StatelessWidget {
                       },
                     ),
                   ),
-                  SizedBox(
-                    height: 50,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          alignment: Alignment.topLeft,
-                          width: 30,
-                          padding:
-                              const EdgeInsets.only(top: Constants.dkp * .25),
-                          child: const KText(
-                            text: "Lọc: ",
-                            tColor: Color(0xFFBCBEC3),
-                            size: 16,
-                            fontWeight: Constants.kRegular,
-                          ),
-                        ),
-                        const FilterTag(
-                          name: "Cấp huyện",
-                        ),
-                        const FilterTag(
-                          name: "Một tháng trước",
-                        ),
-                        InkWell(
-                          child: Image.asset(
-                            'assets/icons/menu.png',
-                            color: kBackgroundTitle,
+                  GetBuilder<DashboardController>(
+                    builder: (_) => SizedBox(
+                      height: 50,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            alignment: Alignment.topLeft,
                             width: 30,
-                            height: 30,
-                            fit: BoxFit.fill,
+                            padding:
+                                const EdgeInsets.only(top: Constants.dkp * .25),
+                            child: const KText(
+                              text: "Lọc: ",
+                              tColor: Color(0xFFBCBEC3),
+                              size: 16,
+                              fontWeight: Constants.kRegular,
+                            ),
                           ),
-                          onTap: () async {
-                            dashBoardController.showBottomSheet(
-                              context,
-                              BottomSheetFilter(
-                                onPress: () {
-                                  controller.changList();
-                                  Get.back();
-                                },
-                              ),
-                            );
-                          },
-                        ),
-                      ],
+                          FilterTag(
+                            name: _.locationTag!,
+                          ),
+                          FilterTag(
+                            name: _.timeTag!,
+                          ),
+                          InkWell(
+                            child: Image.asset(
+                              'assets/icons/menu.png',
+                              color: kBackgroundTitle,
+                              width: 30,
+                              height: 30,
+                              fit: BoxFit.fill,
+                            ),
+                            onTap: () async {
+                              _.showBottomSheet(
+                                context,
+                                BottomSheetFilter(
+                                  onPress: () {
+                                    controller.changList();
+                                    Get.back();
+                                  },
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -373,40 +375,3 @@ class CalendarPage extends StatelessWidget {
     );
   }
 }
-
-
-// SliverList(
-//                                       delegate: SliverChildBuilderDelegate(
-//                                         (context, index) => NewsTimeLine(
-//                                           details: controller.listNews![index],
-//                                         ),
-//                                         childCount: controller.listNews!.length,
-//                                       ),
-//                                     ),
-
-
-
-
-//  CustomScrollView(
-//                                   controller: controller.scrollController,
-//                                   slivers: [
-//                                     // SliverToBoxAdapter(
-//                                     //   child: Column(
-//                                     //     children: controller.buildListNews(
-//                                     //       controller.listNews!,
-//                                     //     ),
-//                                     //   ),
-//                                     // )
-//                                     SliverList(
-//                                       delegate: SliverChildBuilderDelegate(
-//                                         childCount: controller.listNews!.length,
-//                                         (context, index) {
-//                                           return NewsTimeLine(
-//                                             details:
-//                                                 controller.listNews![index],
-//                                           );
-//                                         },
-//                                       ),
-//                                     )
-//                                   ],
-//                                 ),

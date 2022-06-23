@@ -1,5 +1,5 @@
 export 'package:flutter/material.dart';
-export 'contrant.dart';
+export 'o_constants.dart';
 export 'texts.dart';
 export 'bottom_sheet.dart';
 export 'customs.dart';

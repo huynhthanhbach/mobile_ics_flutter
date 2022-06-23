@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_ics_flutter/views/operator/operator_components/contrant.dart';
+import 'package:mobile_ics_flutter/views/operator/components/o_constants.dart';
 
 class PlayNews extends StatelessWidget {
   const PlayNews(

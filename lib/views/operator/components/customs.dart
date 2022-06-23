@@ -1,7 +1,7 @@
 //custom container
 import 'package:flutter/material.dart';
-import 'package:mobile_ics_flutter/views/operator/operator_components/contrant.dart';
-import 'package:mobile_ics_flutter/views/operator/operator_components/texts.dart';
+import 'package:mobile_ics_flutter/views/operator/components/o_constants.dart';
+import 'package:mobile_ics_flutter/views/operator/components/texts.dart';
 
 class CustomContainer extends StatelessWidget {
   final double? height;

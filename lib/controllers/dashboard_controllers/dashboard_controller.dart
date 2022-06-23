@@ -8,13 +8,15 @@ import 'package:mobile_ics_flutter/models/time_bar_model.dart';
 
 class DashboardController extends GetxController {
   final _dateTimeNow = DateTime.now();
+  late String valueTime = 'day ago';
+  late String valueLocation = 'Village';
+
+  String? timeTag;
+  String? locationTag;
   List<TimeBarModel> timeBar = [];
 
-  late bool checkSize;
-  String valueTime = '1';
-
   @override
-  void onInit() {
+  void onInit() async {
     if (timeBar.isEmpty) {
       var weekDay = _dateTimeNow.weekday;
       for (var i = 0; i <= 6; i++) {
@@ -32,7 +34,8 @@ class DashboardController extends GetxController {
       update();
     }
 
-    checkSize = false;
+    timeTag = await _changeTime();
+    locationTag = await _changeLocation();
 
     super.onInit();
   }
@@ -48,16 +51,44 @@ class DashboardController extends GetxController {
     );
   }
 
-  void updateCheckSize() {
-    if (checkSize) {
-      checkSize = false;
-    } else {
-      checkSize = true;
+  void onChangeTime(String value) {
+    valueTime = value;
+  }
+
+  void onChangeLocation(String value) {
+    valueLocation = value;
+  }
+
+  Future<String> _changeLocation() async {
+    switch (valueLocation) {
+      case 'District':
+        return 'Cấp Huyện';
+      default:
+        return 'Cấp Xã';
     }
+  }
+
+  Future<String> _changeTime() async {
+    switch (valueTime) {
+      case 'week ago':
+        return 'Một tuần trước';
+      case 'month ago':
+        return 'Một tháng trước';
+      case 'year ago':
+        return 'Một năm trước';
+      default:
+        return 'Một ngày trước';
+    }
+  }
+
+  Future filterData() async {
+    print("Location: $valueLocation");
+    print("Time: $valueTime");
+    timeTag = await _changeTime();
+    locationTag = await _changeLocation();
 
     update();
 
-    print(checkSize);
-    print(valueTime);
+    // loc da ta o day
   }
 }
