@@ -240,8 +240,10 @@ class NewsPage extends StatelessWidget {
                                 fontWeight: 'w500',
                                 fontFamily: 'SourceSansPro',
                               ),
-                              outsideLabelStyleSpec: const charts.TextStyleSpec(
-                                color: charts.Color.black,
+                              outsideLabelStyleSpec: charts.TextStyleSpec(
+                                color: charts.ColorUtil.fromDartColor(
+                                  kBackgroundTitle,
+                                ),
                                 fontSize: 13,
                                 fontWeight: 'w500',
                                 fontFamily: 'SourceSansPro',

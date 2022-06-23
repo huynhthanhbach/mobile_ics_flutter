@@ -1,16 +1,15 @@
 import 'package:get/get.dart';
+import 'package:mobile_ics_flutter/views/dashboard/components/history_content_card.dart';
 
-import '../../../controllers/operator_controllers/operator_controller.dart';
-import '../operator_components/operator_components.dart';
-import 'operator_pages.dart';
+import '../../controllers/operator_controllers/operator_controller.dart';
+import 'components/component.dart';
+import 'pages/pages.dart';
 
-class OperatorScreen extends StatelessWidget {
+class OperatorScreen extends GetWidget<OperatorController> {
   const OperatorScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // ignore: unused_local_variable
-    var controller = Get.put(OperatorController());
     var size = MediaQuery.of(context).size;
     return Container(
       padding: const EdgeInsets.symmetric(
@@ -336,106 +335,7 @@ class OperatorScreen extends StatelessWidget {
                                     const MyBottomSheet(),
                                   );
                                 },
-                                child: CustomContainer(
-                                  height: 60,
-                                  marginVertical: 5,
-                                  marginHorizontal: defaultPadding,
-                                  paddingHorizontal: defaultPadding,
-                                  paddingVertical: 7,
-                                  child: Row(
-                                    children: [
-                                      InkWell(
-                                        child: SizedBox(
-                                          width: 35,
-                                          child: Row(
-                                            children: [
-                                              Image.asset(
-                                                  'assets/icons/op_new.png')
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: Column(
-                                          children: [
-                                            Row(
-                                              children: const [
-                                                Expanded(
-                                                  child: Text(
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    'Bản tin thời sự đài truyền hình Việt Nam',
-                                                    style: TextStyle(
-                                                      fontSize: 12,
-                                                      color: primaryColor,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: const [
-                                                Text(
-                                                  'Loại: Bản tin thời sự',
-                                                  style: TextStyle(
-                                                    fontSize: 12,
-                                                    color: primaryColor,
-                                                    //fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: const [
-                                                Text(
-                                                  'Thời gian: 00:00 - 31/12/2022',
-                                                  style: TextStyle(
-                                                    fontSize: 12,
-                                                    color: Color(0xffd9d9d9),
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 80,
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          children: [
-                                            Container(
-                                              decoration: BoxDecoration(
-                                                color: const Color(0xffd9d9d9),
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                              ),
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 3,
-                                                      horizontal:
-                                                          defaultPadding),
-                                              child: Text(
-                                                'Đã phát',
-                                                style: TextStyle(
-                                                  fontSize: 12,
-                                                  color: Colors.black
-                                                      .withOpacity(.5),
-                                                ),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                                child: const HistoryContentCard(),
                               );
                             },
                           ),

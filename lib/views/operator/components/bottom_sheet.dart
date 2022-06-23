@@ -1,4 +1,4 @@
-import 'operator_components.dart';
+import 'component.dart';
 
 class MyBottomSheet extends StatelessWidget {
   const MyBottomSheet({Key? key}) : super(key: key);

@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mobile_ics_flutter/controllers/dashboard_controllers/dashboard_controller.dart';
+import 'package:mobile_ics_flutter/controllers/home_controller.dart';
 import 'package:mobile_ics_flutter/core/utils/constants.dart';
 import 'package:mobile_ics_flutter/core/widgets/widget.dart';
 import 'package:mobile_ics_flutter/views/dashboard/components/component.dart';
@@ -236,7 +237,9 @@ class DashboardScreen extends GetWidget<DashboardController> {
                               // tColor: Color(C),
                             ),
                             InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                Get.find<HomeController>().changeIndex(1);
+                              },
                               child: Container(
                                 height: 20,
                                 width: 80,
