@@ -1,16 +1,30 @@
+// ignore_for_file: avoid_print
+
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mobile_ics_flutter/core/routes/initial_binding.dart';
 import 'package:mobile_ics_flutter/core/routes/pages.dart';
+import 'package:mobile_ics_flutter/core/services/boxes_service.dart';
 import 'package:mobile_ics_flutter/core/theme/theme_config.dart';
 import 'package:mobile_ics_flutter/core/utils/constants.dart';
+import 'package:mobile_ics_flutter/models/hive_models/hive_model.dart';
 import 'package:mobile_ics_flutter/views/home/home_screen.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:path_provider/path_provider.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  final appDocDir = await getApplicationDocumentsDirectory();
+  await Hive.initFlutter('${appDocDir.path}/mobile_ics_db');
+  print('${appDocDir.path}/mobile_ics_db');
+
+  Hive.registerAdapter(NewsHiveModelAdapter()); // đăng ký adapter
+  await BoxesService().openBox(); // mở box
+
   runApp(const MyApp());
 }
 

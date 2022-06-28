@@ -1,9 +1,13 @@
 // ignore_for_file: avoid_print
 
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:mobile_ics_flutter/core/services/boxes_service.dart';
+import 'package:mobile_ics_flutter/core/services/hive_news.dart';
 import 'package:mobile_ics_flutter/core/utils/constants.dart';
+import 'package:mobile_ics_flutter/models/hive_models/hive_model.dart';
 import 'package:mobile_ics_flutter/models/time_bar_model.dart';
 
 class DashboardController extends GetxController {
@@ -11,33 +15,75 @@ class DashboardController extends GetxController {
   late String valueTime = 'day ago';
   late String valueLocation = 'Village';
 
+  HiveNews hiveNews = HiveNews();
+
   String? timeTag;
   String? locationTag;
   List<TimeBarModel> timeBar = [];
 
+  List<NewsHiveModel> listNews = [];
+
   @override
   void onInit() async {
+    List<NewsHiveModel> list = await hiveNews.get();
+    if (list.isNotEmpty) {
+      listNews = list.toList();
+      update(['HISTORY_NEWS']);
+    }
+    print('News length: ${list.length}');
+
     if (timeBar.isEmpty) {
       var weekDay = _dateTimeNow.weekday;
-      for (var i = 0; i <= 6; i++) {
-        var firstDayOfWeek = _dateTimeNow.subtract(Duration(days: weekDay - i));
-        var changeDateToString = Jiffy(firstDayOfWeek).format("EEE");
-        final timeBarModel = TimeBarModel(
-          text: changeDateToString,
-          num: firstDayOfWeek.day.toString(),
-        );
-        if (firstDayOfWeek.day == _dateTimeNow.day) {
-          timeBarModel.now = true;
+      if (weekDay == 7) {
+        for (var i = 7; i <= 13; i++) {
+          var firstDayOfWeek =
+              _dateTimeNow.subtract(Duration(days: weekDay - i));
+          var changeDateToString = Jiffy(firstDayOfWeek).format("EEE");
+          final timeBarModel = TimeBarModel(
+            text: changeDateToString,
+            num: firstDayOfWeek.day.toString(),
+          );
+          if (firstDayOfWeek.day == _dateTimeNow.day) {
+            timeBarModel.now = true;
+          }
+          timeBar.add(timeBarModel);
         }
-        timeBar.add(timeBarModel);
+      } else {
+        for (var i = 0; i <= 6; i++) {
+          var firstDayOfWeek =
+              _dateTimeNow.subtract(Duration(days: weekDay - i));
+          var changeDateToString = Jiffy(firstDayOfWeek).format("EEE");
+          final timeBarModel = TimeBarModel(
+            text: changeDateToString,
+            num: firstDayOfWeek.day.toString(),
+          );
+          if (firstDayOfWeek.day == _dateTimeNow.day) {
+            timeBarModel.now = true;
+          }
+          timeBar.add(timeBarModel);
+        }
       }
+
       update();
     }
 
+    super.onInit();
+  }
+
+  @override
+  void onReady() async {
     timeTag = await _changeTime();
     locationTag = await _changeLocation();
+    super.onReady();
+  }
 
-    super.onInit();
+  Future onRefreshNews() async {
+    listNews.clear();
+    List<NewsHiveModel> list = await hiveNews.get();
+    if (list.isNotEmpty) {
+      listNews.addAll(list);
+    }
+    update(['HISTORY_NEWS']);
   }
 
   Future showBottomSheet(BuildContext context, Widget child) async {
@@ -81,6 +127,52 @@ class DashboardController extends GetxController {
     }
   }
 
+  String _getRandomString(int length) {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    Random rnd = Random();
+
+    return String.fromCharCodes(
+      Iterable.generate(
+        length,
+        (_) => chars.codeUnitAt(
+          rnd.nextInt(chars.length),
+        ),
+      ),
+    );
+  }
+
+  void fillData() {
+    List<NewsHiveModel> list = [];
+    list.clear();
+    var name = "";
+    for (var item in listNews) {
+      if (item.area == 'Đài truyền thanh cấp xã') {
+        if (name == "") {
+          name = _getRandomString(2);
+          // _edit(item, 'Bản tin thông tin đài $name');
+          list.add(item);
+        }
+        name = "";
+      }
+      // list.add(item);
+    }
+    if (list.isNotEmpty) {
+      print(list.length);
+      print('------------------');
+      for (var item in list) {
+        print(item.name);
+        print(item.type);
+        print(item.status);
+        print('-------------------');
+      }
+    }
+  }
+
+  // void _edit(NewsHiveModel model, String name) {
+  //   model.name = name;
+  //   model.save();
+  // }
+
   Future filterData() async {
     print("Location: $valueLocation");
     print("Time: $valueTime");
@@ -90,5 +182,13 @@ class DashboardController extends GetxController {
     update();
 
     // loc da ta o day
+  }
+
+  @override
+  void onClose() async {
+    timeBar.clear();
+    await BoxesService().closeBox();
+
+    super.onClose();
   }
 }

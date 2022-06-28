@@ -7,6 +7,7 @@ import 'package:mobile_ics_flutter/controllers/home_controller.dart';
 import 'package:mobile_ics_flutter/core/utils/constants.dart';
 import 'package:mobile_ics_flutter/core/widgets/widget.dart';
 import 'package:mobile_ics_flutter/views/dashboard/components/component.dart';
+import 'package:mobile_ics_flutter/views/dashboard/pages/backup_data_page.dart';
 import 'package:mobile_ics_flutter/views/dashboard/pages/page.dart';
 
 class DashboardScreen extends GetWidget<DashboardController> {
@@ -85,12 +86,22 @@ class DashboardScreen extends GetWidget<DashboardController> {
                                     CircleAvatar(
                                       backgroundColor: kBackgroundTitle,
                                       radius: 35,
-                                      child: Image.asset(
-                                        'assets/icons/avatar.png',
-                                        color: Colors.white,
-                                        width: 68,
-                                        height: 68,
-                                        fit: BoxFit.fill,
+                                      child: InkWell(
+                                        onTap: () {
+                                          Get.to(
+                                            transition: Transition.fade,
+                                            curve: Curves.easeInQuad,
+                                            duration: Constants.dur500,
+                                            () => const BackupDataPage(),
+                                          );
+                                        },
+                                        child: Image.asset(
+                                          'assets/icons/avatar.png',
+                                          color: Colors.white,
+                                          width: 68,
+                                          height: 68,
+                                          fit: BoxFit.fill,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -261,28 +272,37 @@ class DashboardScreen extends GetWidget<DashboardController> {
                         ),
                       ),
                       const SizedBox(height: Constants.dkp * .25),
-                      Container(
-                        height: 215,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: Constants.dkp * .5,
-                          vertical: Constants.dkp * .5,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(15),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
-                              offset: const Offset(4, 4),
-                              blurRadius: 4,
+                      GetBuilder<DashboardController>(
+                        id: 'HISTORY_NEWS',
+                        builder: (_) => Container(
+                          height: 215,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: Constants.dkp * .5,
+                            vertical: Constants.dkp * .5,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(15),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                offset: const Offset(4, 4),
+                                blurRadius: 4,
+                              ),
+                            ],
+                          ),
+                          child: RefreshIndicator(
+                            onRefresh: _.onRefreshNews,
+                            color: kBackgroundTitle,
+                            child: OverflowBox(
+                              child: ListView.builder(
+                                itemCount: 10,
+                                itemBuilder: (context, index) =>
+                                    const HistoryContentCard(
+                                  statusCode: 2,
+                                ),
+                              ),
                             ),
-                          ],
-                        ),
-                        child: ListView.builder(
-                          itemCount: 10,
-                          itemBuilder: (context, index) =>
-                              const HistoryContentCard(
-                            statusCode: 2,
                           ),
                         ),
                       ),
@@ -301,7 +321,9 @@ class DashboardScreen extends GetWidget<DashboardController> {
                               // tColor: Color(C),
                             ),
                             InkWell(
-                              onTap: () {},
+                              onTap: () async {
+                                controller.fillData();
+                              },
                               child: Container(
                                 height: 20,
                                 width: 80,
@@ -356,7 +378,7 @@ class DashboardScreen extends GetWidget<DashboardController> {
                       ),
                     ],
                   ),
-                )
+                ),
               ],
             ),
           ),
