@@ -211,14 +211,14 @@ class NewsPage extends StatelessWidget {
                           height: 60,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
+                            children: [
                               KText(
-                                text: "1000",
+                                text: controller.listNews.length.toString(),
                                 size: 30,
                                 fontWeight: Constants.kRegular,
                                 tColor: kBackgroundTitle,
                               ),
-                              KText(
+                              const KText(
                                 text: "Bản tin phân theo loại",
                                 size: 16,
                                 fontWeight: Constants.kRegular,
@@ -333,14 +333,14 @@ class NewsPage extends StatelessWidget {
                           height: 60,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
+                            children: [
                               KText(
-                                text: "1000",
+                                text: controller.listNews.length.toString(),
                                 size: 30,
                                 fontWeight: Constants.kRegular,
                                 tColor: kBackgroundTitle,
                               ),
-                              KText(
+                              const KText(
                                 text: "Bản tin phân theo trạng thái",
                                 size: 16,
                                 fontWeight: Constants.kRegular,

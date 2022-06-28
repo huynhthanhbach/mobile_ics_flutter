@@ -3,14 +3,20 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mobile_ics_flutter/controllers/dashboard_controllers/dashboard_controller.dart';
 import 'package:mobile_ics_flutter/core/utils/constants.dart';
 import 'package:mobile_ics_flutter/core/widgets/widget.dart';
+import 'package:mobile_ics_flutter/models/hive_models/hive_model.dart';
 import 'package:mobile_ics_flutter/models/news_model.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 class NewsPageController extends GetxController {
   late TooltipBehavior tooltipBehavior;
+
+  List<NewsHiveModel> listNews = [];
+  List<NewsHiveModel> listNewsType = [];
+  List<NewsHiveModel> listNewsStatus = [];
 
   List<NewsModel> newsList = [
     NewsModel(
@@ -65,12 +71,29 @@ class NewsPageController extends GetxController {
   List<charts.Series<NewsModel, String>> series = [];
   List<CircularSeries<NewsModel, String>> seriesPie = [];
 
+  String? location;
+
   Random random = Random();
   late int random1, random2, random3, random4, random5 = 0;
 
+  final _controller = Get.find<DashboardController>();
+
   @override
-  void onInit() {
+  void onInit() async {
     tooltipBehavior = TooltipBehavior(enable: true);
+
+    location = _changeLocation(_controller.valueLocation);
+    List<NewsHiveModel> list = _controller.listNews.toList();
+    if (list.isNotEmpty) {
+      for (var item in list) {
+        if (item.area == location) {
+          listNews.add(item);
+        }
+      }
+    }
+    print(location);
+    print(list.length);
+    print(listNews.length);
 
     series = [
       charts.Series(
@@ -103,6 +126,28 @@ class NewsPageController extends GetxController {
     ];
 
     super.onInit();
+  }
+
+  String _changeLocation(String value) {
+    switch (value) {
+      case 'District':
+        return 'Đài truyền thanh cấp huyện';
+      default:
+        return 'Đài truyền thanh cấp xã';
+    }
+  }
+
+  Future onRefresh() async {
+    listNews.clear();
+    location = _changeLocation(_controller.valueLocation);
+    List<NewsHiveModel> list = _controller.listNews.toList();
+    if (list.isNotEmpty) {
+      for (var item in list) {
+        if (item.area == location) {
+          listNews.add(item);
+        }
+      }
+    }
   }
 
   Future changList() async {
@@ -194,6 +239,8 @@ class NewsPageController extends GetxController {
         )
       ].toList();
     }
+    onRefresh();
+
     update();
   }
 }
