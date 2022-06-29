@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:mobile_ics_flutter/views/operator/components/o_constants.dart';
 
@@ -5,16 +7,20 @@ class PlayNews extends StatelessWidget {
   const PlayNews(
       {super.key,
       required this.icon,
-      required this.text,
-      required String value,
-      this.full});
+      required this.content,
+      //required String value,
+      this.full,
+      this.height = 25.0,
+      this.text = ''});
   final String icon;
-  final Widget text;
+  final Widget content;
   final bool? full;
+  final double height;
+  final String text;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: defaultPadding * 2,
+      height: height,
       child: Row(
         children: [
           const SizedBox(
@@ -27,11 +33,25 @@ class PlayNews extends StatelessWidget {
           const SizedBox(
             width: defaultPadding,
           ),
+          (text == '')
+              ? const SizedBox(
+                  width: 0,
+                )
+              : Container(
+                  padding: const EdgeInsets.only(right: defaultPadding * 1 / 3),
+                  child: Text(
+                    text,
+                    style: TextStyle(
+                      color: kBlack.withOpacity(.6),
+                      fontSize: text3,
+                    ),
+                  ),
+                ),
           SizedBox(
             width: full == null
                 ? MediaQuery.of(context).size.width * .3
                 : MediaQuery.of(context).size.width * .55,
-            child: text,
+            child: content,
           )
         ],
       ),
