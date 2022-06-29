@@ -37,7 +37,7 @@ class OperatorScreen extends GetWidget<OperatorController> {
               children: [
                 Image.asset(
                   'assets/icons/operator.png',
-                  width: defaultIconSize * 2,
+                  width: 40,
                 ),
                 const SizedBox(
                   width: 20,
@@ -51,7 +51,7 @@ class OperatorScreen extends GetWidget<OperatorController> {
                 ),
                 Image.asset(
                   'assets/icons/avatar.png',
-                  width: defaultIconSize * 2,
+                  width: 68,
                 )
               ],
             ),
@@ -85,6 +85,7 @@ class OperatorScreen extends GetWidget<OperatorController> {
                               children: [
                                 Expanded(
                                   child: PlayNews(
+                                    height: 20,
                                     icon: 'op_news.png',
                                     content: GetBuilder<OperatorController>(
                                       builder: (_) => DropdownButton<String>(
@@ -201,6 +202,7 @@ class OperatorScreen extends GetWidget<OperatorController> {
                               children: [
                                 Expanded(
                                   child: PlayNews(
+                                    height: 20,
                                     icon: 'op_repeat.png',
                                     content: GetBuilder<OperatorController>(
                                       builder: (_) => DropdownButton<String>(

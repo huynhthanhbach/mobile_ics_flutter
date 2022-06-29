@@ -97,9 +97,9 @@ class NewsList extends StatelessWidget {
                                               fontSize: text3,
                                             ),
                                             isExpanded: true,
-                                            value: _.calenderFilter,
+                                            value: _.timeFilter,
                                             onChanged: (value) =>
-                                                _.Filt('calenderFilter', value),
+                                                _.Filt('timeFilter', value),
                                             underline: Container(
                                                 color: Colors.transparent),
                                             items: timeList,
