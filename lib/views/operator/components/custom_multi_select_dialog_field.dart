@@ -1,4 +1,4 @@
-// ignore_for_file: depend_on_referenced_packages, prefer_initializing_formals, overridden_fields
+// ignore_for_file: depend_on_referenced_packages
 
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
@@ -97,7 +97,8 @@ class CustomMultiSelectDialogField<V> extends FormField<List<V>> {
 
   /// Set the color of the check in the checkbox
   final Color? checkColor;
- @override
+
+  @override
   // ignore: overridden_fields
   final AutovalidateMode autovalidateMode;
   @override
@@ -107,9 +108,8 @@ class CustomMultiSelectDialogField<V> extends FormField<List<V>> {
   // ignore: overridden_fields
   final FormFieldSetter<List<V>>? onSaved;
   @override
-    // ignore: overridden_fields
+  // ignore: overridden_fields
   final GlobalKey<FormFieldState>? key;
-
   FormFieldState<List<V>>? state;
 
   CustomMultiSelectDialogField({
@@ -287,6 +287,7 @@ class _CustomMultiSelectDialogFieldView<V> extends StatefulWidget {
         selectedItemsTextStyle = field.selectedItemsTextStyle,
         separateSelectedItems = field.separateSelectedItems,
         checkColor = field.checkColor,
+        // ignore: prefer_initializing_formals
         state = state;
 
   @override
