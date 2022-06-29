@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mobile_ics_flutter/controllers/dashboard_controllers/dashboard_controller.dart';
 import 'package:mobile_ics_flutter/core/utils/constants.dart';
+
 import 'package:mobile_ics_flutter/core/widgets/widget.dart';
 import 'package:mobile_ics_flutter/models/hive_models/hive_model.dart';
-import 'package:mobile_ics_flutter/models/news_model.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -18,58 +18,11 @@ class NewsPageController extends GetxController {
   List<NewsHiveModel> listNewsType = [];
   List<NewsHiveModel> listNewsStatus = [];
 
-  List<NewsModel> newsList = [
-    NewsModel(
-        type: "Thể thao",
-        status: "Vừa được khởi tạo",
-        amount: 200,
-        barColor: const Color(0xFFD9D9D9)),
-    NewsModel(
-        type: "Đời sống",
-        status: "Đang chờ phê duyệt",
-        amount: 400,
-        barColor: const Color(0xFFD9D9D9)),
-    NewsModel(
-        type: "Pháp luật",
-        status: "Đã phê duyệt",
-        amount: 250,
-        barColor: const Color(0xFFD9D9D9)),
-    NewsModel(
-        type: "Cảnh báo",
-        status: "Đã phát",
-        amount: 50,
-        barColor: const Color(0xFFD9D9D9)),
-    NewsModel(
-        type: "Thông tin",
-        status: "Đã phát",
-        amount: 100,
-        barColor: const Color(0xFFD9D9D9)),
-  ];
-  List<NewsModel> newsListPie = [
-    NewsModel(
-        type: "Thể thao",
-        status: "Vừa được khởi tạo",
-        amount: 200,
-        barColor: const Color(0xFFD9D9D9)),
-    NewsModel(
-        type: "Đời sống",
-        status: "Đang chờ phê duyệt",
-        amount: 400,
-        barColor: const Color(0xFFD9D9D9)),
-    NewsModel(
-        type: "Pháp luật",
-        status: "Đã phê duyệt",
-        amount: 250,
-        barColor: const Color(0xFFD9D9D9)),
-    NewsModel(
-        type: "Cảnh báo",
-        status: "Đã phát",
-        amount: 50,
-        barColor: const Color(0xFFD9D9D9)),
-  ];
+  List<News> _listBarChart = [];
+  List<News> _listPieChart = [];
 
-  List<charts.Series<NewsModel, String>> series = [];
-  List<CircularSeries<NewsModel, String>> seriesPie = [];
+  List<charts.Series<News, String>> seriesBarChart = [];
+  List<CircularSeries<News, String>> seriesPie = [];
 
   String? location;
 
@@ -91,27 +44,126 @@ class NewsPageController extends GetxController {
         }
       }
     }
-    print(location);
-    print(list.length);
-    print(listNews.length);
 
-    series = [
+    if (listNews.isNotEmpty) {
+      List<NewsHiveModel> listSport = [];
+      List<NewsHiveModel> listLife = [];
+      List<NewsHiveModel> listLaw = [];
+      List<NewsHiveModel> listWarning = [];
+      List<NewsHiveModel> listInfo = [];
+
+      List<NewsHiveModel> listStatus1 = [];
+      List<NewsHiveModel> listStatus2 = [];
+      List<NewsHiveModel> listStatus3 = [];
+      List<NewsHiveModel> listStatus4 = [];
+
+      for (var item in listNews) {
+        if (item.type == 'Thể thao') {
+          listSport.add(item);
+        }
+
+        if (item.type == 'Đời sống') {
+          listLife.add(item);
+        }
+
+        if (item.type == 'Pháp luật') {
+          listLaw.add(item);
+        }
+
+        if (item.type == 'Cảnh báo') {
+          listWarning.add(item);
+        }
+
+        if (item.type == 'Thông tin') {
+          listInfo.add(item);
+        }
+
+        if (item.status == 'Vừa được khởi tạo') {
+          listStatus1.add(item);
+        }
+
+        if (item.status == 'Đang chờ phê duyệt') {
+          listStatus2.add(item);
+        }
+
+        if (item.status == 'Đã phê duyệt') {
+          listStatus3.add(item);
+        }
+
+        if (item.status == 'Đã phát') {
+          listStatus4.add(item);
+        }
+      }
+
+      _listBarChart = [
+        News(
+            type: 'Thể thao',
+            amount: listSport.length,
+            barColor: kBackgroundTitle,
+            status: ''),
+        News(
+            type: 'Đời sống',
+            amount: listLife.length,
+            barColor: kBackgroundTitle,
+            status: ''),
+        News(
+            type: 'Pháp luật',
+            amount: listLaw.length,
+            barColor: kBackgroundTitle,
+            status: ''),
+        News(
+            type: 'Cảnh báo',
+            amount: listWarning.length,
+            barColor: kBackgroundTitle,
+            status: ''),
+        News(
+            type: 'Thông tin',
+            amount: listInfo.length,
+            barColor: kBackgroundTitle,
+            status: ''),
+      ];
+      _listPieChart = [
+        News(
+            type: '',
+            status: 'Vừa được khởi tạo',
+            amount: listStatus1.length,
+            barColor: const Color(0xFFD9D9D9)),
+        News(
+            type: '',
+            status: 'Đang chờ phê duyệt',
+            amount: listStatus2.length,
+            barColor: const Color(0xFFD9D9D9)),
+        News(
+            type: '',
+            status: 'Đã phê duyệt',
+            amount: listStatus3.length,
+            barColor: const Color(0xFFD9D9D9)),
+        News(
+            type: '',
+            status: 'Đã phát',
+            amount: listStatus4.length,
+            barColor: const Color(0xFFD9D9D9)),
+      ];
+      update();
+    }
+
+    seriesBarChart = [
       charts.Series(
         id: "News Type",
-        data: newsList,
-        domainFn: (NewsModel pops, _) => pops.type,
-        measureFn: (NewsModel pops, _) => pops.amount,
-        colorFn: (NewsModel pops, _) =>
+        data: _listBarChart,
+        domainFn: (News news, _) => news.type!,
+        measureFn: (News news, _) => news.amount,
+        colorFn: (News news, _) =>
             charts.ColorUtil.fromDartColor(kBackgroundTitle),
-        labelAccessorFn: (NewsModel pops, _) => pops.amount.toString(),
+        labelAccessorFn: (News news, _) => news.amount.toString(),
       ),
     ];
 
     seriesPie = [
       PieSeries(
-        dataSource: newsListPie,
-        xValueMapper: (NewsModel news, _) => news.status,
-        yValueMapper: (NewsModel news, _) => news.amount,
+        dataSource: _listPieChart,
+        xValueMapper: (News news, _) => news.status,
+        yValueMapper: (News news, _) => news.amount,
         radius: '120%',
         dataLabelSettings: const DataLabelSettings(
           isVisible: true,
@@ -137,6 +189,19 @@ class NewsPageController extends GetxController {
     }
   }
 
+  // String _changeTime(String value) {
+  //   switch (value) {
+  //     case 'week ago':
+  //       return 'Một tuần trước';
+  //     case 'month ago':
+  //       return 'Một tháng trước';
+  //     case 'year ago':
+  //       return 'Một năm trước';
+  //     default:
+  //       return 'Một ngày trước';
+  //   }
+  // }
+
   Future onRefresh() async {
     listNews.clear();
     location = _changeLocation(_controller.valueLocation);
@@ -147,85 +212,126 @@ class NewsPageController extends GetxController {
           listNews.add(item);
         }
       }
+      update();
     }
-  }
 
-  Future changList() async {
-    random1 = random.nextInt(100);
-    random2 = random.nextInt(100);
-    random3 = random.nextInt(100);
-    random4 = random.nextInt(100);
-    random5 = random.nextInt(100);
-    newsList.clear();
-    newsListPie.clear();
+    if (listNews.isNotEmpty) {
+      List<NewsHiveModel> listSport = [];
+      List<NewsHiveModel> listLife = [];
+      List<NewsHiveModel> listLaw = [];
+      List<NewsHiveModel> listWarning = [];
+      List<NewsHiveModel> listInfo = [];
 
-    if (newsList.isEmpty) {
-      series.clear();
-      newsList = [
-        NewsModel(
-            type: "Thể thao",
-            status: "Vừa được khởi tạo",
-            amount: random1,
+      List<NewsHiveModel> listStatus1 = [];
+      List<NewsHiveModel> listStatus2 = [];
+      List<NewsHiveModel> listStatus3 = [];
+      List<NewsHiveModel> listStatus4 = [];
+
+      for (var item in listNews) {
+        if (item.type == 'Thể thao') {
+          listSport.add(item);
+        }
+
+        if (item.type == 'Đời sống') {
+          listLife.add(item);
+        }
+
+        if (item.type == 'Pháp luật') {
+          listLaw.add(item);
+        }
+
+        if (item.type == 'Cảnh báo') {
+          listWarning.add(item);
+        }
+
+        if (item.type == 'Thông tin') {
+          listInfo.add(item);
+        }
+
+        if (item.status == 'Vừa được khởi tạo') {
+          listStatus1.add(item);
+        }
+
+        if (item.status == 'Đang chờ phê duyệt') {
+          listStatus2.add(item);
+        }
+
+        if (item.status == 'Đã phê duyệt') {
+          listStatus3.add(item);
+        }
+
+        if (item.status == 'Đã phát') {
+          listStatus4.add(item);
+        }
+      }
+
+      _listBarChart = [
+        News(
+            type: 'Thể thao',
+            amount: listSport.length,
+            barColor: kBackgroundTitle,
+            status: ''),
+        News(
+            type: 'Đời sống',
+            amount: listLife.length,
+            barColor: kBackgroundTitle,
+            status: ''),
+        News(
+            type: 'Pháp luật',
+            amount: listLaw.length,
+            barColor: kBackgroundTitle,
+            status: ''),
+        News(
+            type: 'Cảnh báo',
+            amount: listWarning.length,
+            barColor: kBackgroundTitle,
+            status: ''),
+        News(
+            type: 'Thông tin',
+            amount: listInfo.length,
+            barColor: kBackgroundTitle,
+            status: ''),
+      ].toList();
+      _listPieChart = [
+        News(
+            type: '',
+            status: 'Vừa được khởi tạo',
+            amount: listStatus1.length,
             barColor: const Color(0xFFD9D9D9)),
-        NewsModel(
-            type: "Đời sống",
-            status: "Đang chờ phê duyệt",
-            amount: random2,
+        News(
+            type: '',
+            status: 'Đang chờ phê duyệt',
+            amount: listStatus2.length,
             barColor: const Color(0xFFD9D9D9)),
-        NewsModel(
-            type: "Pháp luật",
-            status: "Đã phê duyệt",
-            amount: random3,
+        News(
+            type: '',
+            status: 'Đã phê duyệt',
+            amount: listStatus3.length,
             barColor: const Color(0xFFD9D9D9)),
-        NewsModel(
-            type: "Cảnh báo",
-            status: "Đã phát",
-            amount: random4,
-            barColor: const Color(0xFFD9D9D9)),
-        NewsModel(
-            type: "Thông tin",
-            status: "Đã phát",
-            amount: random5,
+        News(
+            type: '',
+            status: 'Đã phát',
+            amount: listStatus4.length,
             barColor: const Color(0xFFD9D9D9)),
       ].toList();
-      List<NewsModel> newsListPie = [
-        NewsModel(
-            type: "Thể thao",
-            status: "Vừa được khởi tạo",
-            amount: random1,
-            barColor: const Color(0xFFD9D9D9)),
-        NewsModel(
-            type: "Đời sống",
-            status: "Đang chờ phê duyệt",
-            amount: random2,
-            barColor: const Color(0xFFD9D9D9)),
-        NewsModel(
-            type: "Pháp luật",
-            status: "Đã phê duyệt",
-            amount: random3,
-            barColor: const Color(0xFFD9D9D9)),
-        NewsModel(
-            type: "Cảnh báo",
-            status: "Đã phát",
-            amount: random4,
-            barColor: const Color(0xFFD9D9D9)),
-      ].toList();
-      series = [
+
+      seriesBarChart = [
         charts.Series(
           id: "News Type",
-          data: newsList,
-          domainFn: (NewsModel pops, _) => pops.type,
-          measureFn: (NewsModel pops, _) => pops.amount,
-          colorFn: (NewsModel pops, _) =>
+          data: _listBarChart,
+          domainFn: (News news, _) => news.type!,
+          measureFn: (News news, _) => news.amount,
+          colorFn: (News news, _) =>
               charts.ColorUtil.fromDartColor(kBackgroundTitle),
-          labelAccessorFn: (NewsModel pops, _) => pops.amount.toString(),
+          labelAccessorFn: (News news, _) => news.amount.toString(),
         ),
-      ];
+      ].toList();
+
       seriesPie = [
         PieSeries(
-          dataSource: newsListPie,
-          xValueMapper: (NewsModel news, _) => news.status,
-          yValueMapper: (NewsModel news, _) => news.amount,
+          dataSource: _listPieChart,
+          xValueMapper: (News news, _) => news.status,
+          yValueMapper: (News news, _) => news.amount,
           radius: '120%',
           dataLabelSettings: const DataLabelSettings(
             isVisible: true,
@@ -238,9 +344,24 @@ class NewsPageController extends GetxController {
           enableTooltip: true,
         )
       ].toList();
+      update();
     }
-    onRefresh();
-
-    update();
   }
+
+  Future changList() async {
+    await onRefresh();
+  }
+}
+
+class News {
+  String? type;
+  String? status;
+  int? amount;
+  Color? barColor;
+  News({
+    this.type,
+    this.status,
+    this.amount,
+    this.barColor,
+  });
 }
