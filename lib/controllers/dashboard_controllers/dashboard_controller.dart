@@ -127,68 +127,33 @@ class DashboardController extends GetxController {
     }
   }
 
-  String _getRandomString(int length) {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    Random rnd = Random();
+  // String _getRandomString(int length) {
+  //   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  //   Random rnd = Random();
 
-    return String.fromCharCodes(
-      Iterable.generate(
-        length,
-        (_) => chars.codeUnitAt(
-          rnd.nextInt(chars.length),
-        ),
-      ),
-    );
-  }
-
-  void fillData() {
-    List<NewsHiveModel> list = [];
-    list.clear();
-    var name = "";
-    for (var item in listNews) {
-      if (item.area == 'Đài truyền thanh cấp xã') {
-        if (name == "") {
-          name = _getRandomString(2);
-          // _edit(item, 'Bản tin thông tin đài $name');
-          list.add(item);
-        }
-        name = "";
-      }
-      // list.add(item);
-    }
-    if (list.isNotEmpty) {
-      print(list.length);
-      print('------------------');
-      for (var item in list) {
-        print(item.name);
-        print(item.type);
-        print(item.status);
-        print('-------------------');
-      }
-    }
-  }
-
-  // void _edit(NewsHiveModel model, String name) {
-  //   model.name = name;
-  //   model.save();
+  //   return String.fromCharCodes(
+  //     Iterable.generate(
+  //       length,
+  //       (_) => chars.codeUnitAt(
+  //         rnd.nextInt(chars.length),
+  //       ),
+  //     ),
+  //   );
   // }
 
-  Future filterData() async {
+  Future onFilter() async {
     print("Location: $valueLocation");
     print("Time: $valueTime");
     timeTag = await _changeTime();
     locationTag = await _changeLocation();
 
     update();
-
-    // loc da ta o day
   }
 
   @override
   void onClose() async {
     timeBar.clear();
     await BoxesService().closeBox();
-
     super.onClose();
   }
 }

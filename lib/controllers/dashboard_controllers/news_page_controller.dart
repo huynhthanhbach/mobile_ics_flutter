@@ -1,8 +1,8 @@
 // ignore_for_file: avoid_print
 
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:mobile_ics_flutter/controllers/dashboard_controllers/dashboard_controller.dart';
 import 'package:mobile_ics_flutter/core/utils/constants.dart';
 
@@ -26,9 +26,6 @@ class NewsPageController extends GetxController {
 
   String? location;
 
-  Random random = Random();
-  late int random1, random2, random3, random4, random5 = 0;
-
   final _controller = Get.find<DashboardController>();
 
   @override
@@ -46,79 +43,71 @@ class NewsPageController extends GetxController {
     }
 
     if (listNews.isNotEmpty) {
-      List<NewsHiveModel> listSport = [];
-      List<NewsHiveModel> listLife = [];
-      List<NewsHiveModel> listLaw = [];
-      List<NewsHiveModel> listWarning = [];
-      List<NewsHiveModel> listInfo = [];
-
-      List<NewsHiveModel> listStatus1 = [];
-      List<NewsHiveModel> listStatus2 = [];
-      List<NewsHiveModel> listStatus3 = [];
-      List<NewsHiveModel> listStatus4 = [];
+      int sport = 0, life = 0, law = 0, warning = 0, info = 0;
+      int status1 = 0, status2 = 0, status3 = 0, status4 = 0;
 
       for (var item in listNews) {
         if (item.type == 'Thể thao') {
-          listSport.add(item);
+          sport++;
         }
 
         if (item.type == 'Đời sống') {
-          listLife.add(item);
+          life++;
         }
 
         if (item.type == 'Pháp luật') {
-          listLaw.add(item);
+          law++;
         }
 
         if (item.type == 'Cảnh báo') {
-          listWarning.add(item);
+          warning++;
         }
 
         if (item.type == 'Thông tin') {
-          listInfo.add(item);
+          info++;
         }
 
         if (item.status == 'Vừa được khởi tạo') {
-          listStatus1.add(item);
+          status1++;
         }
 
         if (item.status == 'Đang chờ phê duyệt') {
-          listStatus2.add(item);
+          status2++;
         }
 
         if (item.status == 'Đã phê duyệt') {
-          listStatus3.add(item);
+          status3++;
         }
 
         if (item.status == 'Đã phát') {
-          listStatus4.add(item);
+          status4++;
         }
       }
 
       _listBarChart = [
         News(
             type: 'Thể thao',
-            amount: listSport.length,
+            amount: sport,
             barColor: kBackgroundTitle,
             status: ''),
         News(
             type: 'Đời sống',
-            amount: listLife.length,
+            amount: life,
             barColor: kBackgroundTitle,
             status: ''),
         News(
             type: 'Pháp luật',
-            amount: listLaw.length,
+            amount: law,
             barColor: kBackgroundTitle,
             status: ''),
         News(
             type: 'Cảnh báo',
-            amount: listWarning.length,
+            amount: warning,
             barColor: kBackgroundTitle,
             status: ''),
         News(
             type: 'Thông tin',
-            amount: listInfo.length,
+            amount: info,
             barColor: kBackgroundTitle,
             status: ''),
       ];
@@ -126,22 +115,22 @@ class NewsPageController extends GetxController {
         News(
             type: '',
             status: 'Vừa được khởi tạo',
-            amount: listStatus1.length,
+            amount: status1,
             barColor: const Color(0xFFD9D9D9)),
         News(
             type: '',
             status: 'Đang chờ phê duyệt',
-            amount: listStatus2.length,
+            amount: status2,
             barColor: const Color(0xFFD9D9D9)),
         News(
             type: '',
             status: 'Đã phê duyệt',
-            amount: listStatus3.length,
+            amount: status3,
             barColor: const Color(0xFFD9D9D9)),
         News(
             type: '',
             status: 'Đã phát',
-            amount: listStatus4.length,
+            amount: status4,
             barColor: const Color(0xFFD9D9D9)),
       ];
       update();
@@ -202,6 +191,38 @@ class NewsPageController extends GetxController {
   //   }
   // }
 
+  List<NewsHiveModel> _itemsBetweenDates({
+    required List<NewsHiveModel> list,
+    required DateTime dateStart,
+    required DateTime dateEnd,
+  }) {
+    var dateFormat = DateFormat('y-MM-dd');
+
+    var filterList = <NewsHiveModel>[];
+
+    for (var item in list) {
+      var date = dateFormat.parse(item.createDate.toString(), true);
+      if (date.compareTo(dateStart) >= 0 && date.compareTo(dateEnd) <= 0) {
+        filterList.add(item);
+      }
+    }
+
+    return filterList;
+  }
+
+  Future<void> _fillDataFormDate(
+      List<NewsHiveModel> list, DateTime dateStart, DateTime dateEnd) async {
+    var dateFormat = DateFormat('y-MM-dd');
+    var start = dateFormat.parse(dateStart.toString(), true);
+    var end = dateFormat.parse(dateEnd.toString(), true);
+
+    final listTemp =
+        _itemsBetweenDates(list: list, dateStart: start, dateEnd: end.toUtc());
+    print('Date start: $start');
+    print('Date end: $end');
+    print('List filter length: ${listTemp.length}');
+  }
+
   Future onRefresh() async {
     listNews.clear();
     location = _changeLocation(_controller.valueLocation);
@@ -216,79 +237,71 @@ class NewsPageController extends GetxController {
     }
 
     if (listNews.isNotEmpty) {
-      List<NewsHiveModel> listSport = [];
-      List<NewsHiveModel> listLife = [];
-      List<NewsHiveModel> listLaw = [];
-      List<NewsHiveModel> listWarning = [];
-      List<NewsHiveModel> listInfo = [];
-
-      List<NewsHiveModel> listStatus1 = [];
-      List<NewsHiveModel> listStatus2 = [];
-      List<NewsHiveModel> listStatus3 = [];
-      List<NewsHiveModel> listStatus4 = [];
+      int sport = 0, life = 0, law = 0, warning = 0, info = 0;
+      int status1 = 0, status2 = 0, status3 = 0, status4 = 0;
 
       for (var item in listNews) {
         if (item.type == 'Thể thao') {
-          listSport.add(item);
+          sport++;
         }
 
         if (item.type == 'Đời sống') {
-          listLife.add(item);
+          life++;
         }
 
         if (item.type == 'Pháp luật') {
-          listLaw.add(item);
+          law++;
         }
 
         if (item.type == 'Cảnh báo') {
-          listWarning.add(item);
+          warning++;
         }
 
         if (item.type == 'Thông tin') {
-          listInfo.add(item);
+          info++;
         }
 
         if (item.status == 'Vừa được khởi tạo') {
-          listStatus1.add(item);
+          status1++;
         }
 
         if (item.status == 'Đang chờ phê duyệt') {
-          listStatus2.add(item);
+          status2++;
         }
 
         if (item.status == 'Đã phê duyệt') {
-          listStatus3.add(item);
+          status3++;
         }
 
         if (item.status == 'Đã phát') {
-          listStatus4.add(item);
+          status4++;
         }
       }
 
       _listBarChart = [
         News(
             type: 'Thể thao',
-            amount: listSport.length,
+            amount: sport,
             barColor: kBackgroundTitle,
             status: ''),
         News(
             type: 'Đời sống',
-            amount: listLife.length,
+            amount: life,
             barColor: kBackgroundTitle,
             status: ''),
         News(
             type: 'Pháp luật',
-            amount: listLaw.length,
+            amount: law,
             barColor: kBackgroundTitle,
             status: ''),
         News(
             type: 'Cảnh báo',
-            amount: listWarning.length,
+            amount: warning,
             barColor: kBackgroundTitle,
             status: ''),
         News(
             type: 'Thông tin',
-            amount: listInfo.length,
+            amount: info,
             barColor: kBackgroundTitle,
             status: ''),
       ].toList();
@@ -296,22 +309,22 @@ class NewsPageController extends GetxController {
         News(
             type: '',
             status: 'Vừa được khởi tạo',
-            amount: listStatus1.length,
+            amount: status1,
             barColor: const Color(0xFFD9D9D9)),
         News(
             type: '',
             status: 'Đang chờ phê duyệt',
-            amount: listStatus2.length,
+            amount: status2,
             barColor: const Color(0xFFD9D9D9)),
         News(
             type: '',
             status: 'Đã phê duyệt',
-            amount: listStatus3.length,
+            amount: status3,
             barColor: const Color(0xFFD9D9D9)),
         News(
             type: '',
             status: 'Đã phát',
-            amount: listStatus4.length,
+            amount: status4,
             barColor: const Color(0xFFD9D9D9)),
       ].toList();
 
@@ -350,6 +363,7 @@ class NewsPageController extends GetxController {
 
   Future changList() async {
     await onRefresh();
+    await _fillDataFormDate(listNews, listNews[0].createDate!, DateTime.now());
   }
 }
 

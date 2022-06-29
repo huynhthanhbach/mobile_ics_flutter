@@ -120,11 +120,13 @@ class BackupDataPage extends StatelessWidget {
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   (controller.isLoading)
-                      ? const CircularProgressIndicator(
-                          color: kBackgroundTitle,
+                      ? const Center(
+                          child: CircularProgressIndicator(
+                            color: kBackgroundTitle,
+                          ),
                         )
                       : const SizedBox(),
                   const SizedBox(height: Constants.dkp),
@@ -134,7 +136,7 @@ class BackupDataPage extends StatelessWidget {
                       ElevatedButton(
                         onPressed: () async {
                           // await controller.backupDatabase();
-                          // print("null");
+                          print("null");
                         },
                         child: const KText(
                           text: "Backup Data",
