@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:mobile_ics_flutter/views/operator/components/op_constant.dart';
 
