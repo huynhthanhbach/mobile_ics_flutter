@@ -6,7 +6,6 @@ import 'kcolors.dart';
 // Kiểu chữ tiêu đề
 const textTitle = TextStyle(
   fontSize: 34,
-  fontFamily: 'Source Sans Pro',
   color: kWhite,
 );
 
@@ -15,7 +14,6 @@ const textStyleTitleNameFolder = TextStyle(
     fontWeight: FontWeight.bold,
     fontSize: 20,
     color: kBlack,
-    fontFamily: 'Source Sans Pro'
 );
 
 // Cỡ chữ 16 in đậm màu đen
@@ -23,11 +21,16 @@ const textStyle1 = TextStyle(
     fontWeight: FontWeight.bold,
     fontSize: 16,
     color: kBlack,
-    fontFamily: 'Source Sans Pro'
+);
+
+const textStyle11 = TextStyle(
+    fontWeight: FontWeight.bold,
+    fontSize: 16,
+    color: kBlue,
 );
 
 // Cỡ chữ 16 màu đen không in đậm
-const textStyle2 = TextStyle(fontSize: 16, color: kBlack, fontFamily: 'Source Sans Pro');
+const textStyle2 = TextStyle(fontSize: 16, color: kBlack);
 
 // Mặc định Radius 15
 
