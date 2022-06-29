@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:mobile_ics_flutter/views/dashboard/components/history_content_card.dart';
-
+import 'package:mobile_ics_flutter/views/operator/components/tempdb.dart';
+import 'package:multi_select_flutter/multi_select_flutter.dart';
 import '../../controllers/operator_controllers/operator_controller.dart';
 import 'components/component.dart';
 import 'pages/pages.dart';
@@ -36,7 +37,7 @@ class OperatorScreen extends GetWidget<OperatorController> {
               children: [
                 Image.asset(
                   'assets/icons/operator.png',
-                  width: defaultIconSize * 2,
+                  width: 40,
                 ),
                 const SizedBox(
                   width: 20,
@@ -50,7 +51,7 @@ class OperatorScreen extends GetWidget<OperatorController> {
                 ),
                 Image.asset(
                   'assets/icons/avatar.png',
-                  width: defaultIconSize * 2,
+                  width: 68,
                 )
               ],
             ),
@@ -84,56 +85,62 @@ class OperatorScreen extends GetWidget<OperatorController> {
                               children: [
                                 Expanded(
                                   child: PlayNews(
+                                    height: 20,
                                     icon: 'op_news.png',
-                                    text: DropdownButton<String>(
-                                      hint: const Text('Chọn bản tin'),
-                                      underline:
-                                          Container(color: Colors.transparent),
-                                      //value: '0',
-                                      items: const [
-                                        DropdownMenuItem(
-                                          value: '0',
-                                          child: PlayNewsCard(
-                                            text: 'Bản tin thời sự',
-                                            width: 90,
-                                          ),
+                                    content: GetBuilder<OperatorController>(
+                                      builder: (_) => DropdownButton<String>(
+                                        isDense: true,
+                                        style: TextStyle(
+                                          color: kBlack.withOpacity(.6),
+                                          fontSize: text3,
                                         ),
-                                      ],
-                                      onChanged: (value) {},
+                                        isExpanded: true,
+                                        value: _.newsSelected,
+                                        onChanged: (value) =>
+                                            _.Select('newsSelected', value),
+                                        hint: const Text('Chọn bản tin'),
+                                        underline: Container(
+                                            color: Colors.transparent),
+                                        items: newsList,
+                                      ),
                                     ),
-                                    value: '',
                                   ),
                                 ),
                                 Expanded(
                                   child: PlayNews(
+                                    height: 28,
                                     icon: 'op_devices.png',
-                                    text: DropdownButton<String>(
-                                      hint: const Text("Chọn thiết bị"),
-                                      underline:
-                                          Container(color: Colors.transparent),
-                                      //value: '0',
-                                      items: [
-                                        DropdownMenuItem(
-                                          value: '0',
-                                          // ignore: avoid_types_as_parameter_names
-                                          child: Row(
-                                            children: [
-                                              Checkbox(
-                                                  value: false,
-                                                  // ignore: avoid_types_as_parameter_names
-                                                  onChanged: (bool) {}),
-                                              const PlayNewsCard(
-                                                text: 'Loa 1',
-                                                isGrey: true,
-                                                width: 40,
-                                              )
-                                            ],
-                                          ),
+                                    content: CustomMultiSelectDialogField(
+                                      chipDisplay:
+                                          MultiSelectChipDisplay.none(),
+                                      decoration: BoxDecoration(
+                                        color: Colors.blue.withOpacity(0),
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(40)),
+                                        border: Border.all(
+                                          color: Colors.blue.withOpacity(0),
+                                          width: 2,
                                         ),
-                                      ],
-                                      onChanged: (value) {},
+                                      ),
+                                      buttonIcon: Icon(
+                                        Icons.arrow_drop_down_sharp,
+                                        color: kBlack.withOpacity(.6),
+                                      ),
+                                      items: device_items,
+                                      title:
+                                          const Text("Danh sách thiết bị phát"),
+                                      selectedColor: Colors.blue,
+                                      buttonText: Text(
+                                        "Chọn thiết bị",
+                                        style: TextStyle(
+                                          color: kBlack.withOpacity(.6),
+                                          fontSize: text3,
+                                        ),
+                                      ),
+                                      onConfirm: (results) {
+                                        //_selectedAnimals = results;
+                                      },
                                     ),
-                                    value: '',
                                   ),
                                 ),
                               ],
@@ -145,27 +152,41 @@ class OperatorScreen extends GetWidget<OperatorController> {
                               children: [
                                 Expanded(
                                   child: PlayNews(
+                                    height: 28,
                                     icon: 'op_calender.png',
-                                    text: Row(
-                                      children: [
-                                        DropdownButton<String>(
-                                          underline: Container(
-                                              color: Colors.transparent),
-                                          value: '0',
-                                          items: const [
-                                            DropdownMenuItem(
-                                                value: '0',
-                                                child: PlayNewsCard(
-                                                  text: 'Khung giờ',
-                                                  isGrey: true,
-                                                  width: 90,
-                                                )),
-                                          ],
-                                          onChanged: (value) {},
+                                    content: CustomMultiSelectDialogField(
+                                      chipDisplay:
+                                          MultiSelectChipDisplay.none(),
+                                      decoration: BoxDecoration(
+                                        color: Colors.blue.withOpacity(0),
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(40)),
+                                        border: Border.all(
+                                          color: Colors.blue.withOpacity(0),
+                                          width: 2,
                                         ),
-                                      ],
+                                      ),
+                                      buttonIcon: Icon(
+                                        Icons.arrow_drop_down_sharp,
+                                        color: kBlack.withOpacity(.6),
+                                      ),
+                                      dialogHeight: 250,
+                                      dialogWidth: 200,
+                                      items: time_items,
+                                      title: const Text("Khung giờ phát"),
+                                      selectedColor: Colors.blue,
+                                      buttonText: Text(
+                                        "Khung giờ",
+                                        style: TextStyle(
+                                          color: kBlack.withOpacity(.6),
+                                          fontSize: text3,
+                                        ),
+                                      ),
+                                      onConfirm: (results) {
+                                        //_selectedAnimals = results;
+                                      },
                                     ),
-                                    value: '',
+                                    //value: '',
                                   ),
                                 ),
                                 const Expanded(
@@ -181,89 +202,46 @@ class OperatorScreen extends GetWidget<OperatorController> {
                               children: [
                                 Expanded(
                                   child: PlayNews(
+                                    height: 20,
                                     icon: 'op_repeat.png',
-                                    text: DropdownButton<String>(
-                                      hint: const Text('Lặp'),
-                                      underline:
-                                          Container(color: Colors.transparent),
-                                      //value: '0',
-                                      items: const [
-                                        DropdownMenuItem(
-                                            value: '0',
-                                            child: PlayNewsCard(
-                                              text: 'Một lần',
-                                              isGrey: true,
-                                              width: 55,
-                                            )),
-                                      ],
-                                      onChanged: (value) {},
+                                    content: GetBuilder<OperatorController>(
+                                      builder: (_) => DropdownButton<String>(
+                                        style: TextStyle(
+                                          color: kBlack.withOpacity(.6),
+                                          fontSize: text3,
+                                        ),
+                                        isExpanded: true,
+                                        value: _.repeatSelected,
+                                        onChanged: (value) =>
+                                            _.Select('repeatSelected', value),
+                                        hint: const Text('Chế độ lặp'),
+                                        underline: Container(
+                                            color: Colors.transparent),
+                                        items: repeatList,
+                                      ),
                                     ),
-                                    // text: CustomDropDown(
-                                    //   hintText: "Lặp lại",
-                                    //   borderRadius: 5,
-                                    //   onChanged: (val) {
-                                    //     // ignore: avoid_print
-                                    //     print(val);
-                                    //   },
-                                    //   items: const [
-                                    //     CustomDropdownMenuItem(
-                                    //         value: '0',
-                                    //         child: PlayNewsCard(
-                                    //           text: 'Một lần',
-                                    //           isGrey: true,
-                                    //           width: 55,
-                                    //         )),
-                                    //     CustomDropdownMenuItem(
-                                    //         value: '0',
-                                    //         child: PlayNewsCard(
-                                    //           text: 'Liên tục',
-                                    //           isGrey: true,
-                                    //           width: 55,
-                                    //         )),
-                                    //   ],
-                                    // ),
-                                    value: '',
                                   ),
                                 ),
                                 Expanded(
                                   child: PlayNews(
                                     icon: 'op_warning.png',
-                                    text: Row(
-                                      children: [
-                                        DropdownButton<String>(
-                                          hint: const Text('Độ ưu tiên'),
-                                          underline: Container(
-                                              color: Colors.transparent),
-                                          //value: '-1',
-                                          items: const [
-                                            DropdownMenuItem(
-                                              value: '0',
-                                              child: PlayNewsCard(
-                                                text: 'Thường',
-                                                isGrey: true,
-                                                width: 65,
-                                              ),
-                                            ),
-                                            DropdownMenuItem(
-                                                value: '1',
-                                                child: PlayNewsCard(
-                                                  text: 'Khẩn cấp',
-                                                  isGrey: true,
-                                                  width: 65,
-                                                )),
-                                            DropdownMenuItem(
-                                                value: '2',
-                                                child: PlayNewsCard(
-                                                  text: 'Ưu tiên',
-                                                  isGrey: true,
-                                                  width: 65,
-                                                )),
-                                          ],
-                                          onChanged: (value) {},
+                                    content: GetBuilder<OperatorController>(
+                                      builder: (_) => DropdownButton<String>(
+                                        style: TextStyle(
+                                          color: kBlack.withOpacity(.6),
+                                          fontSize: text3,
                                         ),
-                                      ],
+                                        isExpanded: true,
+                                        value: _.prioritySelected,
+                                        onChanged: (value) =>
+                                            _.Select('prioritySelected', value),
+                                        hint: const Text('Độ ưu tiên'),
+                                        underline: Container(
+                                            color: Colors.transparent),
+                                        items: priorityList,
+                                      ),
                                     ),
-                                    value: '',
+                                    //value: '',
                                   ),
                                 ),
                               ],
@@ -300,10 +278,13 @@ class OperatorScreen extends GetWidget<OperatorController> {
                 child: CustomContainer(
                     marginHorizontal: 0,
                     marginVertical: 0,
+                    paddingHorizontal: defaultPadding * 2 / 3,
                     child: Column(
                       children: [
                         Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 25),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 25,
+                            ),
                             height: 50,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
