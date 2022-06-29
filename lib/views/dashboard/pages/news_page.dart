@@ -229,7 +229,7 @@ class NewsPage extends StatelessWidget {
                         ),
                         Expanded(
                           child: charts.BarChart(
-                            controller.series,
+                            controller.seriesBarChart,
                             animate: true,
                             animationDuration: Constants.dur500,
                             barRendererDecorator:
