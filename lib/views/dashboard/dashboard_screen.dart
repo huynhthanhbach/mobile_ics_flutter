@@ -322,7 +322,7 @@ class DashboardScreen extends GetWidget<DashboardController> {
                             ),
                             InkWell(
                               onTap: () async {
-                                controller.fillData();
+                                // controller.fillData();
                               },
                               child: Container(
                                 height: 20,

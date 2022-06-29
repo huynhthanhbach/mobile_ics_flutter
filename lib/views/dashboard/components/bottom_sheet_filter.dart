@@ -219,7 +219,7 @@ class BottomSheetFilter extends StatelessWidget {
                         ),
                         child: TextButton(
                           onPressed: () {
-                            dashBoardController.filterData();
+                            dashBoardController.onFilter();
                             onPress(); // test
                           },
                           child: const KText(
