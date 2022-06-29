@@ -387,6 +387,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  form_builder:
+    dependency: "direct main"
+    description:
+      name: form_builder
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.1"
   frontend_server_client:
     dependency: transitive
     description:
