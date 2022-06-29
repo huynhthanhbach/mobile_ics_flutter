@@ -34,6 +34,7 @@ class CustomMultiSelectDialogField<V> extends FormField<List<V>> {
 
   /// The list of selected values before interaction.
   @override
+  // ignore: overridden_fields
   final List<V>? initialValue;
 
   /// Fires when confirm is tapped.
@@ -97,11 +98,13 @@ class CustomMultiSelectDialogField<V> extends FormField<List<V>> {
   /// Set the color of the check in the checkbox
   final Color? checkColor;
 
-  @override
+  // ignore: overridden_fields
   final AutovalidateMode autovalidateMode;
   @override
+  // ignore: overridden_fields
   final FormFieldValidator<List<V>>? validator;
   @override
+  // ignore: overridden_fields
   final FormFieldSetter<List<V>>? onSaved;
   @override
   final GlobalKey<FormFieldState>? key;
