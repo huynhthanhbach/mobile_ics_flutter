@@ -97,7 +97,7 @@ class CustomMultiSelectDialogField<V> extends FormField<List<V>> {
 
   /// Set the color of the check in the checkbox
   final Color? checkColor;
-
+ @override
   // ignore: overridden_fields
   final AutovalidateMode autovalidateMode;
   @override
@@ -107,7 +107,9 @@ class CustomMultiSelectDialogField<V> extends FormField<List<V>> {
   // ignore: overridden_fields
   final FormFieldSetter<List<V>>? onSaved;
   @override
+    // ignore: overridden_fields
   final GlobalKey<FormFieldState>? key;
+
   FormFieldState<List<V>>? state;
 
   CustomMultiSelectDialogField({
