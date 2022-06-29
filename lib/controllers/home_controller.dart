@@ -6,6 +6,8 @@ import 'package:mobile_ics_flutter/views/news_management/news_management_screen.
 import 'package:mobile_ics_flutter/views/operator/operator_screen.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 
+import '../views/news_management/news_management_screen.dart';
+import '../views/operator/operator_pages/operator_screen.dart';
 // import 'package:hive/hive.dart';
 // import 'package:hive_flutter/hive_flutter.dart';
 
