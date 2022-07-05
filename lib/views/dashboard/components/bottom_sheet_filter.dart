@@ -21,10 +21,10 @@ class BottomSheetFilter extends StatelessWidget {
     return Container(
       height: Get.mediaQuery.size.height * .70,
       padding: const EdgeInsets.only(
-        top: Constants.dkp * .75,
-        left: Constants.dkp * .75,
-        right: Constants.dkp * .75,
-        bottom: Constants.dkp * .5,
+        top: Constants.padding35,
+        left: Constants.padding35,
+        right: Constants.padding35,
+        bottom: Constants.padding10,
       ),
       decoration: const BoxDecoration(
         color: Colors.white,
@@ -45,7 +45,7 @@ class BottomSheetFilter extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: Constants.dkp * .75),
+          Constants.sizedBoxH15,
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -70,10 +70,9 @@ class BottomSheetFilter extends StatelessWidget {
                   ),
                 ),
               ),
-              const KText(
-                text: "Lọc",
-                fontWeight: Constants.kSemiBold,
-                tColor: kBackgroundTitle,
+              Text(
+                "Lọc",
+                style: KTextStyle.textButtonStyle,
               ),
               Tooltip(
                 message: "Thiết lập lại",
@@ -99,21 +98,19 @@ class BottomSheetFilter extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: Constants.dkp * 1.25),
+          Constants.sizedBoxH25,
           Expanded(
             child: Column(
               children: [
                 Row(
-                  children: const [
-                    KText(
-                      text: "Đài truyền thanh",
-                      size: 14,
-                      tColor: Color(0xFFBCBEC3),
-                      isBold: true,
+                  children: [
+                    Text(
+                      "Đài truyền thanh",
+                      style: KTextStyle.textRadioButtonStyle,
                     )
                   ],
                 ),
-                const SizedBox(height: Constants.dkp),
+                Constants.sizedBoxH20,
                 GetBuilder<DashboardController>(
                   builder: (_) => CustomRadioButton(
                     elevation: 0,
@@ -139,33 +136,30 @@ class BottomSheetFilter extends StatelessWidget {
                     buttonTextStyle: ButtonTextStyle(
                       selectedColor: Colors.white,
                       unSelectedColor: Colors.black.withOpacity(.5),
-                      textStyle: const TextStyle(
-                          fontSize: 16, fontWeight: Constants.kSemiBold),
+                      textStyle: KTextStyle.textButtonCBXStyle,
                     ),
                     radioButtonValue: (value) {
                       _.onChangeLocation(value.toString());
                     },
-                    margin:
-                        const EdgeInsets.symmetric(horizontal: Constants.dkp),
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: Constants.padding20),
                   ),
                 ),
-                const SizedBox(height: Constants.dkp),
+                Constants.sizedBoxH20,
                 Row(
-                  children: const [
-                    KText(
-                      text: "Khoảng thời gian",
-                      size: 14,
-                      tColor: Color(0xFFBCBEC3),
-                      isBold: true,
+                  children: [
+                    Text(
+                      "Khoảng thời gian",
+                      style: KTextStyle.textRadioButtonStyle,
                     )
                   ],
                 ),
-                const SizedBox(height: Constants.dkp),
+                Constants.sizedBoxH20,
                 GetBuilder<DashboardController>(
                   builder: (_) => Container(
                     padding: const EdgeInsets.symmetric(
-                      horizontal: Constants.dkp * .5,
-                      vertical: Constants.dkp * .25,
+                      horizontal: Constants.padding10,
+                      vertical: Constants.padding5,
                     ),
                     decoration: BoxDecoration(
                       border: Border.all(
@@ -184,11 +178,7 @@ class BottomSheetFilter extends StatelessWidget {
                       icon: const Icon(
                         FontAwesomeIcons.angleDown,
                       ),
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: Constants.kSemiBold,
-                        color: kBackgroundTitle.withOpacity(.9),
-                      ),
+                      style: KTextStyle.textButtonCBXStyle,
                       isExpanded: true,
                       value: _.valueTime,
                       onChanged: (value) => _.onChangeTime(value!),
@@ -205,7 +195,7 @@ class BottomSheetFilter extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: Constants.dkp),
+                Constants.sizedBoxH20,
                 Expanded(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -222,15 +212,11 @@ class BottomSheetFilter extends StatelessWidget {
                             dashBoardController.onFilter();
                             onPress(); // test
                           },
-                          child: const KText(
-                            text: "Xác nhận lọc",
-                            fontWeight: Constants.kSemiBold,
-                          ),
+                          child: Text("Xác nhận lọc",
+                              style: KTextStyle.textButtonStyle1),
                         ),
                       ),
-                      const SizedBox(
-                        height: Constants.dkp * 1.25,
-                      ),
+                      Constants.sizedBoxH25,
                       Container(
                         height: 5,
                         width: 200,

@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:mobile_ics_flutter/controllers/home_controller.dart';
 import 'package:mobile_ics_flutter/core/services/boxes_service.dart';
 import 'package:mobile_ics_flutter/core/services/hive_news.dart';
 import 'package:mobile_ics_flutter/core/utils/constants.dart';
@@ -15,18 +16,17 @@ class DashboardController extends GetxController {
 
   HiveNews hiveNews = HiveNews();
 
-  String? timeTag;
-  String? locationTag;
-  List<TimeBarModel> timeBar = [];
+  var timeTag = ''.obs;
+  var locationTag = ''.obs;
 
-  List<NewsHiveModel> listNews = [];
+  RxList<TimeBarModel> timeBar = <TimeBarModel>[].obs;
+  RxList<NewsHiveModel> listNews = <NewsHiveModel>[].obs;
 
   @override
   void onInit() async {
     List<NewsHiveModel> list = await hiveNews.get();
     if (list.isNotEmpty) {
-      listNews = list.toList();
-      update(['HISTORY_NEWS']);
+      listNews.value = list.toList();
     }
     print('News length: ${list.length}');
 
@@ -61,27 +61,24 @@ class DashboardController extends GetxController {
           timeBar.add(timeBarModel);
         }
       }
-
-      update();
     }
+    print(timeBar);
 
     super.onInit();
   }
 
   @override
-  void onReady() async {
-    timeTag = await _changeTime();
-    locationTag = await _changeLocation();
+  void onReady() {
+    timeTag.value = _changeTime();
+    locationTag.value = _changeLocation();
     super.onReady();
   }
 
   Future onRefreshNews() async {
-    listNews.clear();
     List<NewsHiveModel> list = await hiveNews.get();
     if (list.isNotEmpty) {
-      listNews.addAll(list);
+      listNews.value = list.toList();
     }
-    update(['HISTORY_NEWS']);
   }
 
   Future showBottomSheet(BuildContext context, Widget child) async {
@@ -103,49 +100,37 @@ class DashboardController extends GetxController {
     valueLocation = value;
   }
 
-  Future<String> _changeLocation() async {
+  void changIndexPage(int index) {
+    Get.find<HomeController>().changeIndex(index);
+  }
+
+  String _changeLocation() {
     switch (valueLocation) {
       case 'District':
-        return 'Cấp Huyện';
+        return 'FILTER_AREA_DISTRICT'.tr;
       default:
-        return 'Cấp Xã';
+        return 'FILTER_AREA_VILLAGE'.tr;
     }
   }
 
-  Future<String> _changeTime() async {
+  String _changeTime() {
     switch (valueTime) {
       case 'week ago':
-        return 'Một tuần trước';
+        return 'FILTER_TIME_WEEK'.tr;
       case 'month ago':
-        return 'Một tháng trước';
+        return 'FILTER_TIME_MONTH'.tr;
       case 'year ago':
-        return 'Một năm trước';
+        return 'FILTER_TIME_YEAR'.tr;
       default:
-        return 'Một ngày trước';
+        return 'FILTER_TIME_DAY'.tr;
     }
   }
-
-  // String _getRandomString(int length) {
-  //   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  //   Random rnd = Random();
-
-  //   return String.fromCharCodes(
-  //     Iterable.generate(
-  //       length,
-  //       (_) => chars.codeUnitAt(
-  //         rnd.nextInt(chars.length),
-  //       ),
-  //     ),
-  //   );
-  // }
 
   Future onFilter() async {
     print("Location: $valueLocation");
     print("Time: $valueTime");
-    timeTag = await _changeTime();
-    locationTag = await _changeLocation();
-
-    update();
+    timeTag.value = _changeTime();
+    locationTag.value = _changeLocation();
   }
 
   @override

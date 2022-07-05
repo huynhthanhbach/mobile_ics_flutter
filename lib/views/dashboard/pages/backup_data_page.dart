@@ -25,7 +25,7 @@ class BackupDataPage extends StatelessWidget {
             child: Container(
               width: double.infinity,
               padding:
-                  const EdgeInsets.symmetric(horizontal: Constants.dkp * .75),
+                  const EdgeInsets.symmetric(horizontal: Constants.padding15),
               color: kBackground,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -33,9 +33,9 @@ class BackupDataPage extends StatelessWidget {
                   Container(
                     height: 100,
                     padding: const EdgeInsets.only(
-                      left: Constants.dkp,
-                      right: Constants.dkp,
-                      bottom: Constants.dkp,
+                      left: Constants.padding20,
+                      right: Constants.padding20,
+                      bottom: Constants.padding20,
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
@@ -51,13 +51,10 @@ class BackupDataPage extends StatelessWidget {
                                     Image.asset('assets/icons/button-back.png'),
                               ),
                             ),
-                            const Expanded(
-                              child: KText(
-                                text: "Backup database",
-                                size: 34,
-                                tColor: kBackgroundTitle,
-                                isCenter: true,
-                                fontWeight: Constants.kRegular,
+                            Expanded(
+                              child: Text(
+                                "Backup database",
+                                style: KTextStyle.textTitlePageStyle,
                               ),
                             ),
                           ],
@@ -68,7 +65,7 @@ class BackupDataPage extends StatelessWidget {
                   Container(
                     height: 60,
                     padding: const EdgeInsets.symmetric(
-                      horizontal: Constants.dkp * .5,
+                      horizontal: Constants.padding10,
                     ),
                     child: ListView.builder(
                       shrinkWrap: true,
@@ -80,24 +77,24 @@ class BackupDataPage extends StatelessWidget {
                         if (list[index].now) {
                           return Row(
                             children: [
-                              const SizedBox(width: Constants.dkp * .25),
+                              const SizedBox(width: Constants.padding5),
                               DateTag(
                                 text: list[index].text,
                                 num: list[index].num,
                                 isNow: true,
                               ),
-                              const SizedBox(width: Constants.dkp * .25),
+                              const SizedBox(width: Constants.padding5),
                             ],
                           );
                         } else {
                           return Row(
                             children: [
-                              const SizedBox(width: Constants.dkp * .25),
+                              const SizedBox(width: Constants.padding5),
                               DateTag(
                                 text: list[index].text,
                                 num: list[index].num,
                               ),
-                              const SizedBox(width: Constants.dkp * .25),
+                              const SizedBox(width: Constants.padding5),
                             ],
                           );
                         }
@@ -115,8 +112,8 @@ class BackupDataPage extends StatelessWidget {
                 color: Colors.white,
               ),
               padding: const EdgeInsets.symmetric(
-                horizontal: Constants.dkp * .75,
-                vertical: Constants.dkp,
+                horizontal: Constants.padding15,
+                vertical: Constants.padding20,
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -129,7 +126,7 @@ class BackupDataPage extends StatelessWidget {
                           ),
                         )
                       : const SizedBox(),
-                  const SizedBox(height: Constants.dkp),
+                  Constants.sizedBoxH20,
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -138,40 +135,34 @@ class BackupDataPage extends StatelessWidget {
                           // await controller.backupDatabase();
                           print("null");
                         },
-                        child: const KText(
-                          text: "Backup Data",
-                          tColor: kBackgroundTitle,
-                          size: 24,
+                        child: const Text(
+                          "Backup Data",
                         ),
                       ),
                       (Platform.isAndroid)
                           ? ElevatedButton(
                               onPressed: () async {
-                                // await controller.restoreDatabase();
-                                print("null");
+                                await controller.restoreDatabase();
+                                // print("null");
                               },
-                              child: const KText(
-                                text: "Restore Data",
-                                tColor: kBackgroundTitle,
-                                size: 24,
+                              child: const Text(
+                                "Restore Data",
                               ),
                             )
                           : const SizedBox(),
                     ],
                   ),
-                  const SizedBox(height: Constants.dkp),
+                  Constants.sizedBoxH20,
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       ElevatedButton(
                         onPressed: () async {
-                          // await controller.addDataFakeToHive();
-                          print("null");
+                          await controller.addDataFakeToHive();
+                          // print("null");
                         },
-                        child: const KText(
-                          text: "Add News Data",
-                          tColor: kBackgroundTitle,
-                          size: 24,
+                        child: const Text(
+                          "Add News Data",
                         ),
                       ),
                       ElevatedButton(
@@ -179,10 +170,8 @@ class BackupDataPage extends StatelessWidget {
                           // await controller.clearAllNewsData();
                           print("null");
                         },
-                        child: const KText(
-                          text: "Clear All Data",
-                          tColor: kBackgroundTitle,
-                          size: 24,
+                        child: const Text(
+                          "Clear All Data",
                         ),
                       ),
                     ],

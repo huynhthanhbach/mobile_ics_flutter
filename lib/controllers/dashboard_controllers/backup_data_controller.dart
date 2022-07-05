@@ -8,7 +8,8 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile_ics_flutter/controllers/dashboard_controllers/dashboard_controller.dart';
 import 'package:mobile_ics_flutter/core/services/boxes_service.dart';
-import 'package:mobile_ics_flutter/core/services/hive_news.dart';
+
+import 'package:mobile_ics_flutter/core/services/hive_warning.dart';
 import 'package:mobile_ics_flutter/core/utils/constants.dart';
 import 'package:mobile_ics_flutter/models/hive_models/hive_model.dart';
 import 'package:path_provider/path_provider.dart';
@@ -20,7 +21,7 @@ import 'package:uuid/uuid.dart';
 class BackupDataController extends GetxController {
   late Directory directory;
 
-  HiveNews hiveNews = HiveNews();
+  HiveWarning hiveWarning = HiveWarning();
 
   bool isLoading = false;
 
@@ -287,17 +288,17 @@ class BackupDataController extends GetxController {
         id = uid.v1();
         name = getRandomString(2);
 
-        final newsHiveModel = NewsHiveModel(
+        final warningHiveModel = WarningHiveModel(
           id: id,
+          idDevice: id,
           name: 'Bản tin thông tin đài $name',
-          type: 'Thông tin',
-          author: 'Huỳnh Thanh Bách',
-          content: 'Mô tả tóm tắt bản tin',
+          content: 'Nội dung cảnh báo',
+          type: 'Loại cảnh báo',
+          level: 'Nhẹ',
           createDate: DateTime.now(),
-          duration: '10 minute',
-          status: 'Đã phát',
+          completedTime: null,
+          status: 'Vừa được khởi tạo',
           area: 'Đài truyền thanh cấp xã',
-          url: null,
         );
         // var flag = await hiveNews.addNewsToHive(newsHiveModel);
         // if (flag) {
@@ -306,12 +307,14 @@ class BackupDataController extends GetxController {
         //   print('${newsHiveModel.id} -- Failed');
         // }
 
-        print(newsHiveModel.id);
+        print(warningHiveModel.id);
 
-        print(newsHiveModel.name);
-        print(newsHiveModel.type);
-        print(newsHiveModel.status);
-        print(newsHiveModel.area);
+        print(warningHiveModel.name);
+        print(warningHiveModel.type);
+        print(warningHiveModel.status);
+        print(warningHiveModel.area);
+
+        print('-----------------------');
       }
       id = "";
       name = "";

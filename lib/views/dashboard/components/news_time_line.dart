@@ -21,10 +21,10 @@ class NewsTimeLine extends StatelessWidget {
     return Container(
       height: 90,
       padding: const EdgeInsets.symmetric(
-        horizontal: Constants.dkp * .5,
+        horizontal: Constants.padding10,
       ),
       margin: const EdgeInsets.only(
-        bottom: Constants.dkp * .25,
+        bottom: Constants.padding5,
       ),
       decoration: BoxDecoration(
         // color: Colors.white,
@@ -39,11 +39,9 @@ class NewsTimeLine extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                KText(
-                  text: details['time'],
-                  size: 15,
-                  fontWeight: Constants.kBold,
-                  tColor: kBackgroundTitle,
+                Text(
+                  details['time'],
+                  style: KTextStyle.textTimeLineTimeStyle,
                 ),
                 details['title'].isNotEmpty
                     ? _buildCard(
@@ -71,12 +69,12 @@ class NewsTimeLine extends StatelessWidget {
         ),
       ),
       padding: const EdgeInsets.only(
-        left: Constants.dkp * .25,
-        right: Constants.dkp * .25,
-        top: Constants.dkp * .25,
+        left: Constants.padding5,
+        right: Constants.padding5,
+        top: Constants.padding5,
       ),
       margin: const EdgeInsets.symmetric(
-        vertical: Constants.dkp * .25,
+        vertical: Constants.padding5,
       ),
       child: Row(
         children: [
@@ -84,20 +82,14 @@ class NewsTimeLine extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              KText(
-                text: title,
-                size: 15,
-                fontWeight: Constants.kBold,
-                tColor: kBackgroundTitle,
-                overflow: TextOverflow.ellipsis,
+              Text(
+                title,
+                style: KTextStyle.textTimeLineTitle1Style,
               ),
-              const SizedBox(height: Constants.dkp * .25),
-              KText(
-                text: title,
-                size: 15,
-                fontWeight: Constants.kRegular,
-                tColor: kBackgroundTitle,
-                overflow: TextOverflow.ellipsis,
+              Constants.sizedBoxH5,
+              Text(
+                title,
+                style: KTextStyle.textTimeLineTitle1Style,
               ),
               Expanded(
                 child: SizedBox(
@@ -105,12 +97,9 @@ class NewsTimeLine extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      KText(
-                        text: slot,
-                        tColor: const Color(0xFFA0999B),
-                        fontWeight: Constants.kRegular,
-                        size: 15,
-                        overflow: TextOverflow.ellipsis,
+                      Text(
+                        slot,
+                        style: KTextStyle.textTimeLineTitleStyle,
                       ),
                       (isNow)
                           ? Column(
@@ -155,7 +144,7 @@ class NewsTimeLine extends StatelessWidget {
               color: Colors.white,
               shape: BoxShape.circle,
               border: Border.all(
-                width: Constants.dkp * .25,
+                width: Constants.padding5,
                 color: color,
               ),
             ),

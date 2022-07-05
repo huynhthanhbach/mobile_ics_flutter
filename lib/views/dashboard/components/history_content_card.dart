@@ -46,14 +46,8 @@ class HistoryContentCard extends StatelessWidget {
 
     return Container(
       height: 60,
-      margin: const EdgeInsets.symmetric(
-        horizontal: Constants.dkp * .25,
-        vertical: Constants.dkp * .25,
-      ),
-      padding: const EdgeInsets.symmetric(
-        horizontal: Constants.dkp * .25,
-        vertical: Constants.dkp * .25,
-      ),
+      margin: const EdgeInsets.all(Constants.padding5),
+      padding: const EdgeInsets.all(Constants.padding5),
       decoration: BoxDecoration(
         color: Colors.white,
         boxShadow: [
@@ -75,10 +69,7 @@ class HistoryContentCard extends StatelessWidget {
         children: [
           Container(
             width: 45,
-            padding: const EdgeInsets.symmetric(
-              horizontal: Constants.dkp * .25,
-              vertical: Constants.dkp * .25,
-            ),
+            padding: const EdgeInsets.all(Constants.padding5),
             child: ClipRRect(
               child: Image.asset(
                 imageIcon,
@@ -92,26 +83,32 @@ class HistoryContentCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                KText(
-                  text: titleName,
-                  size: 12,
-                  tColor: titleColor,
+                Text(
+                  titleName,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: titleColor,
+                    fontWeight: FontWeight.w600,
+                  ),
                   overflow: TextOverflow.ellipsis,
-                  fontWeight: Constants.kSemiBold,
                 ),
-                KText(
-                  text: titleType,
-                  size: 12,
-                  tColor: titleColor.withOpacity(.8),
+                Text(
+                  titleType,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: titleColor.withOpacity(.8),
+                    fontWeight: FontWeight.w400,
+                  ),
                   overflow: TextOverflow.ellipsis,
-                  fontWeight: Constants.kRegular,
                 ),
-                KText(
-                  text: titleTime,
-                  size: 12,
-                  tColor: kTitleButtonColor,
+                Text(
+                  titleTime,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: kTitleButtonColor,
+                    fontWeight: FontWeight.w400,
+                  ),
                   overflow: TextOverflow.ellipsis,
-                  fontWeight: Constants.kRegular,
                 ),
               ],
             ),
@@ -129,11 +126,14 @@ class HistoryContentCard extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         alignment: Alignment.center,
-                        child: KText(
-                          text: textTag,
-                          size: 12,
-                          tColor: colorTextTag,
-                          fontWeight: Constants.kRegular,
+                        child: Text(
+                          textTag,
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: colorTextTag,
+                            fontWeight: FontWeight.w400,
+                          ),
+                          overflow: TextOverflow.ellipsis,
                         ),
                       )
                     ],
