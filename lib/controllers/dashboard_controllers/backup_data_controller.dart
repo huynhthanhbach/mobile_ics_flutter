@@ -283,28 +283,32 @@ class BackupDataController extends GetxController {
     const uid = Uuid();
     var id = "";
     var name = "";
-    for (var i = 0; i < 10; i++) {
+    for (var i = 0; i < 5; i++) {
       if (id == "") {
         id = uid.v1();
         name = getRandomString(2);
 
+        // Audio_box  Gateway
+
+        // Vừa được khởi tạo  Đang chờ phê duyệt  Đã phê duyệt  Đã xử lý
+
         final warningHiveModel = WarningHiveModel(
           id: id,
           idDevice: id,
-          name: 'Bản tin thông tin đài $name',
+          name: 'Thông tin cảnh báo đài $name',
           content: 'Nội dung cảnh báo',
-          type: 'Loại cảnh báo',
-          level: 'Nhẹ',
+          type: 'Audio_box',
+          level: 'Nghiêm trọng',
           createDate: DateTime.now(),
           completedTime: null,
-          status: 'Vừa được khởi tạo',
+          status: 'Đã xử lý',
           area: 'Đài truyền thanh cấp xã',
         );
-        // var flag = await hiveNews.addNewsToHive(newsHiveModel);
+        // var flag = await hiveWarning.addWarningToHive(warningHiveModel);
         // if (flag) {
-        //   print('${newsHiveModel.id} -- Success');
+        //   print('${warningHiveModel.id} -- Success');
         // } else {
-        //   print('${newsHiveModel.id} -- Failed');
+        //   print('${warningHiveModel.id} -- Failed');
         // }
 
         print(warningHiveModel.id);
@@ -319,7 +323,7 @@ class BackupDataController extends GetxController {
       id = "";
       name = "";
     }
-    Get.find<DashboardController>().onRefreshNews();
+    // Get.find<DashboardController>().onRefreshNews();
   }
 
   Future<void> clearAllNewsData() async {

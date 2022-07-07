@@ -269,16 +269,18 @@ class DashboardScreen extends GetWidget<DashboardController> {
                             ),
                           ],
                         ),
-                        child: RefreshIndicator(
-                          onRefresh: controller.onRefreshNews,
-                          color: kBackgroundTitle,
-                          child: OverflowBox(
-                            child: ListView.builder(
-                              itemCount: 10,
-                              itemBuilder: (context, index) =>
-                                  const HistoryContentCard(
-                                statusCode: 2,
-                              ),
+                        child: Obx(
+                          () => ListView.builder(
+                            itemCount: (controller.listHisNews.length >= 10)
+                                ? 10
+                                : controller.listHisNews.length,
+                            itemBuilder: (context, index) => HistoryContentCard(
+                              titleName: controller.listHisNews[index].name!,
+                              titleType:
+                                  "Loại: ${controller.listHisNews[index].type!}",
+                              titleTime:
+                                  "Thời gian: ${controller.listHisNews[index].createDate!}",
+                              statusCode: 0,
                             ),
                           ),
                         ),
@@ -334,17 +336,21 @@ class DashboardScreen extends GetWidget<DashboardController> {
                             ),
                           ],
                         ),
-                        child: ListView.builder(
-                          itemCount: 10,
-                          itemBuilder: (context, index) =>
-                              const HistoryContentCard(
-                            imageIcon: 'assets/icons/icon-warning.png',
-                            titleName: "Tên cảnh báo",
-                            titleType: "Nội dung cảnh báo",
-                            titleTime:
-                                "Loại: Hư thiết bị - Thời gian: 00:00 - 31/12/2022",
-                            titleColor: kTitleWarningCardColor,
-                            isTag: false,
+                        child: Obx(
+                          () => ListView.builder(
+                            itemCount: (controller.listHisWarning.length >= 10)
+                                ? 10
+                                : controller.listHisWarning.length,
+                            itemBuilder: (context, index) => HistoryContentCard(
+                              imageIcon: KImage.imageWarningCard,
+                              titleName: controller.listHisWarning[index].name!,
+                              titleType:
+                                  controller.listHisWarning[index].content!,
+                              titleTime:
+                                  "Loại: ${controller.listHisWarning[index].type} - Thời gian: ${controller.listHisWarning[index].createDate}",
+                              titleColor: kTitleWarningCardColor,
+                              isTag: false,
+                            ),
                           ),
                         ),
                       ),

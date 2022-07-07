@@ -196,7 +196,7 @@ class WarningPage extends StatelessWidget {
                           children: [
                             Obx(
                               () => Text(
-                                controller.timeBar.length.toString(),
+                                controller.listWarning.length.toString(),
                                 style: KTextStyle.textAmountStyle,
                               ),
                             ),

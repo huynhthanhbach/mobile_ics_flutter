@@ -47,4 +47,6 @@ class KImage {
   static Image imageBand = Image.asset(
     'assets/icons/bandwidth.png',
   );
+
+  static const String imageWarningCard = 'assets/icons/icon-warning.png';
 }

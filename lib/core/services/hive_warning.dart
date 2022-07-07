@@ -21,7 +21,7 @@ class HiveWarning {
     return list;
   }
 
-  Future<bool> addNewsToHive(WarningHiveModel warningHiveModel) async {
+  Future<bool> addWarningToHive(WarningHiveModel warningHiveModel) async {
     try {
       var box = BoxesService.getWaring();
       if (!box.isOpen) {

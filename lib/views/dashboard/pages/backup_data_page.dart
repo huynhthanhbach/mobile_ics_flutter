@@ -158,8 +158,8 @@ class BackupDataPage extends StatelessWidget {
                     children: [
                       ElevatedButton(
                         onPressed: () async {
-                          await controller.addDataFakeToHive();
-                          // print("null");
+                          // await controller.addDataFakeToHive();
+                          print("null");
                         },
                         child: const Text(
                           "Add News Data",

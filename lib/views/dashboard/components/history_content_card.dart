@@ -90,6 +90,7 @@ class HistoryContentCard extends StatelessWidget {
                     color: titleColor,
                     fontWeight: FontWeight.w600,
                   ),
+                  maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
                 Text(
@@ -99,6 +100,7 @@ class HistoryContentCard extends StatelessWidget {
                     color: titleColor.withOpacity(.8),
                     fontWeight: FontWeight.w400,
                   ),
+                  maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
                 Text(
@@ -108,6 +110,7 @@ class HistoryContentCard extends StatelessWidget {
                     color: kTitleButtonColor,
                     fontWeight: FontWeight.w400,
                   ),
+                  maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
               ],

@@ -26,7 +26,8 @@ void main() async {
   print(TranslationService.locale);
 
   Hive.registerAdapter(NewsHiveModelAdapter());
-  Hive.registerAdapter(WarningHiveModelAdapter()); // đăng ký adapter
+  Hive.registerAdapter(WarningHiveModelAdapter());
+  Hive.registerAdapter(DeviceHiveModelAdapter()); // đăng ký adapter
   await BoxesService().openBox(); // mở box
 
   runApp(const MyApp());
