@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 
 class Constants {
@@ -13,7 +11,12 @@ class Constants {
   }
 
   static List categories = [
-    {'title': 'Videos', 'icon': Icons.play_circle, 'path': '', 'color': Colors.red},
+    {
+      'title': 'Videos',
+      'icon': Icons.play_circle,
+      'path': '',
+      'color': Colors.red
+    },
     {
       'title': 'Audio',
       'icon': Icons.music_note,

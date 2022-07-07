@@ -9,6 +9,8 @@ const Map<String, String> viVN = {
   'FILTER_TIME_WEEK': 'Một tuần trước',
   'FILTER_TIME_YEAR': 'Một năm trước',
   'FILTER_TITLE': 'Lọc: ',
+  'NEWS_LOCAL': 'Bản tin',
+  'NEWS_ONLINE': 'Trực tuyến',
   'TITLE_CONTENT': 'Nội dung',
   'TITLE_TIME': 'Thời gian',
 

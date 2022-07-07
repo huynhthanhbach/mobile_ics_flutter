@@ -272,7 +272,7 @@ class DevicePage extends StatelessWidget {
                 ),
                 Constants.sizedBoxH5,
                 Container(
-                  height: 300,
+                  height: 340,
                   width: double.infinity,
                   padding: const EdgeInsets.all(Constants.padding10),
                   decoration: BoxDecoration(
@@ -304,6 +304,28 @@ class DevicePage extends StatelessWidget {
                             Text(
                               'DEVICE_FILTER_BY_STATUS'.tr,
                               style: KTextStyle.textTitleFilterStyle,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Constants.sizedBoxH5,
+                      SizedBox(
+                        height: 35,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'NEWS_LOCAL'.tr,
+                                  style: KTextStyle.textAmountSubStyle,
+                                ),
+                                Text(
+                                  'NEWS_ONLINE'.tr,
+                                  style: KTextStyle.textAmountSubStyle,
+                                ),
+                              ],
                             ),
                           ],
                         ),
