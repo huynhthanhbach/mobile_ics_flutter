@@ -1,8 +1,7 @@
 // ignore: camel_case_types
 import 'package:flutter/material.dart';
+import 'package:mobile_ics_flutter/views/operator/components/ktext.dart';
 import 'package:mobile_ics_flutter/views/operator/components/op_constant.dart';
-
-import '../../../core/widgets/ktext.dart';
 
 // ignore: camel_case_types
 class textStyle1 extends StatelessWidget {

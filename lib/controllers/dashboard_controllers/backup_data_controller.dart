@@ -8,7 +8,8 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile_ics_flutter/controllers/dashboard_controllers/dashboard_controller.dart';
 import 'package:mobile_ics_flutter/core/services/boxes_service.dart';
-import 'package:mobile_ics_flutter/core/services/hive_news.dart';
+
+import 'package:mobile_ics_flutter/core/services/hive_warning.dart';
 import 'package:mobile_ics_flutter/core/utils/constants.dart';
 import 'package:mobile_ics_flutter/models/hive_models/hive_model.dart';
 import 'package:path_provider/path_provider.dart';
@@ -20,7 +21,7 @@ import 'package:uuid/uuid.dart';
 class BackupDataController extends GetxController {
   late Directory directory;
 
-  HiveNews hiveNews = HiveNews();
+  HiveWarning hiveWarning = HiveWarning();
 
   bool isLoading = false;
 
@@ -282,41 +283,47 @@ class BackupDataController extends GetxController {
     const uid = Uuid();
     var id = "";
     var name = "";
-    for (var i = 0; i < 10; i++) {
+    for (var i = 0; i < 5; i++) {
       if (id == "") {
         id = uid.v1();
         name = getRandomString(2);
 
-        final newsHiveModel = NewsHiveModel(
+        // Audio_box  Gateway
+
+        // Vừa được khởi tạo  Đang chờ phê duyệt  Đã phê duyệt  Đã xử lý
+
+        final warningHiveModel = WarningHiveModel(
           id: id,
-          name: 'Bản tin thông tin đài $name',
-          type: 'Thông tin',
-          author: 'Huỳnh Thanh Bách',
-          content: 'Mô tả tóm tắt bản tin',
+          idDevice: id,
+          name: 'Thông tin cảnh báo đài $name',
+          content: 'Nội dung cảnh báo',
+          type: 'Audio_box',
+          level: 'Nghiêm trọng',
           createDate: DateTime.now(),
-          duration: '10 minute',
-          status: 'Đã phát',
+          completedTime: null,
+          status: 'Đã xử lý',
           area: 'Đài truyền thanh cấp xã',
-          url: null,
         );
-        // var flag = await hiveNews.addNewsToHive(newsHiveModel);
+        // var flag = await hiveWarning.addWarningToHive(warningHiveModel);
         // if (flag) {
-        //   print('${newsHiveModel.id} -- Success');
+        //   print('${warningHiveModel.id} -- Success');
         // } else {
-        //   print('${newsHiveModel.id} -- Failed');
+        //   print('${warningHiveModel.id} -- Failed');
         // }
 
-        print(newsHiveModel.id);
+        print(warningHiveModel.id);
 
-        print(newsHiveModel.name);
-        print(newsHiveModel.type);
-        print(newsHiveModel.status);
-        print(newsHiveModel.area);
+        print(warningHiveModel.name);
+        print(warningHiveModel.type);
+        print(warningHiveModel.status);
+        print(warningHiveModel.area);
+
+        print('-----------------------');
       }
       id = "";
       name = "";
     }
-    Get.find<DashboardController>().onRefreshNews();
+    // Get.find<DashboardController>().onRefreshNews();
   }
 
   Future<void> clearAllNewsData() async {

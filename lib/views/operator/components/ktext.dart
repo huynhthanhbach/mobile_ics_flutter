@@ -8,42 +8,32 @@ class KText extends StatelessWidget {
     this.size = 17,
     this.isBold = false,
     this.isCenter = false,
-    this.spacing,
     this.maxLines,
-    this.overflow,
-    this.style,
-    this.fontWeight,
   }) : super(key: key);
   final String text;
   final Color? tColor;
   final double size;
   final bool isBold;
   final bool isCenter;
-  final double? spacing;
   final int? maxLines;
-  final TextOverflow? overflow;
-  final TextStyle? style;
-  final FontWeight? fontWeight;
 
   @override
   Widget build(BuildContext context) {
-    var fontW = FontWeight.w500;
+    var fontWeight = FontWeight.normal;
 
     if (isBold) {
-      fontW = FontWeight.bold;
+      fontWeight = FontWeight.bold;
     }
     return Text(
       text,
       textAlign: isCenter ? TextAlign.center : null,
-      overflow: overflow,
+      style: TextStyle(
+        color: tColor,
+        fontSize: size,
+        fontWeight: fontWeight,
+        overflow: TextOverflow.ellipsis,
+      ),
       maxLines: maxLines,
-      style: style ??
-          TextStyle(
-            color: tColor,
-            fontSize: size,
-            fontWeight: fontWeight ?? fontW,
-            letterSpacing: spacing,
-          ),
     );
   }
 }

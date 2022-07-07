@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_ics_flutter/core/utils/constants.dart';
 import 'package:mobile_ics_flutter/core/widgets/widget.dart';
 
 class DateTag extends StatelessWidget {
@@ -25,20 +24,24 @@ class DateTag extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          KText(
-            text: text,
-            size: 16,
-            fontWeight: Constants.kSemiBold,
-            tColor: (isNow)
-                ? kBackgroundTitle.withOpacity(.8)
-                : const Color(0xFFBCBEC3).withOpacity(.6),
+          Text(
+            text,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: (isNow)
+                  ? kBackgroundTitle.withOpacity(.8)
+                  : kBorButtonNews.withOpacity(.6),
+            ),
             overflow: TextOverflow.ellipsis,
           ),
-          KText(
-            text: num,
-            size: 16,
-            fontWeight: Constants.kBold,
-            tColor: (isNow) ? kBackgroundTitle : Colors.black,
+          Text(
+            num,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w700,
+              color: (isNow) ? kBackgroundTitle : Colors.black,
+            ),
             overflow: TextOverflow.ellipsis,
           ),
         ],

@@ -5,7 +5,7 @@ import 'package:mobile_ics_flutter/core/widgets/widget.dart';
 class FilterTag extends StatelessWidget {
   const FilterTag({
     Key? key,
-    required this.name,
+    this.name = '',
   }) : super(key: key);
   final String name;
 
@@ -14,18 +14,16 @@ class FilterTag extends StatelessWidget {
     return Container(
       height: 30,
       padding: const EdgeInsets.symmetric(
-        horizontal: Constants.dkp * .5,
-        vertical: Constants.dkp * .25,
+        horizontal: Constants.padding10,
+        vertical: Constants.padding5,
       ),
       decoration: BoxDecoration(
         color: kBackgroundTitle,
         borderRadius: BorderRadius.circular(15),
       ),
-      child: KText(
-        text: name,
-        size: 16,
-        tColor: Colors.white,
-        fontWeight: Constants.kSemiBold,
+      child: Text(
+        name,
+        style: KTextStyle.textButtonFitterStyle,
       ),
     );
   }

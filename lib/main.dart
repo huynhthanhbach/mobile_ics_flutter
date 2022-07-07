@@ -1,10 +1,9 @@
-// ignore_for_file: avoid_print
-
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:mobile_ics_flutter/core/lang/translation_service.dart';
 import 'package:mobile_ics_flutter/core/routes/initial_binding.dart';
 import 'package:mobile_ics_flutter/core/routes/pages.dart';
 import 'package:mobile_ics_flutter/core/services/boxes_service.dart';
@@ -20,9 +19,15 @@ void main() async {
 
   final appDocDir = await getApplicationDocumentsDirectory();
   await Hive.initFlutter('${appDocDir.path}/mobile_ics_db');
+  // ignore: avoid_print
   print('${appDocDir.path}/mobile_ics_db');
 
-  Hive.registerAdapter(NewsHiveModelAdapter()); // đăng ký adapter
+  // ignore: avoid_print
+  print(TranslationService.locale);
+
+  Hive.registerAdapter(NewsHiveModelAdapter());
+  Hive.registerAdapter(WarningHiveModelAdapter());
+  Hive.registerAdapter(DeviceHiveModelAdapter()); // đăng ký adapter
   await BoxesService().openBox(); // mở box
 
   runApp(const MyApp());
@@ -43,20 +48,16 @@ class MyApp extends StatelessWidget {
     Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
       switch (result) {
         case ConnectivityResult.wifi:
-          // 'use_wifi'.tr.toast();
-          'Đang kết nối Wifi'.toast();
+          'USE_WIFI'.tr.toast();
           break;
         case ConnectivityResult.mobile:
-          // 'use_mobile'.tr.toast();
-          'Đang kết nối Mobile data'.toast();
+          'USE_MOBILE'.tr.toast();
           break;
         case ConnectivityResult.none:
-          // 'disconnect_wifi'.tr.toast();
-          'Mất kết nối Wifi'.toast();
+          'DISCONNECT'.tr.toast();
           break;
         case ConnectivityResult.ethernet:
-          // 'use_ethernet'.tr.toast();
-          'Đang kết nối Ethernet'.toast();
+          'USE_ETHERNET'.tr.toast();
           break;
         case ConnectivityResult.bluetooth:
           break;
@@ -67,7 +68,7 @@ class MyApp extends StatelessWidget {
   GetMaterialApp _getMaterialApp() {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter App',
+      title: 'TITLE_APP'.tr,
       initialRoute: '/home',
       initialBinding: InitialBinding(),
       navigatorObservers: [GetObserver(), FlutterSmartDialog.observer],
@@ -100,6 +101,9 @@ class MyApp extends StatelessWidget {
       ),
       darkTheme: ThemeConfig.darkThemeData.copyWith(),
       getPages: Pages.routes,
+      locale: const Locale('vi', 'VN'),
+      fallbackLocale: const Locale('en', 'US'),
+      translations: TranslationService(),
       home: const HomeScreen(),
     );
   }

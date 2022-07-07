@@ -81,7 +81,8 @@ class Constants {
         decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(dkp), topRight: Radius.circular(dkp))),
+                topLeft: Radius.circular(padding20),
+                topRight: Radius.circular(padding20))),
         child: Column(
           mainAxisAlignment: mainAxisAlignment,
           crossAxisAlignment: crossAxisAlignment,
@@ -106,15 +107,42 @@ class Constants {
     );
   }
 
-  //default padding
-  static const double dkp = 20.0;
-  const Constants._();
+  //default SizedBox
+  static const SizedBox sizedBoxH5 = SizedBox(height: 5);
+  static const SizedBox sizedBoxH10 = SizedBox(height: 10);
+  static const SizedBox sizedBoxH15 = SizedBox(height: 15);
+  static const SizedBox sizedBoxH20 = SizedBox(height: 20);
+  static const SizedBox sizedBoxH25 = SizedBox(height: 25);
+  static const SizedBox sizedBoxH30 = SizedBox(height: 30);
 
-  //default font weight
-  static const FontWeight kExtraLight = FontWeight.w100;
-  static const FontWeight kLight = FontWeight.w300;
-  static const FontWeight kRegular = FontWeight.w400;
-  static const FontWeight kSemiBold = FontWeight.w600;
-  static const FontWeight kBold = FontWeight.w700;
-  static const FontWeight kBlack = FontWeight.w900;
+  //default padding
+  static const double padding5 = 5.0;
+  static const double padding10 = 10.0;
+  static const double padding15 = 15.0;
+  static const double padding20 = 20.0;
+  static const double padding25 = 25.0;
+  static const double padding30 = 30.0;
+  static const double padding35 = 35.0;
+
+  //default radius
+  static const Radius radCir5 = Radius.circular(5);
+  static const Radius radCir10 = Radius.circular(10);
+  static const Radius radCir15 = Radius.circular(15);
+  static const Radius radCir20 = Radius.circular(20);
+  static const Radius radCir25 = Radius.circular(25);
+  static const Radius radCir30 = Radius.circular(30);
+  static const Radius radCir35 = Radius.circular(35);
+  static const Radius radCir40 = Radius.circular(40);
+
+  //default border radius
+  static BorderRadius borRadCir5 = BorderRadius.circular(5);
+  static BorderRadius borRadCir10 = BorderRadius.circular(10);
+  static BorderRadius borRadCir15 = BorderRadius.circular(15);
+  static BorderRadius borRadCir20 = BorderRadius.circular(20);
+  static BorderRadius borRadCir25 = BorderRadius.circular(25);
+  static BorderRadius borRadCir30 = BorderRadius.circular(30);
+  static BorderRadius borRadCir35 = BorderRadius.circular(35);
+  static BorderRadius borRadCir40 = BorderRadius.circular(40);
+
+  const Constants._();
 }

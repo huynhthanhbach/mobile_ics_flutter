@@ -1,9 +1,7 @@
-// ignore_for_file: avoid_print
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mobile_ics_flutter/controllers/dashboard_controllers/dashboard_controller.dart';
-import 'package:mobile_ics_flutter/controllers/home_controller.dart';
+import 'package:mobile_ics_flutter/core/theme/theme_config.dart';
 import 'package:mobile_ics_flutter/core/utils/constants.dart';
 import 'package:mobile_ics_flutter/core/widgets/widget.dart';
 import 'package:mobile_ics_flutter/views/dashboard/components/component.dart';
@@ -20,9 +18,9 @@ class DashboardScreen extends GetWidget<DashboardController> {
         child: SingleChildScrollView(
           child: Container(
             width: double.infinity,
-            padding: const EdgeInsets.only(bottom: Constants.dkp),
+            padding: const EdgeInsets.only(bottom: Constants.padding20),
             decoration: const BoxDecoration(
-              color: Colors.white,
+              color: ThemeConfig.lightBG,
             ),
             child: Column(
               children: [
@@ -40,8 +38,8 @@ class DashboardScreen extends GetWidget<DashboardController> {
                           decoration: const BoxDecoration(
                             color: kBackgroundTitle,
                             borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(30),
-                              bottomRight: Radius.circular(30),
+                              bottomLeft: Constants.radCir30,
+                              bottomRight: Constants.radCir30,
                             ),
                           ),
                           child: Column(
@@ -50,7 +48,7 @@ class DashboardScreen extends GetWidget<DashboardController> {
                               Container(
                                 height: 70,
                                 margin: const EdgeInsets.symmetric(
-                                  horizontal: Constants.dkp * 1.75,
+                                  horizontal: Constants.padding35,
                                 ),
                                 child: Row(
                                   mainAxisAlignment:
@@ -60,25 +58,16 @@ class DashboardScreen extends GetWidget<DashboardController> {
                                       child: Row(
                                         children: [
                                           InkWell(
-                                            child: Image.asset(
-                                              'assets/icons/menu.png',
-                                              color: Colors.white,
-                                              width: 30,
-                                              height: 30,
-                                              fit: BoxFit.fill,
-                                            ),
+                                            child: KImage.imageMenu,
                                             onTap: () {},
                                           ),
                                           const SizedBox(
-                                            width: Constants.dkp,
+                                            width: Constants.padding20,
                                           ),
-                                          const KText(
-                                            text: "Dashboard",
-                                            style: TextStyle(
-                                              fontWeight: Constants.kRegular,
-                                              fontSize: 34,
-                                              color: Colors.white,
-                                            ),
+                                          Text(
+                                            'DASH_TITLE'.tr,
+                                            style:
+                                                KTextStyle.textTitleMainStyle,
                                           ),
                                         ],
                                       ),
@@ -95,13 +84,7 @@ class DashboardScreen extends GetWidget<DashboardController> {
                                             () => const BackupDataPage(),
                                           );
                                         },
-                                        child: Image.asset(
-                                          'assets/icons/avatar.png',
-                                          color: Colors.white,
-                                          width: 68,
-                                          height: 68,
-                                          fit: BoxFit.fill,
-                                        ),
+                                        child: KImage.imageAvt,
                                       ),
                                     ),
                                   ],
@@ -118,17 +101,17 @@ class DashboardScreen extends GetWidget<DashboardController> {
                         child: Container(
                           height: 200,
                           margin: const EdgeInsets.symmetric(
-                            horizontal: Constants.dkp * .75,
+                            horizontal: Constants.padding15,
                           ),
                           padding: const EdgeInsets.symmetric(
-                            vertical: Constants.dkp * .5,
+                            vertical: Constants.padding10,
                           ),
                           decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(15),
+                            color: ThemeConfig.lightBG,
+                            borderRadius: Constants.borRadCir15,
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
+                                color: kBlack10,
                                 offset: const Offset(4, 4),
                                 blurRadius: 4,
                               ),
@@ -142,15 +125,20 @@ class DashboardScreen extends GetWidget<DashboardController> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   ButtonDashboardFeature(
-                                      onPress: () {
-                                        Get.to(
-                                          transition: Transition.fade,
-                                          curve: Curves.easeInQuad,
-                                          duration: Constants.dur500,
-                                          () => const NewsPage(),
-                                        );
-                                      },
-                                      title: "Bản tin"),
+                                    onPress: () {
+                                      Get.to(
+                                        transition: Transition.fade,
+                                        curve: Curves.easeInQuad,
+                                        duration: Constants.dur500,
+                                        () => const NewsPage(),
+                                      );
+                                    },
+                                    title: 'DASH_NEWS_BUTTON'.tr,
+                                    backgroundColorOut: kBGButtonNews,
+                                    backgroundColorIn: kBGButtonNews,
+                                    borderColorIn: kBorButtonNews,
+                                    image: KImage.imageNews,
+                                  ),
                                   ButtonDashboardFeature(
                                     onPress: () {
                                       Get.to(
@@ -160,11 +148,11 @@ class DashboardScreen extends GetWidget<DashboardController> {
                                         () => const CalendarPage(),
                                       );
                                     },
-                                    title: "Lịch",
-                                    backgroundColorOut: const Color(0xFFE2F3FE),
-                                    backgroundColorIn: const Color(0xFFE2F3FE),
-                                    borderColorIn: const Color(0xFF79C1EF),
-                                    image: 'assets/icons/calendar.png',
+                                    title: 'DASH_CAL_BUTTON'.tr,
+                                    backgroundColorOut: kBGButtonCal,
+                                    backgroundColorIn: kBGButtonCal,
+                                    borderColorIn: kBorButtonCal,
+                                    image: KImage.imageCalendar,
                                   ),
                                   ButtonDashboardFeature(
                                     onPress: () {
@@ -175,11 +163,11 @@ class DashboardScreen extends GetWidget<DashboardController> {
                                         () => const DevicePage(),
                                       );
                                     },
-                                    title: "Thiết bị",
-                                    backgroundColorOut: const Color(0xFFE7EBFB),
-                                    backgroundColorIn: const Color(0xFFE7EBFB),
-                                    borderColorIn: const Color(0xFF7991EF),
-                                    image: 'assets/icons/device.png',
+                                    title: 'DASH_DEVI_BUTTON'.tr,
+                                    backgroundColorOut: kBGButtonDev,
+                                    backgroundColorIn: kBGButtonDev,
+                                    borderColorIn: kBorButtonDev,
+                                    image: KImage.imageDevice,
                                   ),
                                 ],
                               ),
@@ -196,11 +184,11 @@ class DashboardScreen extends GetWidget<DashboardController> {
                                         () => const WarningPage(),
                                       );
                                     },
-                                    title: "Cảnh báo",
-                                    backgroundColorOut: const Color(0xFFF1ECFD),
-                                    backgroundColorIn: const Color(0xFFF1ECFD),
-                                    borderColorIn: const Color(0xFFA279EF),
-                                    image: 'assets/icons/warning.png',
+                                    title: 'DASH_WARN_BUTTON'.tr,
+                                    backgroundColorOut: kBGButtonWar,
+                                    backgroundColorIn: kBGButtonWar,
+                                    borderColorIn: kBorButtonWar,
+                                    image: KImage.imageWarning,
                                   ),
                                   ButtonDashboardFeature(
                                     onPress: () {
@@ -211,11 +199,11 @@ class DashboardScreen extends GetWidget<DashboardController> {
                                         () => const BandwidthPage(),
                                       );
                                     },
-                                    title: "Băng thông",
-                                    backgroundColorOut: const Color(0xFFFBE0EC),
-                                    backgroundColorIn: const Color(0xFFFBE0EC),
-                                    borderColorIn: const Color(0xFFEC78AB),
-                                    image: 'assets/icons/bandwidth.png',
+                                    title: 'DASH_BAND_BUTTON'.tr,
+                                    backgroundColorOut: kBGButtonBan,
+                                    backgroundColorIn: kBGButtonBan,
+                                    borderColorIn: kBorButtonBan,
+                                    image: KImage.imageBand,
                                   ),
                                   const SizedBox(height: 90, width: 100),
                                 ],
@@ -229,8 +217,8 @@ class DashboardScreen extends GetWidget<DashboardController> {
                 ),
                 Container(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: Constants.dkp * .75,
-                    vertical: Constants.dkp * .5,
+                    horizontal: Constants.padding15,
+                    vertical: Constants.padding10,
                   ),
                   child: Column(
                     children: [
@@ -239,17 +227,14 @@ class DashboardScreen extends GetWidget<DashboardController> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const KText(
-                              text: "Lịch sử phát bản tin",
-                              tColor: kSubTitleMainColor,
-                              size: 16,
-                              fontWeight: Constants.kRegular,
-                              isCenter: true,
-                              // tColor: Color(C),
+                            Text(
+                              'HIS_NEWS_TITLE'.tr,
+                              style: KTextStyle.textSubTitleStyle,
+                              textAlign: TextAlign.center,
                             ),
                             InkWell(
                               onTap: () {
-                                Get.find<HomeController>().changeIndex(1);
+                                controller.changIndexPage(1);
                               },
                               child: Container(
                                 height: 20,
@@ -257,67 +242,59 @@ class DashboardScreen extends GetWidget<DashboardController> {
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
                                   color: kBackgroundTag,
-                                  borderRadius: BorderRadius.circular(10),
+                                  borderRadius: Constants.borRadCir10,
                                 ),
-                                child: const KText(
-                                  text: "Xem thêm",
-                                  size: 13,
-                                  fontWeight: Constants.kRegular,
-                                  isCenter: true,
-                                  tColor: kTextTag,
+                                child: Text(
+                                  'DASH_VIEW_ALL'.tr,
+                                  style: KTextStyle.textSubTagStyle,
+                                  textAlign: TextAlign.center,
                                 ),
                               ),
                             )
                           ],
                         ),
                       ),
-                      const SizedBox(height: Constants.dkp * .25),
-                      GetBuilder<DashboardController>(
-                        id: 'HISTORY_NEWS',
-                        builder: (_) => Container(
-                          height: 215,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: Constants.dkp * .5,
-                            vertical: Constants.dkp * .5,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(15),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
-                                offset: const Offset(4, 4),
-                                blurRadius: 4,
-                              ),
-                            ],
-                          ),
-                          child: RefreshIndicator(
-                            onRefresh: _.onRefreshNews,
-                            color: kBackgroundTitle,
-                            child: OverflowBox(
-                              child: ListView.builder(
-                                itemCount: 10,
-                                itemBuilder: (context, index) =>
-                                    const HistoryContentCard(
-                                  statusCode: 2,
-                                ),
-                              ),
+                      Constants.sizedBoxH5,
+                      Container(
+                        height: 215,
+                        padding: const EdgeInsets.all(Constants.padding10),
+                        decoration: BoxDecoration(
+                          color: ThemeConfig.lightBG,
+                          borderRadius: BorderRadius.circular(15),
+                          boxShadow: [
+                            BoxShadow(
+                              color: kBlack10,
+                              offset: const Offset(4, 4),
+                              blurRadius: 4,
+                            ),
+                          ],
+                        ),
+                        child: Obx(
+                          () => ListView.builder(
+                            itemCount: (controller.listHisNews.length >= 10)
+                                ? 10
+                                : controller.listHisNews.length,
+                            itemBuilder: (context, index) => HistoryContentCard(
+                              titleName: controller.listHisNews[index].name!,
+                              titleType:
+                                  "Loại: ${controller.listHisNews[index].type!}",
+                              titleTime:
+                                  "Thời gian: ${controller.listHisNews[index].createDate!}",
+                              statusCode: 0,
                             ),
                           ),
                         ),
                       ),
-                      const SizedBox(height: Constants.dkp * .5),
+                      Constants.sizedBoxH10,
                       SizedBox(
                         height: 20,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const KText(
-                              text: "Cảnh báo hệ thống",
-                              tColor: kSubTitleMainColor,
-                              size: 16,
-                              fontWeight: Constants.kRegular,
-                              isCenter: true,
+                            Text(
+                              'HIS_WARN_TITLE'.tr,
+                              style: KTextStyle.textSubTitleStyle,
+                              textAlign: TextAlign.center,
                               // tColor: Color(C),
                             ),
                             InkWell(
@@ -330,49 +307,50 @@ class DashboardScreen extends GetWidget<DashboardController> {
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
                                   color: kBackgroundTag,
-                                  borderRadius: BorderRadius.circular(10),
+                                  borderRadius: Constants.borRadCir10,
                                 ),
-                                child: const KText(
-                                  text: "Xem thêm",
-                                  size: 13,
-                                  fontWeight: Constants.kRegular,
-                                  isCenter: true,
-                                  tColor: kTextTag,
+                                child: Text(
+                                  'DASH_VIEW_ALL'.tr,
+                                  style: KTextStyle.textSubTagStyle,
+                                  textAlign: TextAlign.center,
                                 ),
                               ),
                             )
                           ],
                         ),
                       ),
-                      const SizedBox(height: Constants.dkp * .25),
+                      Constants.sizedBoxH5,
                       Container(
                         height: 215,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: Constants.dkp * .5,
-                          vertical: Constants.dkp * .5,
+                        padding: const EdgeInsets.all(
+                          Constants.padding10,
                         ),
                         decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(15),
+                          color: ThemeConfig.lightBG,
+                          borderRadius: Constants.borRadCir15,
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
+                              color: kBlack10,
                               offset: const Offset(4, 4),
                               blurRadius: 4,
                             ),
                           ],
                         ),
-                        child: ListView.builder(
-                          itemCount: 10,
-                          itemBuilder: (context, index) =>
-                              const HistoryContentCard(
-                            imageIcon: 'assets/icons/icon-warning.png',
-                            titleName: "Tên cảnh báo",
-                            titleType: "Nội dung cảnh báo",
-                            titleTime:
-                                "Loại: Hư thiết bị - Thời gian: 00:00 - 31/12/2022",
-                            titleColor: Color(0xFFEBAE08),
-                            isTag: false,
+                        child: Obx(
+                          () => ListView.builder(
+                            itemCount: (controller.listHisWarning.length >= 10)
+                                ? 10
+                                : controller.listHisWarning.length,
+                            itemBuilder: (context, index) => HistoryContentCard(
+                              imageIcon: KImage.imageWarningCard,
+                              titleName: controller.listHisWarning[index].name!,
+                              titleType:
+                                  controller.listHisWarning[index].content!,
+                              titleTime:
+                                  "Loại: ${controller.listHisWarning[index].type} - Thời gian: ${controller.listHisWarning[index].createDate}",
+                              titleColor: kTitleWarningCardColor,
+                              isTag: false,
+                            ),
                           ),
                         ),
                       ),

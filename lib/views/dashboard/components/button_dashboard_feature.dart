@@ -10,8 +10,8 @@ class ButtonDashboardFeature extends StatelessWidget {
     this.borderColorOut = const Color(0xFF000000),
     this.backgroundColorIn = const Color(0xFFE5F7F6),
     this.borderColorIn = const Color(0xFFBCBEC3),
-    this.title = "Title",
-    this.image = 'assets/icons/newspaper.png',
+    required this.title,
+    required this.image,
     required this.onPress,
   }) : super(key: key);
 
@@ -20,7 +20,7 @@ class ButtonDashboardFeature extends StatelessWidget {
   final Color backgroundColorIn;
   final Color borderColorIn;
   final String title;
-  final String image;
+  final Widget image;
   final Function onPress;
 
   @override
@@ -59,15 +59,13 @@ class ButtonDashboardFeature extends StatelessWidget {
                     color: borderColorIn.withOpacity(.04),
                   ),
                 ),
-                child: Image.asset(image),
+                child: image,
               ),
             ),
-            KText(
-              text: title,
-              size: 16,
-              isCenter: true,
-              tColor: kTitleButtonColor,
-              fontWeight: FontWeight.w400,
+            Text(
+              title,
+              style: KTextStyle.textButtonTitleStyle,
+              textAlign: TextAlign.center,
             )
           ],
         ),
