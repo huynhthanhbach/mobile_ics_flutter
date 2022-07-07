@@ -31,10 +31,10 @@ class CustomContainer extends StatelessWidget {
           vertical: marginVertical, horizontal: marginHorizontal),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(defaultBorderRadius),
-        color: kWhite,
+        color: opWhite,
         boxShadow: [
           BoxShadow(
-            color: kGrey.withOpacity(0.5),
+            color: opGray2.withOpacity(0.5),
             spreadRadius: 5,
             blurRadius: 7,
             offset: const Offset(0, 3), // changes position of shadow
@@ -65,12 +65,12 @@ class CustomTextButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       style: ButtonStyle(
-        overlayColor: MaterialStateProperty.all<Color>(kLightGrey),
+        overlayColor: MaterialStateProperty.all<Color>(opLightGrey),
         foregroundColor: MaterialStateProperty.all<Color>(primaryColor),
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(defaultBorderRadius),
-            side: const BorderSide(color: kWhite),
+            side: const BorderSide(color: opWhite),
           ),
         ),
       ),
@@ -96,13 +96,13 @@ class CustomTextButton extends StatelessWidget {
                   : (background == null
                       ? defaultIconSize
                       : defaultIconSize - 7),
-              color: background == null ? primaryColor : kWhite,
+              color: background == null ? primaryColor : opWhite,
             ),
           ),
           SizedBox(
             width: (icon == null) ? 0 : defaultPadding,
           ),
-          textStyle1(
+          Text1(
             text: text,
           )
         ],
@@ -120,7 +120,9 @@ class CustomButton1 extends StatelessWidget {
       this.icon,
       this.space,
       this.padding,
-      this.background});
+      this.background,
+      required this.onpress});
+  final Function onpress;
   final String text;
   final IconData? icon;
   final double? space;
@@ -146,8 +148,7 @@ class CustomButton1 extends StatelessWidget {
         ),
         child: TextButton(
           onPressed: () {
-            // ignore: avoid_print
-            print('Custom TextButton 1');
+            onpress();
           },
           child: Row(
             children: [
@@ -172,7 +173,7 @@ class CustomButton1 extends StatelessWidget {
               SizedBox(
                 width: (space != null) ? space : defaultPadding,
               ),
-              textStyle1(text: text),
+              Text1(text: text),
               SizedBox(
                 width: (padding != null) ? padding : defaultPadding,
               ),

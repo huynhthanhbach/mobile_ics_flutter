@@ -8,7 +8,7 @@ class PlayNews extends StatelessWidget {
       required this.content,
       //required String value,
       this.full,
-      this.height = 25.0,
+      this.height = padding3,
       this.text = ''});
   final String icon;
   final Widget content;
@@ -22,11 +22,11 @@ class PlayNews extends StatelessWidget {
       child: Row(
         children: [
           const SizedBox(
-            width: defaultPadding * 4 / 3,
+            width: padding2,
           ),
           Image.asset(
-            'assets/icons/$icon',
-            width: 25,
+            icon,
+            width: defaultIconSize,
           ),
           const SizedBox(
             width: defaultPadding,
@@ -40,7 +40,7 @@ class PlayNews extends StatelessWidget {
                   child: Text(
                     text,
                     style: TextStyle(
-                      color: kBlack.withOpacity(.6),
+                      color: opBlack.withOpacity(.6),
                       fontSize: text3,
                     ),
                   ),
@@ -76,7 +76,7 @@ class PlayNewsCard extends StatelessWidget {
         text,
         overflow: TextOverflow.ellipsis,
         style: TextStyle(
-            color: isGrey ? kGrey : kBlack.withOpacity(.6), fontSize: text3),
+            color: isGrey ? opGray2 : opBlack.withOpacity(.6), fontSize: text3),
       ),
     );
   }

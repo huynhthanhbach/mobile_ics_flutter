@@ -1,5 +1,4 @@
-// import 'package:flutter/material.dart';
-// import 'package:mobile_ics_flutter/views/operator/operator_components/contrant.dart';
+// import 'component.dart';
 
 // class Volume extends StatefulWidget {
 //   const Volume({Key? key}) : super(key: key);
@@ -9,91 +8,94 @@
 // }
 
 // class _VolumeState extends State<Volume> {
-//   double _currentSliderValue = 70;
+//   double _currentSliderValue = defaultVolumetValue;
 
 //   @override
 //   Widget build(BuildContext context) {
-//     //var size = MediaQuery.of(context).size;
-//     return Row(
-//       children: [
-//         SizedBox(
-//           //color: Colors.amber,
-//           height: 10,
-//           //width: size.width * .68,
-//           child: Slider(
-//             thumbColor: const Color(0xff51dea3),
-//             activeColor: const Color(0xff51dea3),
-//             inactiveColor: const Color(0xffd9d9d9),
-//             value: _currentSliderValue,
-//             max: 100,
-//             divisions: 100,
-//             //label: _currentSliderValue.round().toString(),
-//             onChanged: (double value) {
-//               setState(() {
-//                 _currentSliderValue = value;
-//               });
-//             },
+//     var size = MediaQuery.of(context).size;
+//     return SizedBox(
+//       child: Row(
+//         children: [
+//           const SizedBox(
+//             width: padding2,
 //           ),
-//         ),
-//         Text(
-//           "${_currentSliderValue.round().toString()}%",
-//           style: const TextStyle(color: kGrey, fontSize: 16),
-//         ),
-//       ],
+//           Image.asset(
+//             iconVolume,
+//             width: padding3,
+//           ),
+//           SizedBox(
+//             height: padding1,
+//             width: size.width * .5 - 100,
+//             child: Slider(
+//               thumbColor: opLightGreen,
+//               activeColor: opLightGreen,
+//               inactiveColor: opGray3,
+//               value: _currentSliderValue,
+//               max: maxVolumetValue,
+//               divisions: devisionVolumetValue,
+//               //label: _currentSliderValue.round().toString(),
+//               onChanged: (double value) {
+//                 setState(() {
+//                   _currentSliderValue = value;
+//                 });
+//               },
+//             ),
+//           ),
+//           Text(
+//             "${_currentSliderValue.round().toString()}%",
+//             style: textStyle3b,
+//           ),
+//         ],
+//       ),
 //     );
 //   }
 // }
-import 'package:mobile_ics_flutter/views/operator/components/op_constant.dart';
+
+import 'package:get/get.dart';
+import 'package:mobile_ics_flutter/controllers/operator_controllers/operator_controller.dart';
 
 import 'component.dart';
 
-class Volume extends StatefulWidget {
+class Volume extends StatelessWidget {
   const Volume({Key? key}) : super(key: key);
-
-  @override
-  State<Volume> createState() => _VolumeState();
-}
-
-class _VolumeState extends State<Volume> {
-  double _currentSliderValue = 70;
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return SizedBox(
-      child: Row(
-        children: [
-          const SizedBox(
-            width: 20,
+    var controller = Get.find<OperatorController>();
+
+    return Obx(() => SizedBox(
+          child: Row(
+            children: [
+              const SizedBox(
+                width: padding2,
+              ),
+              Image.asset(
+                iconVolume,
+                width: padding3,
+              ),
+              SizedBox(
+                height: padding1,
+                width: size.width * .5 - 100,
+                child: Slider(
+                  thumbColor: opLightGreen,
+                  activeColor: opLightGreen,
+                  inactiveColor: opGray3,
+                  value: controller.volumeSelected.value,
+                  max: maxVolumetValue,
+                  divisions: devisionVolumetValue,
+                  //label: _currentSliderValue.round().toString(),
+                  onChanged: (double value) {
+                    controller.volumeSelected.value = value;
+                  },
+                ),
+              ),
+              Text(
+                "${controller.volumeSelected.value.round().toString()}%",
+                style: textStyle3b,
+              ),
+            ],
           ),
-          Image.asset(
-            "assets/icons/op_volume.png",
-            width: 25,
-          ),
-          SizedBox(
-            height: 10,
-            width: size.width * .5 - 100,
-            child: Slider(
-              thumbColor: const Color(0xff51dea3),
-              activeColor: const Color(0xff51dea3),
-              inactiveColor: const Color(0xffd9d9d9),
-              value: _currentSliderValue,
-              max: 100,
-              divisions: 100,
-              //label: _currentSliderValue.round().toString(),
-              onChanged: (double value) {
-                setState(() {
-                  _currentSliderValue = value;
-                });
-              },
-            ),
-          ),
-          Text(
-            "${_currentSliderValue.round().toString()}%",
-            style: const TextStyle(color: kGrey, fontSize: 16),
-          ),
-        ],
-      ),
-    );
+        ));
   }
 }

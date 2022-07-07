@@ -5,11 +5,11 @@ import 'package:mobile_ics_flutter/views/operator/components/op_constant.dart';
 import '../../../core/widgets/ktext.dart';
 
 // ignore: camel_case_types
-class textStyle1 extends StatelessWidget {
+class Text1 extends StatelessWidget {
   final String text;
   final Color color;
 
-  const textStyle1({super.key, required this.text, this.color = primaryColor});
+  const Text1({super.key, required this.text, this.color = primaryColor});
   @override
   Widget build(BuildContext context) {
     return KText(
@@ -22,11 +22,11 @@ class textStyle1 extends StatelessWidget {
 }
 
 // ignore: camel_case_types
-class textStyle2 extends StatelessWidget {
+class Text2 extends StatelessWidget {
   final String text;
   final Color color;
 
-  const textStyle2({super.key, required this.text, this.color = primaryColor});
+  const Text2({super.key, required this.text, this.color = primaryColor});
   @override
   Widget build(BuildContext context) {
     return KText(
