@@ -1,7 +1,5 @@
 import 'package:get/get.dart';
 import 'package:mobile_ics_flutter/views/dashboard/components/history_content_card.dart';
-import 'package:mobile_ics_flutter/views/operator/components/op_constant.dart';
-
 import '../../../controllers/operator_controllers/operator_controller.dart';
 import '../components/component.dart';
 import '../components/tempdb.dart';
@@ -14,12 +12,12 @@ class NewsList extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: const Text(
-            "Danh sách điều hành phát",
+            newsListPageTille,
             style: TextStyle(
               fontWeight: FontWeight.bold,
             ),
           ),
-          foregroundColor: Colors.white,
+          foregroundColor: opWhite,
           backgroundColor: primaryColor,
         ),
         body: Container(
@@ -29,21 +27,19 @@ class NewsList extends StatelessWidget {
             children: [
               GetBuilder<OperatorController>(
                 builder: (_) => CustomContainer(
-                  marginVertical: 0,
-                  marginHorizontal: 0,
-                  height: _.flag ? 290 : 50,
+                  height: _.flag ? buttonHeightOn : buttonHeightOff,
 
                   //color: Colors.white,
                   child: Column(
                     children: [
                       SizedBox(
-                        height: 50,
+                        height: buttonHeightOff,
                         child: CustomTextButton(
                           onpress: () {
                             _.pressButton();
                           },
                           icon: _.flag ? null : Icons.filter_list_rounded,
-                          text: "Bộ lọc",
+                          text: filtButtonLabel,
                           background: true,
                         ),
                       ),
@@ -54,15 +50,15 @@ class NewsList extends StatelessWidget {
                                   children: [
                                     Expanded(
                                       child: PlayNews(
-                                        icon: 'op_news.png',
+                                        icon: iconNews,
                                         //full: true,
-                                        text: 'Chuyên mục: ',
+                                        text: nlCategoriesLabel,
                                         content: GetBuilder<OperatorController>(
                                           builder: (_) =>
                                               DropdownButton<String>(
                                             isDense: true,
                                             style: TextStyle(
-                                              color: kBlack.withOpacity(.6),
+                                              color: opBlack.withOpacity(.6),
                                               fontSize: text3,
                                             ),
                                             isExpanded: true,
@@ -86,15 +82,15 @@ class NewsList extends StatelessWidget {
                                   children: [
                                     Expanded(
                                       child: PlayNews(
-                                        icon: 'op_clock.png',
+                                        icon: iconClock,
                                         //full: true,
-                                        text: 'Khung giờ: ',
+                                        text: nlTimeLabel,
                                         content: GetBuilder<OperatorController>(
                                           builder: (_) =>
                                               DropdownButton<String>(
                                             isDense: true,
                                             style: TextStyle(
-                                              color: kBlack.withOpacity(.6),
+                                              color: opBlack.withOpacity(.6),
                                               fontSize: text3,
                                             ),
                                             isExpanded: true,
@@ -118,15 +114,15 @@ class NewsList extends StatelessWidget {
                                   children: [
                                     Expanded(
                                       child: PlayNews(
-                                        icon: 'op_calender.png',
+                                        icon: iconCalender,
                                         //full: true,
-                                        text: 'Thời gian phát: ',
+                                        text: nlCalenderLabel,
                                         content: GetBuilder<OperatorController>(
                                           builder: (_) =>
                                               DropdownButton<String>(
                                             isDense: true,
                                             style: TextStyle(
-                                              color: kBlack.withOpacity(.6),
+                                              color: opBlack.withOpacity(.6),
                                               fontSize: text3,
                                             ),
                                             isExpanded: true,
@@ -150,15 +146,15 @@ class NewsList extends StatelessWidget {
                                   children: [
                                     Expanded(
                                       child: PlayNews(
-                                        icon: 'op_devices.png',
+                                        icon: iconDevice,
                                         //full: true,
-                                        text: 'Thiết bị phát: ',
+                                        text: nlDeviceLabel,
                                         content: GetBuilder<OperatorController>(
                                           builder: (_) =>
                                               DropdownButton<String>(
                                             isDense: true,
                                             style: TextStyle(
-                                              color: kBlack.withOpacity(.6),
+                                              color: opBlack.withOpacity(.6),
                                               fontSize: text3,
                                             ),
                                             isExpanded: true,
@@ -181,16 +177,22 @@ class NewsList extends StatelessWidget {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: defaultPadding),
-                                        child: const CustomButton1(
-                                          padding: defaultPadding * 3,
-                                          space: defaultPadding,
-                                          icon: Icons.filter_list_rounded,
-                                          text: "Lọc",
-                                          background: true,
-                                        )),
+                                    GetBuilder<OperatorController>(
+                                      builder: (_) => Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: defaultPadding),
+                                          child: CustomButton1(
+                                            padding: padding4,
+                                            space: defaultPadding,
+                                            icon: Icons.filter_list_rounded,
+                                            text: filterButtonLabel,
+                                            background: true,
+                                            onpress: () {
+                                              _.addFilter();
+                                              _.pressButton();
+                                            },
+                                          )),
+                                    )
                                   ],
                                 )
                               ],
@@ -200,45 +202,57 @@ class NewsList extends StatelessWidget {
                   ),
                 ),
               ),
+              GetBuilder<OperatorController>(
+                  builder: (_) => Container(
+                        child: (_.flag)
+                            ? const SizedBox(
+                                height: defaultPadding,
+                              )
+                            : Container(
+                                margin: const EdgeInsets.symmetric(
+                                    vertical: defaultPadding),
+                                alignment: Alignment.topLeft,
+                                child: const CustomFilterChip(),
+                              ),
+                      )),
+              // const SizedBox(
+              //   height: defaultPadding,
+              // ),
               Expanded(
                 child: GetBuilder<OperatorController>(
-                  builder: (_) => Container(
-                    //color: Colors.white,
-                    padding: const EdgeInsets.fromLTRB(0, 15, 0, 0),
-                    child: CustomContainer(
-                      paddingHorizontal: defaultPadding * 2 / 3,
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: 50,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                textStyle1(text: 'Danh sách phát'),
-                              ],
-                            ),
+                  builder: (_) => CustomContainer(
+                    paddingHorizontal: defaultPadding * 2 / 3,
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: padding5,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Text1(text: 'Danh sách phát'),
+                            ],
                           ),
-                          Expanded(
-                            child: ListView.builder(
-                              itemCount: 15,
-                              itemBuilder: (context, index) {
-                                return InkWell(
-                                  onTap: () async {
-                                    _.showBottomSheet(
-                                      context,
-                                      const MyBottomSheet(),
-                                    );
-                                  },
-                                  child: const HistoryContentCard(),
-                                );
-                              },
-                            ),
+                        ),
+                        Expanded(
+                          child: ListView.builder(
+                            itemCount: 15,
+                            itemBuilder: (context, index) {
+                              return InkWell(
+                                onTap: () async {
+                                  _.showBottomSheet(
+                                    context,
+                                    const MyBottomSheet(),
+                                  );
+                                },
+                                child: const HistoryContentCard(),
+                              );
+                            },
                           ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                        ],
-                      ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                      ],
                     ),
                   ),
                 ),

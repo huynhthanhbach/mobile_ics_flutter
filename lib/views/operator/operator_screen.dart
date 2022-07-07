@@ -1,8 +1,6 @@
 import 'package:get/get.dart';
 import 'package:mobile_ics_flutter/views/dashboard/components/history_content_card.dart';
-import 'package:mobile_ics_flutter/views/operator/components/op_constant.dart';
 import 'package:mobile_ics_flutter/views/operator/components/tempdb.dart';
-import 'package:multi_select_flutter/multi_select_flutter.dart';
 import '../../controllers/operator_controllers/operator_controller.dart';
 import 'components/component.dart';
 import 'pages/pages.dart';
@@ -23,7 +21,7 @@ class OperatorScreen extends GetWidget<OperatorController> {
           end: Alignment.bottomCenter,
           colors: <Color>[
             primaryColor,
-            Color(0xffffffff),
+            opWhite,
           ], // Gradient from https://learnui.design/tools/gradient-generator.html
           tileMode: TileMode.mirror,
         ),
@@ -32,74 +30,70 @@ class OperatorScreen extends GetWidget<OperatorController> {
       child: Column(
         children: [
           SizedBox(
-            height: size.height * 0.15,
+            height: size.height * textButtonHeight,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
-                  'assets/icons/operator.png',
-                  width: 40,
+                  iconOperator,
+                  width: titleIconSize,
                 ),
                 const SizedBox(
-                  width: 20,
+                  width: padding2,
                 ),
                 const Text(
-                  'Điều hành',
-                  style: TextStyle(color: kWhite, fontSize: header1),
+                  operatorTitle,
+                  style: TextStyle(color: opWhite, fontSize: header1),
                 ),
                 const SizedBox(
-                  width: 20,
+                  width: padding2,
                 ),
                 Image.asset(
-                  'assets/icons/avatar.png',
-                  width: 68,
+                  iconAvatar,
+                  width: avatarSize,
                 )
               ],
             ),
           ),
           GetBuilder<OperatorController>(
             builder: (_) => CustomContainer(
-              marginHorizontal: 0,
-              marginVertical: 0,
-              paddingHorizontal: 0,
-              paddingVertical: 0,
-              height: _.flag ? 270 : defaultIconSize * 2,
+              height: _.flag ? buttonHeightOn : buttonHeightOff,
               child: Column(
                 children: [
                   SizedBox(
-                    height: defaultIconSize * 2,
+                    height: buttonHeightOff,
                     child: CustomTextButton(
                       onpress: () {
                         _.pressButton();
                       },
                       icon: _.flag ? null : Icons.play_arrow_rounded,
-                      text: "Phát bản tin",
+                      text: playNewsButtonLabel,
                     ),
                   ),
                   _.flag
                       ? Column(
                           children: [
                             const SizedBox(
-                              height: defaultPadding * 2 / 3,
+                              height: padding1,
                             ),
                             Row(
                               children: [
                                 Expanded(
                                   child: PlayNews(
-                                    height: 20,
-                                    icon: 'op_news.png',
+                                    height: padding2,
+                                    icon: iconNews,
                                     content: GetBuilder<OperatorController>(
                                       builder: (_) => DropdownButton<String>(
                                         isDense: true,
                                         style: TextStyle(
-                                          color: kBlack.withOpacity(.6),
+                                          color: opBlack.withOpacity(.6),
                                           fontSize: text3,
                                         ),
                                         isExpanded: true,
                                         value: _.newsSelected,
                                         onChanged: (value) =>
                                             _.Select('newsSelected', value),
-                                        hint: const Text('Chọn bản tin'),
+                                        hint: const Text(selectNewsHint),
                                         underline: Container(
                                             color: Colors.transparent),
                                         items: newsList,
@@ -110,36 +104,16 @@ class OperatorScreen extends GetWidget<OperatorController> {
                                 Expanded(
                                   child: PlayNews(
                                     height: 28,
-                                    icon: 'op_devices.png',
-                                    content: CustomMultiSelectDialogField(
-                                      chipDisplay:
-                                          MultiSelectChipDisplay.none(),
-                                      decoration: BoxDecoration(
-                                        color: Colors.blue.withOpacity(0),
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(40)),
-                                        border: Border.all(
-                                          color: Colors.blue.withOpacity(0),
-                                          width: 2,
+                                    icon: iconDevice,
+                                    content: InkWell(
+                                      child: Obx(
+                                        () => Text(
+                                          'Thiết bị phát (${controller.deviceCounter.value.toString()})',
+                                          style: textStyle3a,
                                         ),
                                       ),
-                                      buttonIcon: Icon(
-                                        Icons.arrow_drop_down_sharp,
-                                        color: kBlack.withOpacity(.6),
-                                      ),
-                                      items: device_items,
-                                      title:
-                                          const Text("Danh sách thiết bị phát"),
-                                      selectedColor: Colors.blue,
-                                      buttonText: Text(
-                                        "Chọn thiết bị",
-                                        style: TextStyle(
-                                          color: kBlack.withOpacity(.6),
-                                          fontSize: text3,
-                                        ),
-                                      ),
-                                      onConfirm: (results) {
-                                        //_selectedAnimals = results;
+                                      onTap: () {
+                                        showDeviceSelect(context, controller);
                                       },
                                     ),
                                   ),
@@ -154,40 +128,31 @@ class OperatorScreen extends GetWidget<OperatorController> {
                                 Expanded(
                                   child: PlayNews(
                                     height: 28,
-                                    icon: 'op_calender.png',
-                                    content: CustomMultiSelectDialogField(
-                                      chipDisplay:
-                                          MultiSelectChipDisplay.none(),
-                                      decoration: BoxDecoration(
-                                        color: Colors.blue.withOpacity(0),
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(40)),
-                                        border: Border.all(
-                                          color: Colors.blue.withOpacity(0),
-                                          width: 2,
-                                        ),
+                                    icon: iconCalender,
+                                    content: DropdownButton<String>(
+                                      style: TextStyle(
+                                        color: opBlack.withOpacity(.6),
+                                        fontSize: text3,
                                       ),
-                                      buttonIcon: Icon(
-                                        Icons.arrow_drop_down_sharp,
-                                        color: kBlack.withOpacity(.6),
-                                      ),
-                                      dialogHeight: 250,
-                                      dialogWidth: 200,
-                                      items: time_items,
-                                      title: const Text("Khung giờ phát"),
-                                      selectedColor: Colors.blue,
-                                      buttonText: Text(
-                                        "Khung giờ",
-                                        style: TextStyle(
-                                          color: kBlack.withOpacity(.6),
-                                          fontSize: text3,
-                                        ),
-                                      ),
-                                      onConfirm: (results) {
-                                        //_selectedAnimals = results;
+                                      isExpanded: true,
+                                      //value: null,
+                                      onChanged: (value) => {
+                                        value == '0'
+                                            ? showFixedSchdule(context)
+                                            : controller.chooseTime()
                                       },
+                                      hint: const Text(selectTimeHint),
+                                      underline:
+                                          Container(color: Colors.transparent),
+                                      items: const [
+                                        DropdownMenuItem(
+                                            value: '0',
+                                            child: Text('Chọn khung giờ')),
+                                        DropdownMenuItem(
+                                            value: '1',
+                                            child: Text('Thêm khung giờ')),
+                                      ],
                                     ),
-                                    //value: '',
                                   ),
                                 ),
                                 const Expanded(
@@ -204,11 +169,11 @@ class OperatorScreen extends GetWidget<OperatorController> {
                                 Expanded(
                                   child: PlayNews(
                                     height: 20,
-                                    icon: 'op_repeat.png',
+                                    icon: iconRepeat,
                                     content: GetBuilder<OperatorController>(
                                       builder: (_) => DropdownButton<String>(
                                         style: TextStyle(
-                                          color: kBlack.withOpacity(.6),
+                                          color: opBlack.withOpacity(.6),
                                           fontSize: text3,
                                         ),
                                         isExpanded: true,
@@ -225,18 +190,18 @@ class OperatorScreen extends GetWidget<OperatorController> {
                                 ),
                                 Expanded(
                                   child: PlayNews(
-                                    icon: 'op_warning.png',
+                                    icon: iconWarning,
                                     content: GetBuilder<OperatorController>(
                                       builder: (_) => DropdownButton<String>(
                                         style: TextStyle(
-                                          color: kBlack.withOpacity(.6),
+                                          color: opBlack.withOpacity(.6),
                                           fontSize: text3,
                                         ),
                                         isExpanded: true,
                                         value: _.prioritySelected,
                                         onChanged: (value) =>
                                             _.Select('prioritySelected', value),
-                                        hint: const Text('Độ ưu tiên'),
+                                        hint: const Text(selectPriorityHint),
                                         underline: Container(
                                             color: Colors.transparent),
                                         items: priorityList,
@@ -248,7 +213,7 @@ class OperatorScreen extends GetWidget<OperatorController> {
                               ],
                             ),
                             const SizedBox(
-                              height: 20,
+                              height: padding2,
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -256,11 +221,14 @@ class OperatorScreen extends GetWidget<OperatorController> {
                                 Container(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: defaultPadding),
-                                    child: const CustomButton1(
-                                      padding: defaultPadding * 3,
+                                    child: CustomButton1(
+                                      padding: padding4,
                                       space: defaultPadding,
                                       icon: Icons.play_arrow_rounded,
-                                      text: "Phát",
+                                      text: playButtonLabel,
+                                      onpress: () {
+                                        controller.printNewsPlayed();
+                                      },
                                     )),
                               ],
                             )
@@ -293,7 +261,7 @@ class OperatorScreen extends GetWidget<OperatorController> {
                                 const SizedBox(
                                   width: 25,
                                 ),
-                                const textStyle1(text: "Danh sách phát"),
+                                const Text1(text: "Danh sách phát"),
                                 InkWell(
                                   onTap: () {
                                     Get.to(const NewsList());
