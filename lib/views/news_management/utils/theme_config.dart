@@ -13,7 +13,6 @@ class ThemeConfig {
   static ThemeData lightTheme = ThemeData(
     backgroundColor: lightBG,
     primaryColor: lightPrimary,
-    accentColor: lightAccent,
     scaffoldBackgroundColor: lightBG,
     appBarTheme: AppBarTheme(
       elevation: 0,
@@ -33,7 +32,6 @@ class ThemeConfig {
     brightness: Brightness.dark,
     backgroundColor: darkBG,
     primaryColor: darkPrimary,
-    accentColor: darkAccent,
     scaffoldBackgroundColor: darkBG,
     appBarTheme: AppBarTheme(
       elevation: 0,
