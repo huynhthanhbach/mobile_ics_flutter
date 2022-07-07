@@ -3,14 +3,16 @@
     - Xây dựng chức năng của các tùy chọn trên Bottom Sheet.
 */
 
+import 'package:file_manager/file_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mobile_ics_flutter/views/news_management/newsmanagement_components/constants.dart';
-import 'package:mobile_ics_flutter/views/news_management/newsmanagement_components/kcolors.dart';
+import 'package:mobile_ics_flutter/views/news_management/utils/constants.dart';
+import 'package:mobile_ics_flutter/views/news_management/utils/kcolors.dart';
 
 // Lớp xây dựng bottom sheet hiện lên khi nhấn vào dấu 3 chấm trong mỗi file/folder
 class BottomSheetActionFolder extends StatelessWidget {
-  const BottomSheetActionFolder({
+  final FileManagerController controller = FileManagerController();
+  BottomSheetActionFolder({
     Key? key,
     required this.foldername,
   }) : super(key: key);
@@ -20,12 +22,12 @@ class BottomSheetActionFolder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: Get.mediaQuery.size.height * .6,
+      height: Get.mediaQuery.size.height * .5,
       padding: const EdgeInsets.only(
-        top: Constants.dkp * .75,
-        left: Constants.dkp * .75,
-        right: Constants.dkp * .75,
-        bottom: Constants.dkp * .5,
+        top: 15,
+        left: 15,
+        right: 15,
+        bottom: 10,
       ),
       decoration: const BoxDecoration(
         color: kWhite,
@@ -151,40 +153,57 @@ class BottomSheetActionFolder extends StatelessWidget {
   // Chức năng đổi tên
   Future openDialogChangeName(BuildContext context) => showDialog(
         context: context,
-        builder: (context) => AlertDialog(
-          title: Text(foldername, style: textStyle1),
-          content: TextField(
-            autofocus: true,
-            decoration: InputDecoration(
-              icon: Image.asset('assets/icons/nm_changename.png'),
-              fillColor: kShadow,
-              filled: true,
-              hintText: 'Nhập tên mới',
-            ),
-          ),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(left: 40, right: 40),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextButton(
-                      onPressed: () {},
-                      child: const Text('Xong', style: textStyle11)),
-                  TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: const Text('Hủy', style: textStyle11)),
-                ],
+        builder: (context) {
+          TextEditingController folderName = TextEditingController();
+          return AlertDialog(
+            title: Text(foldername, style: textStyle1),
+            content: TextField(
+              autofocus: true,
+              decoration: InputDecoration(
+                icon: Image.asset('assets/icons/nm_changename.png'),
+                fillColor: kShadow,
+                filled: true,
+                hintText: 'Nhập tên mới',
               ),
+            ),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(left: 40, right: 40),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TextButton(
+                        onPressed: () async {
+                          try {
+                            // Create Folder
+                            await FileManager.createFolder(
+                                controller.getCurrentPath, folderName.text);
+                            // Open Created Folder
+                            controller.setCurrentPath =
+                                controller.getCurrentPath + "/" + folderName.text;
+                          // ignore: empty_catches
+                          } catch (e) {}
+                          
+                          Navigator.pop(context);
+                        },
+                        child: const Text('Xong', style: textStyle11)),
+                    TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: const Text('Hủy', style: textStyle11)),
+                  ],
+                ),
+              )
+            ],
+            backgroundColor: kWhite,
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(15.0))
             )
-          ],
-          backgroundColor: kWhite,
-          shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(15.0))),
-        ),
+          );
+        }
       );
+       
 
   // Chức năng xóa
   Future openDialogDelete(BuildContext context) => showDialog(
