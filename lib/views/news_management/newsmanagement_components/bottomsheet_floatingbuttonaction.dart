@@ -6,14 +6,16 @@
     - Xây dựng chức năng của các tùy chọn trên Bottom Sheet.
 */
 
+import 'package:file_manager/file_manager.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:mobile_ics_flutter/controllers/newsmanagement_controllers/newsmanagement_controller.dart';
-import 'package:mobile_ics_flutter/views/news_management/newsmanagement_components/constants.dart';
-import 'package:mobile_ics_flutter/views/news_management/newsmanagement_components/kcolors.dart';
+import 'package:mobile_ics_flutter/views/news_management/utils/constants.dart';
+import 'package:mobile_ics_flutter/views/news_management/utils/kcolors.dart';
 
+//Hàm xây dựng FloatingButton
 Widget bottomSheetFloatingButton(
   BuildContext context, NewsManagementController controller) =>
     FloatingActionButton(
@@ -23,13 +25,14 @@ Widget bottomSheetFloatingButton(
         floatingButtonAction(context, controller);
       },
     );
+    
 
 // Hàm xử lí hiện bottom sheet lên khi tap vào floating button dấu cộng để upload file mp3 hoặc tạo folder mới
 floatingButtonAction(BuildContext context, NewsManagementController controller) {
   controller.showBottomSheet(
     context,
     Container(
-      height: Get.mediaQuery.size.height * .4,
+      height: Get.mediaQuery.size.height * .3,
       padding: const EdgeInsets.only(
         top: Constants.dkp * .75,
         left: Constants.dkp * .75,
@@ -133,37 +136,53 @@ void pickFiless() async {
 
 Future createNewFolder(BuildContext context) => showDialog(
   context: context,
-  builder: (context) => AlertDialog(
-    title: const Text('Tạo thư mục mới', style: textStyle1),
-    content: TextField(
-      autofocus: true,
-      decoration: InputDecoration(
-        icon: Image.asset('assets/icons/nm_changename.png'),
-        fillColor: kShadow,
-        filled: true,
-        hintText: 'Nhập tên thư mục',
-      ),
-    ),
-    actions: [
-      Padding(
-        padding: const EdgeInsets.only(left: 40, right: 40),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            TextButton(
-                onPressed: () {},
-                child: const Text('Tạo', style: textStyle11)),
-            TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text('Hủy', style: textStyle11)),
-          ],
+  builder: (context) {
+    final FileManagerController controller = FileManagerController();
+    TextEditingController folderName = TextEditingController();
+    return AlertDialog(
+      title: const Text('Tạo thư mục mới', style: textStyle1),
+      content: TextField(
+        autofocus: true,
+        decoration: InputDecoration(
+          icon: Image.asset('assets/icons/nm_changename.png'),
+          fillColor: kShadow,
+          filled: true,
+          hintText: 'Nhập tên thư mục',
         ),
-      )
-    ],
-    backgroundColor: kWhite,
-    shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(15.0))),
-  ),
+      ),
+      actions: [
+        Padding(
+          padding: const EdgeInsets.only(left: 40, right: 40),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              TextButton(
+                  onPressed: () async {
+                    try {
+                      // Create Folder
+                      await FileManager.createFolder(
+                        controller.getCurrentPath, folderName.text
+                      );
+                      // Open Created Folder
+                      controller.setCurrentPath =
+                          controller.getCurrentPath + "/" + folderName.text;
+                    } catch (e) {}
+
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Tạo', style: textStyle11)),
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Hủy', style: textStyle11)),
+            ],
+          ),
+        )
+      ],
+      backgroundColor: kWhite,
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(15.0))),
+    );
+  }
 );
