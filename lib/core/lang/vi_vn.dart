@@ -9,6 +9,9 @@ const Map<String, String> viVN = {
   'FILTER_TIME_WEEK': 'Một tuần trước',
   'FILTER_TIME_YEAR': 'Một năm trước',
   'FILTER_TITLE': 'Lọc: ',
+  'NEWS_LOCAL': 'Bản tin',
+  'NEWS_ONLINE': 'Trực tuyến',
+  'NONE_DATA': 'Không có dữ liệu!',
   'TITLE_CONTENT': 'Nội dung',
   'TITLE_TIME': 'Thời gian',
 
@@ -75,13 +78,7 @@ const Map<String, String> viVN = {
   'WARNING_LEVEL_SMALL': 'Mức độ nhẹ',
   'WARNING_LEVEL_MEDIUM': 'Mức độ trung bình',
   'WARNING_LEVEL_HARD': 'Mức độ nặng',
-
-  // Bandwidth page
-  'BANDWIDTH_TITLE': 'Băng thông',
-  'BANDWIDTH_SPEED': 'Tốc độ dữ liệu hiện tại',
-  'BANDWIDTH_INTER_SPEED': 'Internet speed (Mbps)',
-  'BANDWIDTH_TIME': 'Time (seconds)',
-
+  
   //Operator
   //Title
   'OP_TITLE': 'Điều hành',
@@ -125,4 +122,15 @@ const Map<String, String> viVN = {
   'BSL_PRIORITY': 'Ưu tiên: ',
   'BSL_DEVICE': 'Thiết bị phát: ',
   'BSL_DEVICE_SELECTED': 'Danh sách thiết bị',
+
+  // Bandwidth page
+  'BANDWIDTH_TITLE': 'Băng thông',
+  'BANDWIDTH_SPEED': 'Tốc độ dữ liệu hiện tại',
+  'BANDWIDTH_INTER_SPEED': 'Internet speed (Mbps)',
+  'BANDWIDTH_TIME': 'Time (seconds)',
+  'BANDWIDTH_TOTAL': 'Sử dụng dữ liệu',
+  'BANDWIDTH_USED': 'Dữ liệu',
+  'BANDWIDTH_USED_MBS': 'Dữ liệu sử dụng',
+  'BANDWIDTH_NOW': 'Dữ liệu hiện tại',
+  'BANDWIDTH_NOW_TOTAL': 'Tổng'
 };
