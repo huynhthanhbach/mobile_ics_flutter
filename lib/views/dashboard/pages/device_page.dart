@@ -76,8 +76,8 @@ class DevicePage extends StatelessWidget {
                             children: [
                               const SizedBox(width: Constants.padding5),
                               DateTag(
-                                text: list[index].text,
-                                num: list[index].num,
+                                text: list[index].date,
+                                num: list[index].day,
                                 isNow: true,
                               ),
                               const SizedBox(width: Constants.padding5),
@@ -88,8 +88,8 @@ class DevicePage extends StatelessWidget {
                             children: [
                               const SizedBox(width: Constants.padding5),
                               DateTag(
-                                text: list[index].text,
-                                num: list[index].num,
+                                text: list[index].date,
+                                num: list[index].day,
                               ),
                               const SizedBox(width: Constants.padding5),
                             ],
@@ -195,7 +195,7 @@ class DevicePage extends StatelessWidget {
                           children: [
                             Obx(
                               () => Text(
-                                controller.timeBar.length.toString(),
+                                controller.listDevice.length.toString(),
                                 style: KTextStyle.textAmountStyle,
                               ),
                             ),
@@ -208,48 +208,57 @@ class DevicePage extends StatelessWidget {
                       ),
                       Obx(
                         () => Expanded(
-                          child: charts.BarChart(
-                            // ignore: invalid_use_of_protected_member
-                            controller.series.value,
-                            animate: true,
-                            animationDuration: Constants.dur500,
-                            defaultRenderer: charts.BarRendererConfig(
-                              maxBarWidthPx: 40,
-                              barRendererDecorator:
-                                  charts.BarLabelDecorator<String>(
-                                insideLabelStyleSpec:
-                                    KTextStyle.textInsideLabelStyleSpec,
-                                outsideLabelStyleSpec:
-                                    KTextStyle.textOutsideLabelStyleSpec,
-                              ),
-                            ),
-                            domainAxis: charts.OrdinalAxisSpec(
-                              renderSpec: charts.SmallTickRendererSpec(
-                                // Tick and Label styling here.
-                                labelStyle: KTextStyle.textChartsLabelStyle,
+                          child: (controller.listDevice.isNotEmpty)
+                              ? charts.BarChart(
+                                  // ignore: invalid_use_of_protected_member
+                                  controller.series.value,
+                                  animate: true,
+                                  animationDuration: Constants.dur500,
+                                  defaultRenderer: charts.BarRendererConfig(
+                                    maxBarWidthPx: 40,
+                                    barRendererDecorator:
+                                        charts.BarLabelDecorator<String>(
+                                      insideLabelStyleSpec:
+                                          KTextStyle.textInsideLabelStyleSpec,
+                                      outsideLabelStyleSpec:
+                                          KTextStyle.textOutsideLabelStyleSpec,
+                                    ),
+                                  ),
+                                  domainAxis: charts.OrdinalAxisSpec(
+                                    renderSpec: charts.SmallTickRendererSpec(
+                                      // Tick and Label styling here.
+                                      labelStyle:
+                                          KTextStyle.textChartsLabelStyle,
 
-                                // Change the line colors to match text color.
-                                lineStyle: charts.LineStyleSpec(
-                                  color: charts.ColorUtil.fromDartColor(
-                                    kBackgroundTitle,
+                                      // Change the line colors to match text color.
+                                      lineStyle: charts.LineStyleSpec(
+                                        color: charts.ColorUtil.fromDartColor(
+                                          kBackgroundTitle,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  primaryMeasureAxis: charts.NumericAxisSpec(
+                                    renderSpec: charts.GridlineRendererSpec(
+                                      // Tick and Label styling here.
+                                      labelStyle:
+                                          KTextStyle.textChartsLabelStyle1,
+
+                                      // Change the line colors to match text color.
+                                      lineStyle: charts.LineStyleSpec(
+                                        color: charts.ColorUtil.fromDartColor(
+                                          kBackgroundTitle.withOpacity(.3),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : Center(
+                                  child: Text(
+                                    'NONE_DATA'.tr,
+                                    style: KTextStyle.textAmountSubStyle,
                                   ),
                                 ),
-                              ),
-                            ),
-                            primaryMeasureAxis: charts.NumericAxisSpec(
-                              renderSpec: charts.GridlineRendererSpec(
-                                // Tick and Label styling here.
-                                labelStyle: KTextStyle.textChartsLabelStyle1,
-
-                                // Change the line colors to match text color.
-                                lineStyle: charts.LineStyleSpec(
-                                  color: charts.ColorUtil.fromDartColor(
-                                    kBackgroundTitle.withOpacity(.3),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
                         ),
                       ),
                     ],
@@ -297,7 +306,7 @@ class DevicePage extends StatelessWidget {
                           children: [
                             Obx(
                               () => Text(
-                                controller.timeBar.length.toString(),
+                                controller.listDevice.length.toString(),
                                 style: KTextStyle.textAmountStyle,
                               ),
                             ),
@@ -337,44 +346,63 @@ class DevicePage extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Obx(
-                              () => Container(
-                                height: 200,
-                                width: Constants.screenWidth * .43,
-                                alignment: Alignment.center,
-                                child: SfCircularChart(
-                                  // ignore: invalid_use_of_protected_member
-                                  series: controller.seriesPie.value,
-                                  tooltipBehavior: controller.tooltipBehavior1,
-                                  legend: Legend(
-                                    isVisible: true,
-                                    position: LegendPosition.bottom,
-                                    overflowMode: LegendItemOverflowMode.wrap,
-                                    textStyle: KTextStyle.textLegendStyle,
-                                    height: '40%',
-                                    alignment: ChartAlignment.center,
-                                  ),
-                                ),
-                              ),
+                              () => (controller.listDevice.isNotEmpty)
+                                  ? Container(
+                                      height: 200,
+                                      width: Constants.screenWidth * .43,
+                                      alignment: Alignment.center,
+                                      child: SfCircularChart(
+                                        // ignore: invalid_use_of_protected_member
+                                        series: controller.seriesLocalPie.value,
+                                        tooltipBehavior:
+                                            controller.tooltipBehavior1,
+                                        legend: Legend(
+                                          isVisible: true,
+                                          position: LegendPosition.bottom,
+                                          overflowMode:
+                                              LegendItemOverflowMode.wrap,
+                                          textStyle: KTextStyle.textLegendStyle,
+                                          height: '40%',
+                                          alignment: ChartAlignment.center,
+                                        ),
+                                      ),
+                                    )
+                                  : Center(
+                                      child: Text(
+                                        'NONE_DATA'.tr,
+                                        style: KTextStyle.textAmountSubStyle,
+                                      ),
+                                    ),
                             ),
                             Obx(
-                              () => Container(
-                                height: 200,
-                                width: Constants.screenWidth * .43,
-                                alignment: Alignment.center,
-                                child: SfCircularChart(
-                                  // ignore: invalid_use_of_protected_member
-                                  series: controller.seriesPie.value,
-                                  tooltipBehavior: controller.tooltipBehavior2,
-                                  legend: Legend(
-                                    isVisible: true,
-                                    position: LegendPosition.bottom,
-                                    overflowMode: LegendItemOverflowMode.wrap,
-                                    textStyle: KTextStyle.textLegendStyle,
-                                    alignment: ChartAlignment.center,
-                                    height: '40%',
-                                  ),
-                                ),
-                              ),
+                              () => (controller.listDevice.isNotEmpty)
+                                  ? Container(
+                                      height: 200,
+                                      width: Constants.screenWidth * .43,
+                                      alignment: Alignment.center,
+                                      child: SfCircularChart(
+                                        series:
+                                            // ignore: invalid_use_of_protected_member
+                                            controller.seriesOnlinePie.value,
+                                        tooltipBehavior:
+                                            controller.tooltipBehavior2,
+                                        legend: Legend(
+                                          isVisible: true,
+                                          position: LegendPosition.bottom,
+                                          overflowMode:
+                                              LegendItemOverflowMode.wrap,
+                                          textStyle: KTextStyle.textLegendStyle,
+                                          alignment: ChartAlignment.center,
+                                          height: '40%',
+                                        ),
+                                      ),
+                                    )
+                                  : Center(
+                                      child: Text(
+                                        'NONE_DATA'.tr,
+                                        style: KTextStyle.textAmountSubStyle,
+                                      ),
+                                    ),
                             ),
                           ],
                         ),

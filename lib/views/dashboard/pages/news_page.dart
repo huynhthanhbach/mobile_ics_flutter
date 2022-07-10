@@ -76,8 +76,8 @@ class NewsPage extends StatelessWidget {
                             children: [
                               const SizedBox(width: Constants.padding5),
                               DateTag(
-                                text: list[index].text,
-                                num: list[index].num,
+                                text: list[index].date,
+                                num: list[index].day,
                                 isNow: true,
                               ),
                               const SizedBox(width: Constants.padding5),
@@ -88,8 +88,8 @@ class NewsPage extends StatelessWidget {
                             children: [
                               const SizedBox(width: Constants.padding5),
                               DateTag(
-                                text: list[index].text,
-                                num: list[index].num,
+                                text: list[index].date,
+                                num: list[index].day,
                               ),
                               const SizedBox(width: Constants.padding5),
                             ],
@@ -210,45 +210,53 @@ class NewsPage extends StatelessWidget {
                     ),
                     Obx(
                       () => Expanded(
-                        child: charts.BarChart(
-                          // ignore: invalid_use_of_protected_member
-                          controller.seriesBarChart.value,
-                          animate: true,
-                          animationDuration: Constants.dur500,
-                          barRendererDecorator:
-                              charts.BarLabelDecorator<String>(
-                            insideLabelStyleSpec:
-                                KTextStyle.textInsideLabelStyleSpec,
-                            outsideLabelStyleSpec:
-                                KTextStyle.textOutsideLabelStyleSpec,
-                          ),
-                          domainAxis: charts.OrdinalAxisSpec(
-                            renderSpec: charts.SmallTickRendererSpec(
-                              // Tick and Label styling here.
-                              labelStyle: KTextStyle.textChartsLabelStyle,
+                        child: (controller.listNews.isNotEmpty)
+                            ? charts.BarChart(
+                                // ignore: invalid_use_of_protected_member
+                                controller.seriesBarChart.value,
+                                animate: true,
+                                animationDuration: Constants.dur500,
+                                barRendererDecorator:
+                                    charts.BarLabelDecorator<String>(
+                                  insideLabelStyleSpec:
+                                      KTextStyle.textInsideLabelStyleSpec,
+                                  outsideLabelStyleSpec:
+                                      KTextStyle.textOutsideLabelStyleSpec,
+                                ),
+                                domainAxis: charts.OrdinalAxisSpec(
+                                  renderSpec: charts.SmallTickRendererSpec(
+                                    // Tick and Label styling here.
+                                    labelStyle: KTextStyle.textChartsLabelStyle,
 
-                              // Change the line colors to match text color.
-                              lineStyle: charts.LineStyleSpec(
-                                color: charts.ColorUtil.fromDartColor(
-                                  kBackgroundTitle,
+                                    // Change the line colors to match text color.
+                                    lineStyle: charts.LineStyleSpec(
+                                      color: charts.ColorUtil.fromDartColor(
+                                        kBackgroundTitle,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                primaryMeasureAxis: charts.NumericAxisSpec(
+                                  renderSpec: charts.GridlineRendererSpec(
+                                    // Tick and Label styling here.
+                                    labelStyle:
+                                        KTextStyle.textChartsLabelStyle1,
+
+                                    // Change the line colors to match text color.
+                                    lineStyle: charts.LineStyleSpec(
+                                      color: charts.ColorUtil.fromDartColor(
+                                        kBackgroundTitle.withOpacity(.3),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : Center(
+                                child: Text(
+                                  'NONE_DATA'.tr,
+                                  style: KTextStyle.textAmountSubStyle,
                                 ),
                               ),
-                            ),
-                          ),
-                          primaryMeasureAxis: charts.NumericAxisSpec(
-                            renderSpec: charts.GridlineRendererSpec(
-                              // Tick and Label styling here.
-                              labelStyle: KTextStyle.textChartsLabelStyle1,
-
-                              // Change the line colors to match text color.
-                              lineStyle: charts.LineStyleSpec(
-                                color: charts.ColorUtil.fromDartColor(
-                                  kBackgroundTitle.withOpacity(.3),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
                       ),
                     ),
                   ],
@@ -309,16 +317,23 @@ class NewsPage extends StatelessWidget {
                     ),
                     Obx(
                       () => Expanded(
-                        child: SfCircularChart(
-                          // ignore: invalid_use_of_protected_member
-                          series: controller.seriesPie.value,
-                          tooltipBehavior: controller.tooltipBehavior,
-                          legend: Legend(
-                            isVisible: true,
-                            overflowMode: LegendItemOverflowMode.wrap,
-                            textStyle: KTextStyle.textPieLabelStyle,
-                          ),
-                        ),
+                        child: (controller.listNews.isNotEmpty)
+                            ? SfCircularChart(
+                                // ignore: invalid_use_of_protected_member
+                                series: controller.seriesPie.value,
+                                tooltipBehavior: controller.tooltipBehavior,
+                                legend: Legend(
+                                  isVisible: true,
+                                  overflowMode: LegendItemOverflowMode.wrap,
+                                  textStyle: KTextStyle.textPieLabelStyle,
+                                ),
+                              )
+                            : Center(
+                                child: Text(
+                                  'NONE_DATA'.tr,
+                                  style: KTextStyle.textAmountSubStyle,
+                                ),
+                              ),
                       ),
                     ),
                   ],

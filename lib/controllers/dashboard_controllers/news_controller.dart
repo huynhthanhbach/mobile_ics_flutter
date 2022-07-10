@@ -57,8 +57,6 @@ class NewsController extends GetxController {
     if (timeData.isNotEmpty) {
       timeBar.value = timeData.toList();
     }
-    print(listNews.length);
-    print(timeBar.length);
 
     _getDataCharts(listNews);
 
@@ -175,6 +173,7 @@ class NewsController extends GetxController {
             barColor: kBackgroundTitle,
             status: ''),
       ].toList();
+
       _listDataPieChart = [
         News(
             type: '',
@@ -224,7 +223,7 @@ class NewsController extends GetxController {
             amount: 0,
             barColor: kBackgroundTitle,
             status: ''),
-      ];
+      ].toList();
 
       _listDataPieChart = [];
     }
@@ -234,8 +233,7 @@ class NewsController extends GetxController {
     timeTag = dashboardController.timeTag;
     locationTag = dashboardController.locationTag;
 
-    print(timeTag);
-    print(locationTag);
+    print("$locationTag - $timeTag");
   }
 
   List<NewsHiveModel> _itemsBetweenDates({
@@ -272,9 +270,6 @@ class NewsController extends GetxController {
   }
 
   Future onRefresh() async {
-    listNews.clear();
-    _listDataBarChart.clear();
-    _listDataPieChart.clear();
     await _changeFilter();
     _location = _changeLocation(dashboardController.valueLocation);
     _time = _changeTime(dashboardController.valueTime);

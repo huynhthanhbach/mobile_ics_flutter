@@ -4,6 +4,9 @@ import 'package:get/get.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:mobile_ics_flutter/controllers/home_controller.dart';
 import 'package:mobile_ics_flutter/core/services/boxes_service.dart';
+import 'package:mobile_ics_flutter/core/services/hive_bandwidth.dart';
+import 'package:mobile_ics_flutter/core/services/hive_calendar.dart';
+import 'package:mobile_ics_flutter/core/services/hive_device.dart';
 import 'package:mobile_ics_flutter/core/services/hive_news.dart';
 import 'package:mobile_ics_flutter/core/services/hive_warning.dart';
 import 'package:mobile_ics_flutter/core/utils/constants.dart';
@@ -19,6 +22,9 @@ class DashboardController extends GetxController {
 
   HiveNews hiveNews = HiveNews();
   HiveWarning hiveWarning = HiveWarning();
+  HiveDevice hiveDevice = HiveDevice();
+  HiveBandwidth hiveBandwidth = HiveBandwidth();
+  HiveCalendar hiveCalendar = HiveCalendar();
 
   var timeTag = ''.obs;
   var locationTag = ''.obs;
@@ -27,6 +33,9 @@ class DashboardController extends GetxController {
 
   RxList<NewsHiveModel> listNews = <NewsHiveModel>[].obs;
   RxList<WarningHiveModel> listWarning = <WarningHiveModel>[].obs;
+  RxList<DeviceHiveModel> listDevice = <DeviceHiveModel>[].obs;
+  RxList<BandwidthHiveModel> listBandwidth = <BandwidthHiveModel>[].obs;
+  RxList<CalendarHiveModel> listCalendar = <CalendarHiveModel>[].obs;
 
   RxList<NewsHiveModel> listHisNews = <NewsHiveModel>[].obs;
   RxList<WarningHiveModel> listHisWarning = <WarningHiveModel>[].obs;
@@ -46,16 +55,38 @@ class DashboardController extends GetxController {
     }
     print('Warning length: ${listW.length}');
 
+    List<DeviceHiveModel> listD = await hiveDevice.get();
+    if (listD.isNotEmpty) {
+      listDevice.value = listD.toList();
+    }
+    print('Device length: ${listD.length}');
+
+    List<BandwidthHiveModel> listB = await hiveBandwidth.get();
+    if (listB.isNotEmpty) {
+      listBandwidth.value = listB.toList();
+    }
+    print('Bandwidth length: ${listB.length}');
+
+    List<CalendarHiveModel> listC = await hiveCalendar.get();
+    if (listC.isNotEmpty) {
+      listCalendar.value = listC.toList();
+    }
+    print('Calendar length: ${listC.length}');
+
     if (timeBar.isEmpty) {
       var weekDay = _dateTimeNow.weekday;
       if (weekDay == 7) {
         for (var i = 7; i <= 13; i++) {
           var firstDayOfWeek =
               _dateTimeNow.subtract(Duration(days: weekDay - i));
+
           var changeDateToString = Jiffy(firstDayOfWeek).format("EEE");
+          var changeMonthToString = Jiffy(firstDayOfWeek).format("MMM");
           final timeBarModel = TimeBarModel(
-            text: changeDateToString,
-            num: firstDayOfWeek.day.toString(),
+            date: changeDateToString,
+            day: firstDayOfWeek.day.toString(),
+            month: changeMonthToString,
+            year: firstDayOfWeek.year.toString(),
           );
           if (firstDayOfWeek.day == _dateTimeNow.day) {
             timeBarModel.now = true;
@@ -66,10 +97,14 @@ class DashboardController extends GetxController {
         for (var i = 0; i <= 6; i++) {
           var firstDayOfWeek =
               _dateTimeNow.subtract(Duration(days: weekDay - i));
+
           var changeDateToString = Jiffy(firstDayOfWeek).format("EEE");
+          var changeMonthToString = Jiffy(firstDayOfWeek).format("MMM");
           final timeBarModel = TimeBarModel(
-            text: changeDateToString,
-            num: firstDayOfWeek.day.toString(),
+            date: changeDateToString,
+            day: firstDayOfWeek.day.toString(),
+            month: changeMonthToString,
+            year: firstDayOfWeek.year.toString(),
           );
           if (firstDayOfWeek.day == _dateTimeNow.day) {
             timeBarModel.now = true;
@@ -100,7 +135,6 @@ class DashboardController extends GetxController {
       });
 
       listHisNews.value = listNewsFilterArea.toList();
-      print(listHisNews.length);
     }
 
     if (listWarning.isNotEmpty) {
@@ -116,21 +150,35 @@ class DashboardController extends GetxController {
       });
 
       listHisWarning.value = listWarningFilterArea.toList();
-      print(listHisWarning.length);
     }
 
     super.onReady();
   }
 
-  Future onRefreshNews() async {
+  Future onRefresh() async {
     List<NewsHiveModel> list = await hiveNews.get();
     if (list.isNotEmpty) {
       listNews.value = list.toList();
     }
 
+    List<CalendarHiveModel> listC = await hiveCalendar.get();
+    if (listC.isNotEmpty) {
+      listCalendar.value = listC.toList();
+    }
+
+    List<DeviceHiveModel> listD = await hiveDevice.get();
+    if (listD.isNotEmpty) {
+      listDevice.value = listD.toList();
+    }
+
     List<WarningHiveModel> listW = await hiveWarning.get();
     if (listW.isNotEmpty) {
-      listHisWarning.value = listW.toList();
+      listWarning.value = listW.toList();
+    }
+
+    List<BandwidthHiveModel> listB = await hiveBandwidth.get();
+    if (listB.isNotEmpty) {
+      listBandwidth.value = listB.toList();
     }
 
     if (listNews.isNotEmpty) {
@@ -146,7 +194,6 @@ class DashboardController extends GetxController {
       });
 
       listHisNews.value = listNewsFilterArea.toList();
-      print(listHisNews.length);
     }
 
     if (listWarning.isNotEmpty) {
@@ -162,7 +209,6 @@ class DashboardController extends GetxController {
       });
 
       listHisWarning.value = listWarningFilterArea.toList();
-      print(listHisWarning.length);
     }
   }
 
@@ -221,12 +267,10 @@ class DashboardController extends GetxController {
   }
 
   Future onFilter() async {
-    print("Location: $valueLocation");
-    print("Time: $valueTime");
     timeTag.value = _changeTime();
     locationTag.value = _changeLocation();
     areaFilter = _changeArea();
-    await onRefreshNews();
+    await onRefresh();
   }
 
   @override

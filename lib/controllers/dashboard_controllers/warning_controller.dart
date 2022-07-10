@@ -51,8 +51,6 @@ class WarningController extends GetxController {
     if (timeData.isNotEmpty) {
       timeBar.value = timeData.toList();
     }
-    print(timeBar.length);
-    print(listWarning.length);
 
     _getDataCharts(listWarning);
 
@@ -130,9 +128,7 @@ class WarningController extends GetxController {
   Future<void> _changeFilter() async {
     timeTag = dashboardController.timeTag;
     locationTag = dashboardController.locationTag;
-
-    print(timeTag);
-    print(locationTag);
+    print("$locationTag - $timeTag");
   }
 
   List<WarningHiveModel> _itemsBetweenDates({
@@ -169,8 +165,6 @@ class WarningController extends GetxController {
   }
 
   Future onRefresh() async {
-    listWarning.clear();
-    _listDataCharts.clear();
     await _changeFilter();
     _location = _changeLocation(dashboardController.valueLocation);
     _time = _changeTime(dashboardController.valueTime);

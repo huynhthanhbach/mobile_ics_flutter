@@ -8,6 +8,7 @@ import 'package:mobile_ics_flutter/core/utils/constants.dart';
 import 'package:mobile_ics_flutter/core/widgets/widget.dart';
 import 'package:mobile_ics_flutter/views/dashboard/components/component.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
 
 class BandwidthPage extends StatelessWidget {
   const BandwidthPage({super.key});
@@ -77,8 +78,8 @@ class BandwidthPage extends StatelessWidget {
                             children: [
                               const SizedBox(width: Constants.padding5),
                               DateTag(
-                                text: list[index].text,
-                                num: list[index].num,
+                                text: list[index].date,
+                                num: list[index].day,
                                 isNow: true,
                               ),
                               const SizedBox(width: Constants.padding5),
@@ -89,8 +90,8 @@ class BandwidthPage extends StatelessWidget {
                             children: [
                               const SizedBox(width: Constants.padding5),
                               DateTag(
-                                text: list[index].text,
-                                num: list[index].num,
+                                text: list[index].day,
+                                num: list[index].day,
                               ),
                               const SizedBox(width: Constants.padding5),
                             ],
@@ -171,7 +172,7 @@ class BandwidthPage extends StatelessWidget {
                 ),
                 Constants.sizedBoxH5,
                 Container(
-                  height: 300,
+                  height: 360,
                   padding: const EdgeInsets.all(Constants.padding10),
                   decoration: BoxDecoration(
                     color: ThemeConfig.lightBG,
@@ -184,40 +185,246 @@ class BandwidthPage extends StatelessWidget {
                       ),
                     ],
                   ),
-                  child: Obx(
-                    () => SfCartesianChart(
-                      series: controller.seriesLive.value,
-                      enableAxisAnimation: true,
-                      primaryXAxis: NumericAxis(
-                        majorGridLines: const MajorGridLines(width: 0),
-                        edgeLabelPlacement: EdgeLabelPlacement.shift,
-                        interval: 2,
-                        labelStyle: KTextStyle.textPieLabelBandStyle,
-                        axisLine: const AxisLine(
-                          width: 1,
-                          color: kBackgroundTitle,
-                        ),
-                        title: AxisTitle(
-                          text: 'BANDWIDTH_TIME'.tr,
-                          textStyle: KTextStyle.textPieLabelBandTitleStyle,
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: Obx(
+                          () => SfCartesianChart(
+                            series: controller.seriesLive.value,
+                            enableAxisAnimation: true,
+                            primaryXAxis: NumericAxis(
+                              majorGridLines: const MajorGridLines(width: 0),
+                              edgeLabelPlacement: EdgeLabelPlacement.shift,
+                              interval: 2,
+                              labelStyle: KTextStyle.textPieLabelBandStyle,
+                              axisLine: const AxisLine(
+                                width: 1,
+                                color: kBackgroundTitle,
+                              ),
+                              title: AxisTitle(
+                                text: 'BANDWIDTH_TIME'.tr,
+                                textStyle:
+                                    KTextStyle.textPieLabelBandTitleStyle,
+                              ),
+                            ),
+                            primaryYAxis: NumericAxis(
+                              axisLine: const AxisLine(
+                                width: 1,
+                                color: kBackgroundTitle,
+                              ),
+                              majorTickLines: const MajorTickLines(
+                                  size: 0, color: kBackgroundTitle),
+                              labelStyle: KTextStyle.textPieLabelBandStyle,
+                              title: AxisTitle(
+                                text: 'BANDWIDTH_INTER_SPEED'.tr,
+                                textStyle:
+                                    KTextStyle.textPieLabelBandTitleStyle,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
-                      primaryYAxis: NumericAxis(
-                        axisLine: const AxisLine(
-                          width: 1,
-                          color: kBackgroundTitle,
-                        ),
-                        majorTickLines: const MajorTickLines(
-                            size: 0, color: kBackgroundTitle),
-                        labelStyle: KTextStyle.textPieLabelBandStyle,
-                        title: AxisTitle(
-                          text: 'BANDWIDTH_INTER_SPEED'.tr,
-                          textStyle: KTextStyle.textPieLabelBandTitleStyle,
+                      SizedBox(
+                        height: 60,
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: 30,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'BANDWIDTH_NOW'.tr,
+                                        style: KTextStyle.textDefaultStyle,
+                                      ),
+                                      Obx(
+                                        () => Text(
+                                          ': ${controller.nowDataValue.value.toStringAsFixed(3)} (Mbps) ',
+                                          style: KTextStyle.textDefaultStyle,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: 30,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'BANDWIDTH_NOW_TOTAL'.tr,
+                                        style: KTextStyle.textDefaultStyle,
+                                      ),
+                                      Obx(
+                                        () => Text(
+                                          ': ${controller.totalDataValue.value.toStringAsFixed(3)} (Mbps) ',
+                                          style: KTextStyle.textDefaultStyle,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                )
+                ),
+                Constants.sizedBoxH10,
+                SizedBox(
+                  height: 20,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        'BANDWIDTH_TOTAL'.tr,
+                        style: KTextStyle.textSubTitleStyle,
+                        textAlign: TextAlign.center,
+                        // tColor: Color(C),
+                      ),
+                    ],
+                  ),
+                ),
+                Constants.sizedBoxH5,
+                Container(
+                  height: 330,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: Constants.padding5,
+                    vertical: Constants.padding10,
+                  ),
+                  decoration: BoxDecoration(
+                    color: ThemeConfig.lightBG,
+                    borderRadius: BorderRadius.circular(15),
+                    boxShadow: [
+                      BoxShadow(
+                        color: kBlack10,
+                        offset: const Offset(4, 4),
+                        blurRadius: 4,
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: 30,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'BANDWIDTH_USED'.tr,
+                                  style: KTextStyle.textAmountSubStyle,
+                                ),
+                                Obx(
+                                  () => Text(
+                                    ' (${controller.timeStart.value} - ${controller.timeEnd.value}) ',
+                                    style: KTextStyle.textAmountSubStyle,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      Obx(
+                        () => Expanded(
+                          child: (controller.listBandwidth.isNotEmpty)
+                              ? charts.BarChart(
+                                  controller.seriesBarChart.value,
+                                  animate: true,
+                                  animationDuration: Constants.dur500,
+                                  barRendererDecorator:
+                                      charts.BarLabelDecorator<String>(
+                                    insideLabelStyleSpec:
+                                        KTextStyle.textInsideLabelStyleSpec,
+                                    outsideLabelStyleSpec:
+                                        KTextStyle.textOutsideLabelStyleSpec,
+                                  ),
+                                  domainAxis: charts.OrdinalAxisSpec(
+                                    renderSpec: charts.SmallTickRendererSpec(
+                                      // Tick and Label styling here.
+                                      labelStyle:
+                                          KTextStyle.textChartsLabelStyle,
+
+                                      // Change the line colors to match text color.
+                                      lineStyle: charts.LineStyleSpec(
+                                        color: charts.ColorUtil.fromDartColor(
+                                          kBackgroundTitle,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  primaryMeasureAxis: charts.NumericAxisSpec(
+                                    renderSpec: charts.GridlineRendererSpec(
+                                      // Tick and Label styling here.
+                                      labelStyle:
+                                          KTextStyle.textChartsLabelStyle1,
+
+                                      // Change the line colors to match text color.
+                                      lineStyle: charts.LineStyleSpec(
+                                        color: charts.ColorUtil.fromDartColor(
+                                          kBackgroundTitle.withOpacity(.3),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : Center(
+                                  child: Text(
+                                    'NONE_DATA'.tr,
+                                    style: KTextStyle.textAmountSubStyle,
+                                  ),
+                                ),
+                        ),
+                      ),
+                      Constants.sizedBoxH10,
+                      SizedBox(
+                        height: 35,
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: 30,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'BANDWIDTH_USED_MBS'.tr,
+                                        style: KTextStyle.textDefaultStyle,
+                                      ),
+                                      Obx(
+                                        () => Text(
+                                          ': ${controller.totalDataUsed.value.toStringAsFixed(2)} (MB/s) ',
+                                          style: KTextStyle.textDefaultStyle,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),

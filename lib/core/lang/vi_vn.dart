@@ -11,6 +11,7 @@ const Map<String, String> viVN = {
   'FILTER_TITLE': 'Lọc: ',
   'NEWS_LOCAL': 'Bản tin',
   'NEWS_ONLINE': 'Trực tuyến',
+  'NONE_DATA': 'Không có dữ liệu!',
   'TITLE_CONTENT': 'Nội dung',
   'TITLE_TIME': 'Thời gian',
 
@@ -83,4 +84,9 @@ const Map<String, String> viVN = {
   'BANDWIDTH_SPEED': 'Tốc độ dữ liệu hiện tại',
   'BANDWIDTH_INTER_SPEED': 'Internet speed (Mbps)',
   'BANDWIDTH_TIME': 'Time (seconds)',
+  'BANDWIDTH_TOTAL': 'Sử dụng dữ liệu',
+  'BANDWIDTH_USED': 'Dữ liệu',
+  'BANDWIDTH_USED_MBS': 'Dữ liệu sử dụng',
+  'BANDWIDTH_NOW': 'Dữ liệu hiện tại',
+  'BANDWIDTH_NOW_TOTAL': 'Tổng'
 };

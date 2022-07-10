@@ -79,8 +79,8 @@ class BackupDataPage extends StatelessWidget {
                             children: [
                               const SizedBox(width: Constants.padding5),
                               DateTag(
-                                text: list[index].text,
-                                num: list[index].num,
+                                text: list[index].date,
+                                num: list[index].day,
                                 isNow: true,
                               ),
                               const SizedBox(width: Constants.padding5),
@@ -91,8 +91,8 @@ class BackupDataPage extends StatelessWidget {
                             children: [
                               const SizedBox(width: Constants.padding5),
                               DateTag(
-                                text: list[index].text,
-                                num: list[index].num,
+                                text: list[index].date,
+                                num: list[index].day,
                               ),
                               const SizedBox(width: Constants.padding5),
                             ],
@@ -132,8 +132,8 @@ class BackupDataPage extends StatelessWidget {
                     children: [
                       ElevatedButton(
                         onPressed: () async {
-                          // await controller.backupDatabase();
-                          print("null");
+                          await controller.backupDatabase();
+                          // print("null");
                         },
                         child: const Text(
                           "Backup Data",
@@ -158,8 +158,8 @@ class BackupDataPage extends StatelessWidget {
                     children: [
                       ElevatedButton(
                         onPressed: () async {
-                          // await controller.addDataFakeToHive();
-                          print("null");
+                          await controller.addDataFakeToHive();
+                          // print("null");
                         },
                         child: const Text(
                           "Add News Data",

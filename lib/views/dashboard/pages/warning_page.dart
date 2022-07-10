@@ -77,8 +77,8 @@ class WarningPage extends StatelessWidget {
                             children: [
                               const SizedBox(width: Constants.padding5),
                               DateTag(
-                                text: list[index].text,
-                                num: list[index].num,
+                                text: list[index].date,
+                                num: list[index].day,
                                 isNow: true,
                               ),
                               const SizedBox(width: Constants.padding5),
@@ -89,8 +89,8 @@ class WarningPage extends StatelessWidget {
                             children: [
                               const SizedBox(width: Constants.padding5),
                               DateTag(
-                                text: list[index].text,
-                                num: list[index].num,
+                                text: list[index].date,
+                                num: list[index].day,
                               ),
                               const SizedBox(width: Constants.padding5),
                             ],
@@ -209,15 +209,22 @@ class WarningPage extends StatelessWidget {
                       ),
                       Obx(
                         () => Expanded(
-                          child: SfCircularChart(
-                            series: controller.seriesPie.value,
-                            tooltipBehavior: controller.tooltipBehavior,
-                            legend: Legend(
-                              isVisible: true,
-                              overflowMode: LegendItemOverflowMode.wrap,
-                              textStyle: KTextStyle.textLegendStyle,
-                            ),
-                          ),
+                          child: (controller.listWarning.isNotEmpty)
+                              ? SfCircularChart(
+                                  series: controller.seriesPie.value,
+                                  tooltipBehavior: controller.tooltipBehavior,
+                                  legend: Legend(
+                                    isVisible: true,
+                                    overflowMode: LegendItemOverflowMode.wrap,
+                                    textStyle: KTextStyle.textLegendStyle,
+                                  ),
+                                )
+                              : Center(
+                                  child: Text(
+                                    'NONE_DATA'.tr,
+                                    style: KTextStyle.textAmountSubStyle,
+                                  ),
+                                ),
                         ),
                       ),
                     ],

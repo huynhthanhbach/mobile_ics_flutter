@@ -298,9 +298,7 @@ class DashboardScreen extends GetWidget<DashboardController> {
                               // tColor: Color(C),
                             ),
                             InkWell(
-                              onTap: () async {
-                                // controller.fillData();
-                              },
+                              onTap: () async {},
                               child: Container(
                                 height: 20,
                                 width: 80,
