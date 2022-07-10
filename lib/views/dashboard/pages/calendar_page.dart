@@ -76,8 +76,8 @@ class CalendarPage extends StatelessWidget {
                             children: [
                               const SizedBox(width: Constants.padding5),
                               DateTag(
-                                text: list[index].text,
-                                num: list[index].num,
+                                text: list[index].date,
+                                num: list[index].day,
                                 isNow: true,
                               ),
                               const SizedBox(width: Constants.padding5),
@@ -88,8 +88,8 @@ class CalendarPage extends StatelessWidget {
                             children: [
                               const SizedBox(width: Constants.padding5),
                               DateTag(
-                                text: list[index].text,
-                                num: list[index].num,
+                                text: list[index].date,
+                                num: list[index].day,
                               ),
                               const SizedBox(width: Constants.padding5),
                             ],

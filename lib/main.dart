@@ -27,8 +27,11 @@ void main() async {
 
   Hive.registerAdapter(NewsHiveModelAdapter());
   Hive.registerAdapter(WarningHiveModelAdapter());
-  Hive.registerAdapter(DeviceHiveModelAdapter()); // đăng ký adapter
-  await BoxesService().openBox(); // mở box
+  Hive.registerAdapter(DeviceHiveModelAdapter());
+  Hive.registerAdapter(BandwidthHiveModelAdapter());
+  Hive.registerAdapter(CalendarHiveModelAdapter());
+  Hive.registerAdapter(PlayNewsHiveModelAdapter());
+  await BoxesService().openBox();
 
   runApp(const MyApp());
 }

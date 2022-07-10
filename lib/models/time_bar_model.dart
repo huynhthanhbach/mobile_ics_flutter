@@ -2,36 +2,48 @@
 import 'dart:convert';
 
 class TimeBarModel {
-  String text;
-  String num;
+  String date;
+  String day;
+  String month;
+  String year;
 
   bool now = false;
   TimeBarModel({
-    required this.text,
-    required this.num,
+    required this.date,
+    required this.day,
+    required this.month,
+    required this.year,
   });
 
   TimeBarModel copyWith({
-    String? text,
-    String? num,
+    String? date,
+    String? day,
+    String? month,
+    String? year,
   }) {
     return TimeBarModel(
-      text: text ?? this.text,
-      num: num ?? this.num,
+      date: date ?? this.date,
+      day: day ?? this.day,
+      month: month ?? this.month,
+      year: year ?? this.year,
     );
   }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'text': text,
-      'num': num,
+      'date': date,
+      'day': day,
+      'month': month,
+      'year': year,
     };
   }
 
   factory TimeBarModel.fromMap(Map<String, dynamic> map) {
     return TimeBarModel(
-      text: map['text'] as String,
-      num: map['num'] as String,
+      date: map['date'] as String,
+      day: map['day'] as String,
+      month: map['month'] as String,
+      year: map['year'] as String,
     );
   }
 
@@ -41,15 +53,23 @@ class TimeBarModel {
       TimeBarModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
-  String toString() => 'TimeBarModel(text: $text, num: $num)';
+  String toString() {
+    return 'TimeBarModel(date: $date, day: $day, month: $month, year: $year)';
+  }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is TimeBarModel && other.text == text && other.num == num;
+    return other is TimeBarModel &&
+        other.date == date &&
+        other.day == day &&
+        other.month == month &&
+        other.year == year;
   }
 
   @override
-  int get hashCode => text.hashCode ^ num.hashCode;
+  int get hashCode {
+    return date.hashCode ^ day.hashCode ^ month.hashCode ^ year.hashCode;
+  }
 }

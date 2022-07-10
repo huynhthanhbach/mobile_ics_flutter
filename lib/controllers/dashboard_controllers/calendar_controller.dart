@@ -4,9 +4,12 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:mobile_ics_flutter/controllers/dashboard_controllers/dashboard_controller.dart';
 import 'package:mobile_ics_flutter/core/utils/constants.dart';
 import 'package:mobile_ics_flutter/core/widgets/kcolors.dart';
+import 'package:mobile_ics_flutter/models/hive_models/hive_model.dart';
 import 'package:mobile_ics_flutter/models/time_bar_model.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -22,7 +25,11 @@ class CalendarController extends GetxController {
   RxList<CircularSeries<Calendar, String>> seriesPie =
       <CircularSeries<Calendar, String>>[].obs;
 
+  List<NewsHiveModel> listTemp = [];
+
   String? _location;
+  DateTime? _time;
+
   var timeTag = ''.obs;
   var locationTag = ''.obs;
 
@@ -51,6 +58,10 @@ class CalendarController extends GetxController {
     _getDataCharts();
 
     print(_listDataCharts.length);
+
+    listTemp = dashboardController.listNews.toList();
+
+    print(listTemp.last);
 
     calendarModel.descNews = [
       {
@@ -229,6 +240,10 @@ class CalendarController extends GetxController {
 
     listNews = calendarModel.descNews.toList();
 
+    print(listNews);
+    print(listNews!.length);
+    print(listNews![0]);
+
     seriesPie.value = [
       PieSeries(
         dataSource: _listDataCharts,
@@ -256,6 +271,117 @@ class CalendarController extends GetxController {
       _scrollNewsPlaying(listNews!, isAnimating: true);
     });
     super.onReady();
+  }
+
+  Future jumpNewsPlaying() async {
+    await _scrollNewsPlaying(listNews!, isAnimating: false);
+  }
+
+  Future _scrollNewsPlaying(List<Map<String, dynamic>> list,
+      {bool isAnimating = false}) async {
+    int i = 1;
+    for (var item in list) {
+      if (item['status'] == 'Đang phát') {
+        _scrollToItem(i - 1, isAnimating: isAnimating);
+      }
+      i++;
+    }
+  }
+
+  Future _scrollToItem(int index, {bool isAnimating = false}) async {
+    var alignment = 0.0;
+    if (isAnimating) {
+      await itemController.scrollTo(
+        index: index,
+        duration: Constants.dur1000,
+        curve: Curves.fastOutSlowIn,
+      );
+    } else {
+      itemController.jumpTo(
+        index: index,
+        alignment: alignment,
+      );
+    }
+  }
+
+  DateTime _getDateTimeFilter(int i) {
+    final dateFormat = DateFormat('y-MM-dd');
+    final now = Jiffy(DateTime.now()).subtract(days: i);
+    var date = now.format('yyyy-MM-dd h:mm:ss a');
+
+    DateTime dateChange = dateFormat.parse(date, true);
+
+    return dateChange;
+  }
+
+  void _getDataCharts() {
+    _listDataCharts = [
+      Calendar(
+        type: '',
+        status: 'CALENDAR_STATUS_INIT'.tr,
+        amount: 100,
+        barColor: const Color(0xFFD9D9D9),
+      ),
+      Calendar(
+        type: '',
+        status: 'CALENDAR_STATUS_AWAIT'.tr,
+        amount: 200,
+        barColor: const Color(0xFFD9D9D9),
+      ),
+      Calendar(
+        type: '',
+        status: 'CALENDAR_STATUS_APPROVED'.tr,
+        amount: 300,
+        barColor: const Color(0xFFD9D9D9),
+      ),
+      Calendar(
+        type: '',
+        status: 'CALENDAR_STATUS_PLAYED'.tr,
+        amount: 400,
+        barColor: const Color(0xFFD9D9D9),
+      ),
+    ].toList();
+  }
+
+  Future<void> _changeFilter() async {
+    timeTag = dashboardController.timeTag;
+    locationTag = dashboardController.locationTag;
+
+    print(timeTag);
+    print(locationTag);
+  }
+
+  List<CalendarHiveModel> _itemsBetweenDates({
+    required List<CalendarHiveModel> list,
+    required DateTime dateStart,
+    required DateTime dateEnd,
+  }) {
+    var dateFormat = DateFormat('y-MM-dd');
+
+    var filterList = <CalendarHiveModel>[];
+
+    for (var item in list) {
+      var date = dateFormat.parse(item.createDate.toString(), true);
+      if (date.compareTo(dateStart) >= 0 && date.compareTo(dateEnd) <= 0) {
+        filterList.add(item);
+      }
+    }
+
+    return filterList;
+  }
+
+  List<CalendarHiveModel> _fillDataFormDate(List<CalendarHiveModel> list) {
+    var dateFormat = DateFormat('y-MM-dd');
+    var start = dateFormat.parse(_time.toString(), true);
+    var end = dateFormat.parse(DateTime.now().toString(), true);
+
+    final listTemp =
+        _itemsBetweenDates(list: list, dateStart: start, dateEnd: end);
+    print('Date start: $start');
+    print('Date end: $end');
+    print('List filter length: ${listTemp.length}');
+
+    return listTemp;
   }
 
   Future onRefresh() async {
@@ -313,45 +439,6 @@ class CalendarController extends GetxController {
     ].toList();
   }
 
-  Future changList() async {
-    await onRefresh();
-  }
-
-  Future showBottomSheet(BuildContext context, Widget child) async {
-    await dashboardController.showBottomSheet(context, child);
-  }
-
-  Future jumpNewsPlaying() async {
-    await _scrollNewsPlaying(listNews!, isAnimating: false);
-  }
-
-  Future _scrollNewsPlaying(List<Map<String, dynamic>> list,
-      {bool isAnimating = false}) async {
-    int i = 1;
-    for (var item in list) {
-      if (item['status'] == 'Đang phát') {
-        _scrollToItem(i - 1, isAnimating: isAnimating);
-      }
-      i++;
-    }
-  }
-
-  Future _scrollToItem(int index, {bool isAnimating = false}) async {
-    var alignment = 0.0;
-    if (isAnimating) {
-      await itemController.scrollTo(
-        index: index,
-        duration: Constants.dur1000,
-        curve: Curves.fastOutSlowIn,
-      );
-    } else {
-      itemController.jumpTo(
-        index: index,
-        alignment: alignment,
-      );
-    }
-  }
-
   String _changeLocation(String value) {
     switch (value) {
       case 'District':
@@ -361,41 +448,25 @@ class CalendarController extends GetxController {
     }
   }
 
-  void _getDataCharts() {
-    _listDataCharts = [
-      Calendar(
-        type: '',
-        status: 'CALENDAR_STATUS_INIT'.tr,
-        amount: 100,
-        barColor: const Color(0xFFD9D9D9),
-      ),
-      Calendar(
-        type: '',
-        status: 'CALENDAR_STATUS_AWAIT'.tr,
-        amount: 200,
-        barColor: const Color(0xFFD9D9D9),
-      ),
-      Calendar(
-        type: '',
-        status: 'CALENDAR_STATUS_APPROVED'.tr,
-        amount: 300,
-        barColor: const Color(0xFFD9D9D9),
-      ),
-      Calendar(
-        type: '',
-        status: 'CALENDAR_STATUS_PLAYED'.tr,
-        amount: 400,
-        barColor: const Color(0xFFD9D9D9),
-      ),
-    ].toList();
+  DateTime _changeTime(String value) {
+    switch (value) {
+      case 'week ago':
+        return _getDateTimeFilter(7);
+      case 'month ago':
+        return _getDateTimeFilter(30);
+      case 'year ago':
+        return _getDateTimeFilter(365);
+      default:
+        return _getDateTimeFilter(1);
+    }
   }
 
-  Future<void> _changeFilter() async {
-    timeTag = dashboardController.timeTag;
-    locationTag = dashboardController.locationTag;
+  Future changList() async {
+    await onRefresh();
+  }
 
-    print(timeTag);
-    print(locationTag);
+  Future showBottomSheet(BuildContext context, Widget child) async {
+    await dashboardController.showBottomSheet(context, child);
   }
 
   @override

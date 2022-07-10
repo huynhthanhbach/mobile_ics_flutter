@@ -8,8 +8,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile_ics_flutter/controllers/dashboard_controllers/dashboard_controller.dart';
 import 'package:mobile_ics_flutter/core/services/boxes_service.dart';
-
-import 'package:mobile_ics_flutter/core/services/hive_warning.dart';
+import 'package:mobile_ics_flutter/core/services/hive_calendar.dart';
 import 'package:mobile_ics_flutter/core/utils/constants.dart';
 import 'package:mobile_ics_flutter/models/hive_models/hive_model.dart';
 import 'package:path_provider/path_provider.dart';
@@ -21,7 +20,7 @@ import 'package:uuid/uuid.dart';
 class BackupDataController extends GetxController {
   late Directory directory;
 
-  HiveWarning hiveWarning = HiveWarning();
+  HiveCalendar hiveCalendar = HiveCalendar();
 
   bool isLoading = false;
 
@@ -248,7 +247,7 @@ class BackupDataController extends GetxController {
     } catch (e) {
       return;
     } finally {
-      Get.find<DashboardController>().onRefreshNews();
+      Get.find<DashboardController>().onRefresh();
     }
   }
 
@@ -283,40 +282,34 @@ class BackupDataController extends GetxController {
     const uid = Uuid();
     var id = "";
     var name = "";
-    for (var i = 0; i < 5; i++) {
+    for (var i = 0; i < 35; i++) {
       if (id == "") {
         id = uid.v1();
         name = getRandomString(2);
 
         // Audio_box  Gateway
 
-        // Vừa được khởi tạo  Đang chờ phê duyệt  Đã phê duyệt  Đã xử lý
+        // Phát bản tin Phát trực tuyến
 
-        final warningHiveModel = WarningHiveModel(
+        // Được khởi tạo  Đang chờ phê duyệt  Đã duyệt  Đã phát
+
+        final calendarHiveModel = CalendarHiveModel(
           id: id,
-          idDevice: id,
-          name: 'Thông tin cảnh báo đài $name',
-          content: 'Nội dung cảnh báo',
-          type: 'Audio_box',
-          level: 'Nghiêm trọng',
+          name: 'Lịch phát đài $name',
           createDate: DateTime.now(),
-          completedTime: null,
-          status: 'Đã xử lý',
+          status: 'Được khởi tạo',
           area: 'Đài truyền thanh cấp xã',
         );
-        // var flag = await hiveWarning.addWarningToHive(warningHiveModel);
+        // var flag = await hiveCalendar.addCalendarToHive(calendarHiveModel);
         // if (flag) {
-        //   print('${warningHiveModel.id} -- Success');
+        //   print('${calendarHiveModel.id} -- Success');
         // } else {
-        //   print('${warningHiveModel.id} -- Failed');
+        //   print('${calendarHiveModel.id} -- Failed');
         // }
 
-        print(warningHiveModel.id);
-
-        print(warningHiveModel.name);
-        print(warningHiveModel.type);
-        print(warningHiveModel.status);
-        print(warningHiveModel.area);
+        print(calendarHiveModel.id);
+        print(calendarHiveModel.createDate);
+        print(calendarHiveModel.area);
 
         print('-----------------------');
       }
@@ -331,7 +324,7 @@ class BackupDataController extends GetxController {
       final box = BoxesService.getNews();
       box.clear();
     } finally {
-      Get.find<DashboardController>().onRefreshNews();
+      Get.find<DashboardController>().onRefresh();
       print("Clear all data!");
       'Thành công'.toast();
     }
