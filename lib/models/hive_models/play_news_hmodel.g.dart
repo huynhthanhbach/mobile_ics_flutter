@@ -26,7 +26,7 @@ class PlayNewsHiveModelAdapter extends TypeAdapter<PlayNewsHiveModel> {
       createDate: fields[6] as DateTime?,
       prioritized: fields[7] as String?,
       area: fields[8] as String?,
-    )..listDevice = (fields[9] as List).cast<Device>();
+    )..listDevice = (fields[9] as List).cast<DeviceHiveModel>();
   }
 
   @override
