@@ -78,6 +78,50 @@ const Map<String, String> viVN = {
   'WARNING_LEVEL_SMALL': 'Mức độ nhẹ',
   'WARNING_LEVEL_MEDIUM': 'Mức độ trung bình',
   'WARNING_LEVEL_HARD': 'Mức độ nặng',
+  
+  //Operator
+  //Title
+  'OP_TITLE': 'Điều hành',
+  'OP_NEWS_PAGE_TITLE': 'Danh sách điều hành phát',
+  'OP_OPERATE_HISTORY': 'Lịch sử điều hành',
+  'OP_OPERATE_TODAY': 'Danh sách phát hôm nay',
+
+  //Button label
+  'BTL_PLAY_NEWS': 'Phát bản tin',
+  'BTL_PLAY': 'Phát',
+  'BTL_FILTER': 'Bộ lọc',
+  'BTL_FILT': 'Lọc',
+  //News list page filter label
+  'NFL_CATEGORY': 'Chuyên mục: ',
+  'NFL_TIME': 'Khung giờ: ',
+  'NFL_CALENDER': 'Thời gian phát: ',
+  'NFL_DEVICE': 'Thiết bị phát: ',
+
+  //dialog
+  'CONFIRM_TEXT': 'XÁC NHẬN',
+  'CANCEL_TEXT': 'HUỶ',
+  'DEVICE_SELECT_TITLE': 'CHỌN THIẾT BỊ',
+
+  //hint
+  'H_SELECT_NEWS': 'Chọn bản tin',
+  'H_SELECT_TIMES': 'CHỌN KHUNG GIỜ',
+  'H_SELECT_TIME_OPTION_1': 'Giờ cố định',
+  'H_SELECT_TIME_OPTION_2': 'Giờ tuỳ chỉnh',
+  'H_SELECT_DEVICE': 'Thiết bị phát',
+  'H_SELECT_PRIORITY': 'Độ ưu tiên',
+  'H_TIME': 'Khung giờ',
+  'H_REPEAT': 'Chế độ lặp',
+
+  //bottomsheet label
+  'BSL_TIME': 'Thời gian: ',
+  'BSL_DURATION': 'Thời lượng: ',
+  'BSL_STATUS': 'Trạng thái: ',
+  'BSL_VOLUME': '',
+  'BSL_CATEGORY': 'Chuyên mục: ',
+  'BSL_REPEAT': 'Lặp: ',
+  'BSL_PRIORITY': 'Ưu tiên: ',
+  'BSL_DEVICE': 'Thiết bị phát: ',
+  'BSL_DEVICE_SELECTED': 'Danh sách thiết bị',
 
   // Bandwidth page
   'BANDWIDTH_TITLE': 'Băng thông',
