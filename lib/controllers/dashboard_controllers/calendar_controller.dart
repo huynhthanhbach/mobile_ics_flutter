@@ -1,18 +1,18 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 // ignore_for_file: avoid_print, unused_field
-
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
+
 import 'package:mobile_ics_flutter/controllers/dashboard_controllers/dashboard_controller.dart';
 import 'package:mobile_ics_flutter/core/utils/constants.dart';
 import 'package:mobile_ics_flutter/core/widgets/kcolors.dart';
 import 'package:mobile_ics_flutter/models/hive_models/hive_model.dart';
 import 'package:mobile_ics_flutter/models/time_bar_model.dart';
-import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 
 class CalendarController extends GetxController {
   final dashboardController = Get.find<DashboardController>();
@@ -20,12 +20,14 @@ class CalendarController extends GetxController {
   final itemController = ItemScrollController();
   final itemListener = ItemPositionsListener.create();
 
+  RxList<CalendarHiveModel> listCalendar = <CalendarHiveModel>[].obs;
   RxList<TimeBarModel> timeBar = <TimeBarModel>[].obs;
+
   List<Calendar> _listDataCharts = [];
+  RxList<Map<String, dynamic>> listTimeLine = <Map<String, dynamic>>[].obs;
+
   RxList<CircularSeries<Calendar, String>> seriesPie =
       <CircularSeries<Calendar, String>>[].obs;
-
-  List<NewsHiveModel> listTemp = [];
 
   String? _location;
   DateTime? _time;
@@ -33,216 +35,38 @@ class CalendarController extends GetxController {
   var timeTag = ''.obs;
   var locationTag = ''.obs;
 
-  Random random = Random();
-  late int random1, random2, random3, random4 = 0;
-
-  late CalendarModel calendarModel = CalendarModel(
-      id: '7UBnjXgDaz',
-      name: 'Calendar Test',
-      area: 'Cấp Huyện',
-      createTime: DateTime.now(),
-      status: 'Đã phê duyệt');
-  List<Map<String, dynamic>>? listNews;
-
   @override
   void onInit() {
     tooltipBehavior = TooltipBehavior(enable: true);
-    _location = _changeLocation(dashboardController.valueLocation);
     timeTag = dashboardController.timeTag;
     locationTag = dashboardController.locationTag;
+    _location = _changeLocation(dashboardController.valueLocation);
+    _time = _changeTime(dashboardController.valueTime);
+
+    List<CalendarHiveModel> data = dashboardController.listCalendar.toList();
+    if (data.isNotEmpty) {
+      List<CalendarHiveModel> list = [];
+      for (var item in data) {
+        if (item.area == _location) {
+          list.add(item);
+        }
+      }
+      var listFilter = _fillDataFormDate(list);
+
+      listCalendar.value = listFilter.toList();
+    }
+
     List<TimeBarModel> timeData = dashboardController.timeBar.toList();
     if (timeData.isNotEmpty) {
       timeBar.value = timeData.toList();
     }
     print(timeBar.length);
-    _getDataCharts();
+    _getDataCharts(listCalendar);
 
-    print(_listDataCharts.length);
-
-    listTemp = dashboardController.listNews.toList();
-
-    print(listTemp.last);
-
-    calendarModel.descNews = [
-      {
-        'time': '00:00 am',
-        'title': 'Bản tin thời sự đài truyền hình VN',
-        'slot': '00:00 - 01:00 am',
-        'tlColor': kRedDark,
-        'bgColor': kRedLight,
-        'status': '',
-      },
-      {
-        'time': '01:00 am',
-        'title': 'Bản tin thời sự đài truyền hình VN',
-        'slot': '01:00 - 02:00 am',
-        'tlColor': kBlueDark,
-        'bgColor': kBlueLight,
-        'status': '',
-      },
-      {
-        'time': '02:00 am',
-        'title': '',
-        'slot': '',
-        'tlColor': kYellowDark,
-        'status': '',
-      },
-      {
-        'time': '03:00 am',
-        'title': '',
-        'slot': '',
-        'tlColor': kRedDark,
-        'status': '',
-      },
-      {
-        'time': '04:00 am',
-        'title': '',
-        'slot': '',
-        'tlColor': kBlueDark,
-        'status': '',
-      },
-      {
-        'time': '05:00 am',
-        'title': '',
-        'slot': '',
-        'tlColor': kYellowDark,
-        'status': '',
-      },
-      {
-        'time': '06:00 am',
-        'title': '',
-        'slot': '',
-        'tlColor': kRedDark,
-        'status': '',
-      },
-      {
-        'time': '07:00 am',
-        'title': '',
-        'slot': '',
-        'tlColor': kBlueDark,
-        'status': '',
-      },
-      {
-        'time': '08:00 am',
-        'title': '',
-        'slot': '',
-        'tlColor': kYellowDark,
-        'status': '',
-      },
-      {
-        'time': '09:00 am',
-        'title': '',
-        'slot': '',
-        'tlColor': kRedDark,
-        'status': '',
-      },
-      {
-        'time': '10:00 am',
-        'title': '',
-        'slot': '',
-        'tlColor': kBlueDark,
-        'status': '',
-      },
-      {
-        'time': '11:00 am',
-        'title': '',
-        'slot': '',
-        'tlColor': kYellowDark,
-        'status': '',
-      },
-      {
-        'time': '12:00 pm',
-        'title': '',
-        'slot': '',
-        'tlColor': kRedDark,
-        'status': '',
-      },
-      {
-        'time': '01:00 pm',
-        'title': 'Bản tin thời sự đài truyền hình VN',
-        'slot': '01:00 - 02:00 pm',
-        'tlColor': kBlueDark,
-        'bgColor': kBlueLight,
-        'status': 'Đang phát',
-      },
-      {
-        'time': '02:00 pm',
-        'title': '',
-        'slot': '',
-        'tlColor': kYellowDark,
-        'status': '',
-      },
-      {
-        'time': '03:00 pm',
-        'title': '',
-        'slot': '',
-        'tlColor': kRedDark,
-        'status': '',
-      },
-      {
-        'time': '04:00 pm',
-        'title': '',
-        'slot': '',
-        'tlColor': kBlueDark,
-        'status': '',
-      },
-      {
-        'time': '05:00 pm',
-        'title': '',
-        'slot': '',
-        'tlColor': kYellowDark,
-        'status': '',
-      },
-      {
-        'time': '06:00 pm',
-        'title': '',
-        'slot': '',
-        'tlColor': kRedDark,
-        'status': '',
-      },
-      {
-        'time': '07:00 pm',
-        'title': '',
-        'slot': '',
-        'tlColor': kBlueDark,
-        'status': '',
-      },
-      {
-        'time': '08:00 pm',
-        'title': '',
-        'slot': '',
-        'tlColor': kYellowDark,
-        'status': '',
-      },
-      {
-        'time': '09:00 pm',
-        'title': '',
-        'slot': '',
-        'tlColor': kRedDark,
-        'status': '',
-      },
-      {
-        'time': '10:00 pm',
-        'title': '',
-        'slot': '',
-        'tlColor': kBlueDark,
-        'status': '',
-      },
-      {
-        'time': '11:00 pm',
-        'title': 'Bản tin thời sự đài truyền hình VN',
-        'slot': '11:00 - 00:00 am',
-        'tlColor': kYellowDark,
-        'bgColor': kYellowLight,
-        'status': '',
-      },
-    ];
-
-    listNews = calendarModel.descNews.toList();
-
-    print(listNews);
-    print(listNews!.length);
-    print(listNews![0]);
+    listCalendar.last.descNews = DataDesc().desc.toList();
+    if (listCalendar.last.descNews.isNotEmpty) {
+      listTimeLine.value = listCalendar.last.descNews.toList();
+    }
 
     seriesPie.value = [
       PieSeries(
@@ -268,13 +92,13 @@ class CalendarController extends GetxController {
   @override
   void onReady() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      _scrollNewsPlaying(listNews!, isAnimating: true);
+      _scrollNewsPlaying(listTimeLine, isAnimating: true);
     });
     super.onReady();
   }
 
   Future jumpNewsPlaying() async {
-    await _scrollNewsPlaying(listNews!, isAnimating: false);
+    await _scrollNewsPlaying(listTimeLine, isAnimating: false);
   }
 
   Future _scrollNewsPlaying(List<Map<String, dynamic>> list,
@@ -314,33 +138,57 @@ class CalendarController extends GetxController {
     return dateChange;
   }
 
-  void _getDataCharts() {
-    _listDataCharts = [
-      Calendar(
-        type: '',
-        status: 'CALENDAR_STATUS_INIT'.tr,
-        amount: 100,
-        barColor: const Color(0xFFD9D9D9),
-      ),
-      Calendar(
-        type: '',
-        status: 'CALENDAR_STATUS_AWAIT'.tr,
-        amount: 200,
-        barColor: const Color(0xFFD9D9D9),
-      ),
-      Calendar(
-        type: '',
-        status: 'CALENDAR_STATUS_APPROVED'.tr,
-        amount: 300,
-        barColor: const Color(0xFFD9D9D9),
-      ),
-      Calendar(
-        type: '',
-        status: 'CALENDAR_STATUS_PLAYED'.tr,
-        amount: 400,
-        barColor: const Color(0xFFD9D9D9),
-      ),
-    ].toList();
+  void _getDataCharts(RxList<CalendarHiveModel> list) {
+    if (list.isNotEmpty) {
+      int status1 = 0, status2 = 0, status3 = 0, status4 = 0;
+
+      for (var item in list) {
+        if (item.status == 'Được khởi tạo') {
+          status1++;
+        }
+
+        if (item.status == 'Đang chờ phê duyệt') {
+          status2++;
+        }
+
+        if (item.status == 'Đã duyệt') {
+          status3++;
+        }
+
+        if (item.status == 'Đã phát') {
+          status4++;
+        }
+      }
+
+      _listDataCharts = [
+        Calendar(
+          type: '',
+          status: 'CALENDAR_STATUS_INIT'.tr,
+          amount: status1,
+          barColor: const Color(0xFFD9D9D9),
+        ),
+        Calendar(
+          type: '',
+          status: 'CALENDAR_STATUS_AWAIT'.tr,
+          amount: status2,
+          barColor: const Color(0xFFD9D9D9),
+        ),
+        Calendar(
+          type: '',
+          status: 'CALENDAR_STATUS_APPROVED'.tr,
+          amount: status3,
+          barColor: const Color(0xFFD9D9D9),
+        ),
+        Calendar(
+          type: '',
+          status: 'CALENDAR_STATUS_PLAYED'.tr,
+          amount: status4,
+          barColor: const Color(0xFFD9D9D9),
+        ),
+      ].toList();
+    } else {
+      _listDataCharts = [];
+    }
   }
 
   Future<void> _changeFilter() async {
@@ -387,38 +235,36 @@ class CalendarController extends GetxController {
   Future onRefresh() async {
     await _changeFilter();
     _location = _changeLocation(dashboardController.valueLocation);
+    _time = _changeTime(dashboardController.valueTime);
 
-    random1 = random.nextInt(100);
-    random2 = random.nextInt(100);
-    random3 = random.nextInt(100);
-    random4 = random.nextInt(100);
+    for (var item in listCalendar) {
+      item.descNews.clear();
+    }
+    listTimeLine.clear();
 
-    _listDataCharts = [
-      Calendar(
-        type: '',
-        status: 'CALENDAR_STATUS_INIT'.tr,
-        amount: random1,
-        barColor: const Color(0xFFD9D9D9),
-      ),
-      Calendar(
-        type: '',
-        status: 'CALENDAR_STATUS_AWAIT'.tr,
-        amount: random2,
-        barColor: const Color(0xFFD9D9D9),
-      ),
-      Calendar(
-        type: '',
-        status: 'CALENDAR_STATUS_APPROVED'.tr,
-        amount: random3,
-        barColor: const Color(0xFFD9D9D9),
-      ),
-      Calendar(
-        type: '',
-        status: 'CALENDAR_STATUS_PLAYED'.tr,
-        amount: random4,
-        barColor: const Color(0xFFD9D9D9),
-      ),
-    ].toList();
+    List<CalendarHiveModel> data = dashboardController.listCalendar.toList();
+    if (data.isNotEmpty) {
+      List<CalendarHiveModel> list = [];
+      for (var item in data) {
+        if (item.area == _location) {
+          list.add(item);
+        }
+      }
+
+      var listFilter = _fillDataFormDate(list);
+      listCalendar.value = listFilter.toList();
+    }
+
+    _getDataCharts(listCalendar);
+
+    listCalendar.last.descNews = DataDesc().desc.toList();
+    if (listCalendar.last.descNews.isNotEmpty) {
+      listTimeLine.value = listCalendar.last.descNews.toList();
+    }
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      _scrollNewsPlaying(listTimeLine, isAnimating: true);
+    });
 
     seriesPie.value = [
       PieSeries(
@@ -437,6 +283,8 @@ class CalendarController extends GetxController {
         radius: '120%',
       )
     ].toList();
+
+    seriesPie.refresh();
   }
 
   String _changeLocation(String value) {
@@ -471,27 +319,12 @@ class CalendarController extends GetxController {
 
   @override
   void onClose() {
-    calendarModel.descNews.clear();
-    listNews!.clear();
+    for (var item in listCalendar) {
+      item.descNews.clear();
+    }
+    listTimeLine.clear();
     super.onClose();
   }
-}
-
-class CalendarModel {
-  String? id;
-  String? name;
-  String? area;
-  DateTime? createTime;
-  String? status;
-
-  List<Map<String, dynamic>> descNews = [];
-  CalendarModel({
-    this.id,
-    this.name,
-    this.area,
-    this.createTime,
-    this.status,
-  });
 }
 
 class Calendar {
@@ -505,4 +338,181 @@ class Calendar {
     this.amount,
     this.barColor,
   });
+}
+
+class DataDesc {
+  List<Map<String, dynamic>> desc = [
+    {
+      'time': '00:00 am',
+      'title': 'Bản tin thể thao đài truyền hình VN',
+      'slot': '00:00 - 01:00 am',
+      'tlColor': kRedDark,
+      'bgColor': kRedLight,
+      'status': '',
+    },
+    {
+      'time': '01:00 am',
+      'title': 'Bản tin thông tin đài truyền hình VN',
+      'slot': '01:00 - 02:00 am',
+      'tlColor': kBlueDark,
+      'bgColor': kBlueLight,
+      'status': '',
+    },
+    {
+      'time': '02:00 am',
+      'title': '',
+      'slot': '',
+      'tlColor': kYellowDark,
+      'status': '',
+    },
+    {
+      'time': '03:00 am',
+      'title': '',
+      'slot': '',
+      'tlColor': kRedDark,
+      'status': '',
+    },
+    {
+      'time': '04:00 am',
+      'title': '',
+      'slot': '',
+      'tlColor': kBlueDark,
+      'status': '',
+    },
+    {
+      'time': '05:00 am',
+      'title': '',
+      'slot': '',
+      'tlColor': kYellowDark,
+      'status': '',
+    },
+    {
+      'time': '06:00 am',
+      'title': '',
+      'slot': '',
+      'tlColor': kRedDark,
+      'status': '',
+    },
+    {
+      'time': '07:00 am',
+      'title': '',
+      'slot': '',
+      'tlColor': kBlueDark,
+      'status': '',
+    },
+    {
+      'time': '08:00 am',
+      'title': '',
+      'slot': '',
+      'tlColor': kYellowDark,
+      'status': '',
+    },
+    {
+      'time': '09:00 am',
+      'title': '',
+      'slot': '',
+      'tlColor': kRedDark,
+      'status': '',
+    },
+    {
+      'time': '10:00 am',
+      'title': '',
+      'slot': '',
+      'tlColor': kBlueDark,
+      'status': '',
+    },
+    {
+      'time': '11:00 am',
+      'title': '',
+      'slot': '',
+      'tlColor': kYellowDark,
+      'status': '',
+    },
+    {
+      'time': '12:00 pm',
+      'title': '',
+      'slot': '',
+      'tlColor': kRedDark,
+      'status': '',
+    },
+    {
+      'time': '01:00 pm',
+      'title': 'Bản tin thời sự đài truyền hình VN',
+      'slot': '01:00 - 02:00 pm',
+      'tlColor': kBlueDark,
+      'bgColor': kBlueLight,
+      'status': 'Đang phát',
+    },
+    {
+      'time': '02:00 pm',
+      'title': '',
+      'slot': '',
+      'tlColor': kYellowDark,
+      'status': '',
+    },
+    {
+      'time': '03:00 pm',
+      'title': '',
+      'slot': '',
+      'tlColor': kRedDark,
+      'status': '',
+    },
+    {
+      'time': '04:00 pm',
+      'title': '',
+      'slot': '',
+      'tlColor': kBlueDark,
+      'status': '',
+    },
+    {
+      'time': '05:00 pm',
+      'title': '',
+      'slot': '',
+      'tlColor': kYellowDark,
+      'status': '',
+    },
+    {
+      'time': '06:00 pm',
+      'title': '',
+      'slot': '',
+      'tlColor': kRedDark,
+      'status': '',
+    },
+    {
+      'time': '07:00 pm',
+      'title': '',
+      'slot': '',
+      'tlColor': kBlueDark,
+      'status': '',
+    },
+    {
+      'time': '08:00 pm',
+      'title': '',
+      'slot': '',
+      'tlColor': kYellowDark,
+      'status': '',
+    },
+    {
+      'time': '09:00 pm',
+      'title': '',
+      'slot': '',
+      'tlColor': kRedDark,
+      'status': '',
+    },
+    {
+      'time': '10:00 pm',
+      'title': '',
+      'slot': '',
+      'tlColor': kBlueDark,
+      'status': '',
+    },
+    {
+      'time': '11:00 pm',
+      'title': 'Bản tin pháp luật đài truyền hình VN',
+      'slot': '11:00 - 00:00 am',
+      'tlColor': kYellowDark,
+      'bgColor': kYellowLight,
+      'status': '',
+    },
+  ];
 }

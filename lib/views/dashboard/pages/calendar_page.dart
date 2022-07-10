@@ -231,34 +231,39 @@ class CalendarPage extends StatelessWidget {
                           ],
                         ),
                       ),
-                      Expanded(
-                        child: (controller.listNews == null)
-                            ? Container(
-                                color: kBackgroundTag,
-                                child: Center(
-                                  child: Text(
-                                    'CALENDAR_NONE'.tr,
-                                    style: KTextStyle.textAmountSubStyle,
+                      Obx(
+                        () => Expanded(
+                          child: (controller.listTimeLine.isEmpty)
+                              ? Container(
+                                  color: kBackgroundTag,
+                                  child: Center(
+                                    child: Text(
+                                      'CALENDAR_NONE'.tr,
+                                      style: KTextStyle.textAmountSubStyle,
+                                    ),
                                   ),
-                                ),
-                              )
-                            : ScrollablePositionedList.builder(
-                                itemScrollController: controller.itemController,
-                                itemCount: controller.listNews!.length,
-                                itemPositionsListener: controller.itemListener,
-                                itemBuilder: (context, index) {
-                                  if (controller.listNews![index]['status'] ==
-                                      'Đang phát') {
+                                )
+                              : ScrollablePositionedList.builder(
+                                  itemScrollController:
+                                      controller.itemController,
+                                  itemCount: controller.listTimeLine.length,
+                                  itemPositionsListener:
+                                      controller.itemListener,
+                                  itemBuilder: (context, index) {
+                                    if (controller.listTimeLine[index]
+                                            ['status'] ==
+                                        'Đang phát') {
+                                      return NewsTimeLine(
+                                        details: controller.listTimeLine[index],
+                                        isNow: true,
+                                      );
+                                    }
                                     return NewsTimeLine(
-                                      details: controller.listNews![index],
-                                      isNow: true,
+                                      details: controller.listTimeLine[index],
                                     );
-                                  }
-                                  return NewsTimeLine(
-                                    details: controller.listNews![index],
-                                  );
-                                },
-                              ),
+                                  },
+                                ),
+                        ),
                       ),
                     ],
                   ),
@@ -307,7 +312,7 @@ class CalendarPage extends StatelessWidget {
                           children: [
                             Obx(
                               () => Text(
-                                controller.timeBar.length.toString(),
+                                controller.listCalendar.length.toString(),
                                 style: KTextStyle.textAmountStyle,
                               ),
                             ),
