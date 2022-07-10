@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:mobile_ics_flutter/views/dashboard/components/history_content_card.dart';
 import 'package:mobile_ics_flutter/views/operator/components/tempdb.dart';
+import 'package:oktoast/oktoast.dart';
 import '../../controllers/operator_controllers/operator_controller.dart';
 import 'components/component.dart';
 import 'pages/pages.dart';
@@ -41,9 +42,9 @@ class OperatorScreen extends GetWidget<OperatorController> {
                 const SizedBox(
                   width: padding2,
                 ),
-                const Text(
-                  operatorTitle,
-                  style: TextStyle(color: opWhite, fontSize: header1),
+                Text(
+                  'OP_TITLE'.tr,
+                  style: operatorTitle,
                 ),
                 const SizedBox(
                   width: padding2,
@@ -55,22 +56,24 @@ class OperatorScreen extends GetWidget<OperatorController> {
               ],
             ),
           ),
-          GetBuilder<OperatorController>(
-            builder: (_) => CustomContainer(
-              height: _.flag ? buttonHeightOn : buttonHeightOff,
+          Obx(
+            () => CustomContainer(
+              height: controller.flag.value ? buttonHeightOn : buttonHeightOff,
               child: Column(
                 children: [
                   SizedBox(
                     height: buttonHeightOff,
                     child: CustomTextButton(
                       onpress: () {
-                        _.pressButton();
+                        controller.pressButton();
                       },
-                      icon: _.flag ? null : Icons.play_arrow_rounded,
-                      text: playNewsButtonLabel,
+                      icon: controller.flag.value
+                          ? null
+                          : Icons.play_arrow_rounded,
+                      text: 'BTL_PLAY_NEWS'.tr,
                     ),
                   ),
-                  _.flag
+                  controller.flag.value
                       ? Column(
                           children: [
                             const SizedBox(
@@ -80,24 +83,20 @@ class OperatorScreen extends GetWidget<OperatorController> {
                               children: [
                                 Expanded(
                                   child: PlayNews(
-                                    height: padding2,
                                     icon: iconNews,
-                                    content: GetBuilder<OperatorController>(
-                                      builder: (_) => DropdownButton<String>(
-                                        isDense: true,
-                                        style: TextStyle(
-                                          color: opBlack.withOpacity(.6),
-                                          fontSize: text3,
-                                        ),
-                                        isExpanded: true,
-                                        value: _.newsSelected,
-                                        onChanged: (value) =>
-                                            _.Select('newsSelected', value),
-                                        hint: const Text(selectNewsHint),
-                                        underline: Container(
-                                            color: Colors.transparent),
-                                        items: newsList,
+                                    height: 28,
+                                    content: InkWell(
+                                      child: Text(
+                                        controller.newsSelected.value == ''
+                                            ? 'H_SELECT_NEWS'.tr
+                                            : controller.newsSelected.value,
+                                        style: textStyle3a,
                                       ),
+                                      onTap: () {
+                                        showToast('Lấy bản tin');
+                                        controller.newsSelected.value =
+                                            'Bản tin aaaa';
+                                      },
                                     ),
                                   ),
                                 ),
@@ -106,11 +105,9 @@ class OperatorScreen extends GetWidget<OperatorController> {
                                     height: 28,
                                     icon: iconDevice,
                                     content: InkWell(
-                                      child: Obx(
-                                        () => Text(
-                                          'Thiết bị phát (${controller.deviceCounter.value.toString()})',
-                                          style: textStyle3a,
-                                        ),
+                                      child: Text(
+                                        '${'H_SELECT_DEVICE'.tr} (${controller.deviceCounter.value.toString()})',
+                                        style: textStyle3a,
                                       ),
                                       onTap: () {
                                         showDeviceSelect(context, controller);
@@ -138,10 +135,16 @@ class OperatorScreen extends GetWidget<OperatorController> {
                                       //value: null,
                                       onChanged: (value) => {
                                         value == '0'
-                                            ? showFixedSchdule(context)
+                                            ? showFixedSchdule(
+                                                context, controller)
                                             : controller.chooseTime()
                                       },
-                                      hint: const Text(selectTimeHint),
+                                      hint: Obx(
+                                        () => Text(
+                                          '${'H_TIME'.tr} (${controller.timeCounter.value.toString()})',
+                                          style: textStyle3a,
+                                        ),
+                                      ),
                                       underline:
                                           Container(color: Colors.transparent),
                                       items: const [
@@ -180,7 +183,7 @@ class OperatorScreen extends GetWidget<OperatorController> {
                                         value: _.repeatSelected,
                                         onChanged: (value) =>
                                             _.Select('repeatSelected', value),
-                                        hint: const Text('Chế độ lặp'),
+                                        hint: Text('H_REPEAT'.tr),
                                         underline: Container(
                                             color: Colors.transparent),
                                         items: repeatList,
@@ -201,7 +204,7 @@ class OperatorScreen extends GetWidget<OperatorController> {
                                         value: _.prioritySelected,
                                         onChanged: (value) =>
                                             _.Select('prioritySelected', value),
-                                        hint: const Text(selectPriorityHint),
+                                        hint: Text('H_SELECT_PRIORITY'.tr),
                                         underline: Container(
                                             color: Colors.transparent),
                                         items: priorityList,
@@ -225,7 +228,7 @@ class OperatorScreen extends GetWidget<OperatorController> {
                                       padding: padding4,
                                       space: defaultPadding,
                                       icon: Icons.play_arrow_rounded,
-                                      text: playButtonLabel,
+                                      text: 'BTL_PLAY'.tr,
                                       onpress: () {
                                         controller.printNewsPlayed();
                                       },
@@ -261,7 +264,7 @@ class OperatorScreen extends GetWidget<OperatorController> {
                                 const SizedBox(
                                   width: 25,
                                 ),
-                                const Text1(text: "Danh sách phát"),
+                                Text1(text: 'OP_OPERATE_TODAY'.tr),
                                 InkWell(
                                   onTap: () {
                                     Get.to(const NewsList());
@@ -274,20 +277,29 @@ class OperatorScreen extends GetWidget<OperatorController> {
                               ],
                             )),
                         Expanded(
-                          child: ListView.builder(
-                            itemCount: 15,
-                            // ignore: avoid_types_as_parameter_names
-                            itemBuilder: (context, num) {
-                              return InkWell(
+                          child: Obx(
+                            () => ListView.builder(
+                              itemCount: (controller.listNews.length >= 10)
+                                  ? 10
+                                  : controller.listNews.length,
+                              itemBuilder: (context, index) => InkWell(
                                 onTap: () async {
-                                  _.showBottomSheet(
-                                    context,
-                                    const MyBottomSheet(),
-                                  );
+                                  controller.showBottomSheet(
+                                      context,
+                                      MyBottomSheet(
+                                        news: controller.listNews[index],
+                                      ));
                                 },
-                                child: const HistoryContentCard(),
-                              );
-                            },
+                                child: HistoryContentCard(
+                                  titleName: controller.listNews[index].name!,
+                                  titleType:
+                                      "Loại: ${controller.listNews[index].type!}",
+                                  titleTime:
+                                      "Thời gian: ${controller.listNews[index].createDate!}",
+                                  statusCode: 0,
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                         const SizedBox(

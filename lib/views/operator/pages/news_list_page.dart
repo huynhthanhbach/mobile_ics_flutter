@@ -11,9 +11,9 @@ class NewsList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text(
-            newsListPageTille,
-            style: TextStyle(
+          title: Text(
+            'OP_NEWS_PAGE_TITLE'.tr,
+            style: const TextStyle(
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -27,7 +27,8 @@ class NewsList extends StatelessWidget {
             children: [
               GetBuilder<OperatorController>(
                 builder: (_) => CustomContainer(
-                  height: _.flag ? buttonHeightOn : buttonHeightOff,
+                  height:
+                      controller.flag.value ? buttonHeightOn : buttonHeightOff,
 
                   //color: Colors.white,
                   child: Column(
@@ -38,12 +39,14 @@ class NewsList extends StatelessWidget {
                           onpress: () {
                             _.pressButton();
                           },
-                          icon: _.flag ? null : Icons.filter_list_rounded,
-                          text: filtButtonLabel,
+                          icon: controller.flag.value
+                              ? null
+                              : Icons.filter_list_rounded,
+                          text: 'BTL_FILTER'.tr,
                           background: true,
                         ),
                       ),
-                      _.flag
+                      controller.flag.value
                           ? Column(
                               children: [
                                 Row(
@@ -51,8 +54,7 @@ class NewsList extends StatelessWidget {
                                     Expanded(
                                       child: PlayNews(
                                         icon: iconNews,
-                                        //full: true,
-                                        text: nlCategoriesLabel,
+                                        text: 'NFL_CATEGORY'.tr,
                                         content: GetBuilder<OperatorController>(
                                           builder: (_) =>
                                               DropdownButton<String>(
@@ -84,7 +86,7 @@ class NewsList extends StatelessWidget {
                                       child: PlayNews(
                                         icon: iconClock,
                                         //full: true,
-                                        text: nlTimeLabel,
+                                        text: 'NFL_TIME'.tr,
                                         content: GetBuilder<OperatorController>(
                                           builder: (_) =>
                                               DropdownButton<String>(
@@ -99,7 +101,7 @@ class NewsList extends StatelessWidget {
                                                 _.Filt('timeFilter', value),
                                             underline: Container(
                                                 color: Colors.transparent),
-                                            items: timeList,
+                                            items: controller.timeList,
                                           ),
                                         ),
                                         //value: '',
@@ -116,7 +118,7 @@ class NewsList extends StatelessWidget {
                                       child: PlayNews(
                                         icon: iconCalender,
                                         //full: true,
-                                        text: nlCalenderLabel,
+                                        text: 'NFL_CALENDER'.tr,
                                         content: GetBuilder<OperatorController>(
                                           builder: (_) =>
                                               DropdownButton<String>(
@@ -148,7 +150,7 @@ class NewsList extends StatelessWidget {
                                       child: PlayNews(
                                         icon: iconDevice,
                                         //full: true,
-                                        text: nlDeviceLabel,
+                                        text: 'NFL_DEVICE'.tr,
                                         content: GetBuilder<OperatorController>(
                                           builder: (_) =>
                                               DropdownButton<String>(
@@ -185,11 +187,12 @@ class NewsList extends StatelessWidget {
                                             padding: padding4,
                                             space: defaultPadding,
                                             icon: Icons.filter_list_rounded,
-                                            text: filterButtonLabel,
+                                            text: 'BTL_FILT'.tr,
                                             background: true,
                                             onpress: () {
                                               _.addFilter();
                                               _.pressButton();
+                                              _.checkFilter();
                                             },
                                           )),
                                     )
@@ -204,7 +207,7 @@ class NewsList extends StatelessWidget {
               ),
               GetBuilder<OperatorController>(
                   builder: (_) => Container(
-                        child: (_.flag)
+                        child: (_.flag.value)
                             ? const SizedBox(
                                 height: defaultPadding,
                               )
@@ -228,25 +231,33 @@ class NewsList extends StatelessWidget {
                           height: padding5,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              Text1(text: 'Danh sách phát'),
+                            children: [
+                              Text1(text: 'OP_OPERATE_HISTORY'.tr),
                             ],
                           ),
                         ),
                         Expanded(
-                          child: ListView.builder(
-                            itemCount: 15,
-                            itemBuilder: (context, index) {
-                              return InkWell(
+                          child: Obx(
+                            () => ListView.builder(
+                              itemCount: controller.listNews.length,
+                              itemBuilder: (context, index) => InkWell(
                                 onTap: () async {
-                                  _.showBottomSheet(
-                                    context,
-                                    const MyBottomSheet(),
-                                  );
+                                  controller.showBottomSheet(
+                                      context,
+                                      MyBottomSheet(
+                                        news: controller.listNews[index],
+                                      ));
                                 },
-                                child: const HistoryContentCard(),
-                              );
-                            },
+                                child: HistoryContentCard(
+                                  titleName: controller.listNews[index].name!,
+                                  titleType:
+                                      "Loại: ${controller.listNews[index].type!}",
+                                  titleTime:
+                                      "Thời gian: ${controller.listNews[index].createDate!}",
+                                  statusCode: 0,
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                         const SizedBox(

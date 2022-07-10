@@ -43,6 +43,8 @@ const text3 = 16.0;
 const text4 = 12.0;
 
 //textstyle
+const operatorTitle = TextStyle(color: opWhite, fontSize: header1);
+const textStyle1 = TextStyle(fontSize: text1, color: primaryColor);
 const textStyle2 = TextStyle(fontSize: text2, color: primaryColor);
 const textStyle3a = TextStyle(fontSize: text3, color: opGray1);
 const textStyle3b = TextStyle(fontSize: text3, color: opGray2);
