@@ -8,6 +8,7 @@ import 'package:mobile_ics_flutter/core/services/hive_bandwidth.dart';
 import 'package:mobile_ics_flutter/core/services/hive_calendar.dart';
 import 'package:mobile_ics_flutter/core/services/hive_device.dart';
 import 'package:mobile_ics_flutter/core/services/hive_news.dart';
+import 'package:mobile_ics_flutter/core/services/hive_play_news.dart';
 import 'package:mobile_ics_flutter/core/services/hive_warning.dart';
 import 'package:mobile_ics_flutter/core/utils/constants.dart';
 import 'package:mobile_ics_flutter/models/hive_models/hive_model.dart';
@@ -25,6 +26,7 @@ class DashboardController extends GetxController {
   HiveDevice hiveDevice = HiveDevice();
   HiveBandwidth hiveBandwidth = HiveBandwidth();
   HiveCalendar hiveCalendar = HiveCalendar();
+  HivePlayNews hivePlayNews = HivePlayNews();
 
   var timeTag = ''.obs;
   var locationTag = ''.obs;
@@ -36,6 +38,7 @@ class DashboardController extends GetxController {
   RxList<DeviceHiveModel> listDevice = <DeviceHiveModel>[].obs;
   RxList<BandwidthHiveModel> listBandwidth = <BandwidthHiveModel>[].obs;
   RxList<CalendarHiveModel> listCalendar = <CalendarHiveModel>[].obs;
+  RxList<PlayNewsHiveModel> listPlayNews = <PlayNewsHiveModel>[].obs;
 
   RxList<NewsHiveModel> listHisNews = <NewsHiveModel>[].obs;
   RxList<WarningHiveModel> listHisWarning = <WarningHiveModel>[].obs;
@@ -72,6 +75,12 @@ class DashboardController extends GetxController {
       listCalendar.value = listC.toList();
     }
     print('Calendar length: ${listC.length}');
+
+    List<PlayNewsHiveModel> listP = await hivePlayNews.get();
+    if (listP.isNotEmpty) {
+      listPlayNews.value = listP.toList();
+    }
+    print('PlayNews length: ${listP.length}');
 
     if (timeBar.isEmpty) {
       var weekDay = _dateTimeNow.weekday;
@@ -179,6 +188,11 @@ class DashboardController extends GetxController {
     List<BandwidthHiveModel> listB = await hiveBandwidth.get();
     if (listB.isNotEmpty) {
       listBandwidth.value = listB.toList();
+    }
+
+    List<PlayNewsHiveModel> listP = await hivePlayNews.get();
+    if (listP.isNotEmpty) {
+      listPlayNews.value = listP.toList();
     }
 
     if (listNews.isNotEmpty) {
