@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:mobile_ics_flutter/models/hive_models/device_hmodel.dart';
 import 'package:mobile_ics_flutter/views/operator/components/component.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 
@@ -43,6 +44,7 @@ void showDeviceSelect(
     context: context,
     builder: (ctx) {
       return MultiSelectDialog(
+        searchable: true,
         title: Text(
           'DEVICE_SELECT_TITLE'.tr,
           style: textStyle1,
@@ -55,10 +57,14 @@ void showDeviceSelect(
           'CANCEL_TEXT'.tr,
           style: textStyle2,
         ),
-        items: device_items,
-        initialValue: listDeviceSelected,
-        onConfirm: (List<Device> results) {
-          listDeviceSelected = results;
+        // items: device_items,
+        // initialValue: listDeviceSelected,
+        // onConfirm: (List<Device> results) {
+        //   listDeviceSelected = results;
+        items: controller.deviceItem,
+        initialValue: controller.listDeviceSelected,
+        onConfirm: (List<DeviceHiveModel> results) {
+          controller.listDeviceSelected = results;
           controller.countDevice();
         },
         width: 200,

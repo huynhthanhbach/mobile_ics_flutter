@@ -1,19 +1,27 @@
 // ignore_for_file: non_constant_identifier_names, avoid_print
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mobile_ics_flutter/core/services/hive_calendar.dart';
+import 'package:mobile_ics_flutter/core/services/hive_device.dart';
 import 'package:mobile_ics_flutter/views/operator/components/component.dart';
 import 'package:mobile_ics_flutter/views/operator/components/tempdb.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:oktoast/oktoast.dart';
-
+import 'package:uuid/uuid.dart';
 import '../../core/services/hive_news.dart';
 import '../../models/hive_models/hive_model.dart';
 
 class OperatorController extends GetxController {
   HiveNews hiveNews = HiveNews();
+  HiveDevice hiveDevice = HiveDevice();
+  HiveCalendar hiveCalender = HiveCalendar();
+  PlayNewsHiveModel? playNewsCalender;
   RxBool flag = true.obs;
   RxBool checkFiler = false.obs;
+  NewsHiveModel? newsHiveSelected;
   RxString newsSelected = ''.obs;
   String? repeatSelected;
   String? prioritySelected;
@@ -25,6 +33,8 @@ class OperatorController extends GetxController {
   List<String> times = ['5h - 8h30', '11h - 12h', '16h - 19h30', '21h - 23h30'];
   List<DropdownMenuItem<String>> timeList = [];
   List<MultiSelectItem<Time>> time_items = [];
+  List<MultiSelectItem<DeviceHiveModel>> deviceItem = [];
+  List<DeviceHiveModel> listDeviceSelected = [];
 
   List<Time> listTimeSelected = [];
   // Map<String, String> filterValue = {
@@ -34,6 +44,7 @@ class OperatorController extends GetxController {
   //   'times': '-1'
   // };
   RxList<NewsHiveModel> listNews = <NewsHiveModel>[].obs;
+  List<DeviceHiveModel> listDevice = <DeviceHiveModel>[];
   List<String> selectedTime = [];
   List<String> filter = ['Tất cả', 'Tất cả', 'Tất cả', 'Tất cả'];
   var timePicker = TimeOfDay.now().obs;
@@ -79,23 +90,6 @@ class OperatorController extends GetxController {
     timeCounter.value = listTimeSelected.length;
   }
 
-  // String getFilter(List list, String value) {
-  //   String text = '';
-  //   value == '1'
-  //       ? text = 'Tất cả'
-  //       : (value == '-2' ? text = 'Khác' : text = list[int.parse(value)]);
-  //   return text;
-  // }
-
-  // List<String> getFilterList() {
-  //   List<String> temp = [];
-  //   temp.addAll([getFilter(categories, filterValue['categories']!)]);
-  //   temp.addAll([getFilter(times, filterValue['times']!)]);
-  //   temp.addAll([getFilter(calenders, filterValue['calenders']!)]);
-  //   temp.addAll([getFilter(devices, filterValue['devices']!)]);
-  //   return temp;
-  // }
-
   //Tao filter
   void addFilter() {
     filter = ['Tất cả', 'Tất cả', 'Tất cả', 'Tất cả'];
@@ -127,15 +121,20 @@ class OperatorController extends GetxController {
         Times.map((time) => MultiSelectItem<Time>(time, time.name)).toList();
 
     //Khoi tao cac dropdownbuttonitem list
-
     initListItem();
+    //khoi tao multiselect item
 
     //lay data news
-    List<NewsHiveModel> list = await hiveNews.get();
-    if (list.isNotEmpty) {
-      listNews.value = list.toList();
+    List<NewsHiveModel> listN = await hiveNews.get();
+    if (listN.isNotEmpty) {
+      listNews.value = listN.toList();
     }
-
+    //lay data device
+    List<DeviceHiveModel> listD = await hiveDevice.get();
+    if (listD.isNotEmpty) {
+      listDevice = listD.toList();
+    }
+    deviceItem = getDeviceList().toList();
     super.onInit();
   }
 
@@ -285,5 +284,34 @@ class OperatorController extends GetxController {
       i++;
     }
     return listTemp;
+  }
+
+  //tao list multi select
+  List<MultiSelectItem<DeviceHiveModel>> getDeviceList() {
+    List<MultiSelectItem<DeviceHiveModel>> temp = [];
+    for (var item in listDevice) {
+      temp.add(MultiSelectItem(item, item.name!));
+    }
+    return temp;
+  }
+
+  PlayNewsHiveModel addPlayNews(String newsId, double volume, String repeat,
+      String priority, List<DeviceHiveModel> device) {
+    const uid = Uuid();
+    var i = Random().nextBool();
+    var obj = PlayNewsHiveModel(
+      id: uid.v1(),
+      idNews: newsId,
+      //timeTitle: ,
+      status: 'Chưa phát',
+      volume: volume.round().toString(),
+      repeatMode: repeat,
+      prioritized: priority,
+      area: i ? 'Cấp xã' : 'Cấp huyện',
+      createDate: DateTime.now(),
+      timeTitle: '',
+    );
+    obj.listDevice = device.toList();
+    return obj;
   }
 }

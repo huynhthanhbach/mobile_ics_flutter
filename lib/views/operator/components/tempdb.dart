@@ -81,22 +81,22 @@ class Device {
   });
 }
 
-final List<Device> Devices = [
-  Device(id: '1', name: "Cụm loa 1"),
-  Device(id: '2', name: "Cụm loa 2"),
-  Device(id: '3', name: "Cụm loa 3"),
-  Device(id: '4', name: "Cụm loa 4"),
-  Device(id: '5', name: "Cụm loa 5"),
-  Device(id: '6', name: "Cụm loa 6"),
-  Device(id: '7', name: "Cụm loa 7"),
-  Device(id: '8', name: "Cụm loa 9"),
-  Device(id: '9', name: "Cụm loa 8"),
-  Device(id: '10', name: "Cụm loa 10"),
-];
-final device_items =
-    Devices.map((device) => MultiSelectItem<Device>(device, device.name))
-        .toList();
-List<Device> listDeviceSelected = [];
+//  List<Device> Devices = [
+//   Device(id: '1', name: "Cụm loa 1"),
+//   Device(id: '2', name: "Cụm loa 2"),
+//   Device(id: '3', name: "Cụm loa 3"),
+//   Device(id: '4', name: "Cụm loa 4"),
+//   Device(id: '5', name: "Cụm loa 5"),
+//   Device(id: '6', name: "Cụm loa 6"),
+//   Device(id: '7', name: "Cụm loa 7"),
+//   Device(id: '8', name: "Cụm loa 9"),
+//   Device(id: '9', name: "Cụm loa 8"),
+//   Device(id: '10', name: "Cụm loa 10"),
+// ];
+//  var device_items =
+//     Devices.map((device) => MultiSelectItem<Device>(device, device.name))
+//         .toList();
+// List<Device> listDeviceSelected = [];
 
 class Time {
   final String id;

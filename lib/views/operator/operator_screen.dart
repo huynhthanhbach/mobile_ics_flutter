@@ -1,9 +1,12 @@
 import 'package:get/get.dart';
+import 'package:mobile_ics_flutter/core/services/hive_calendar.dart';
 import 'package:mobile_ics_flutter/views/dashboard/components/history_content_card.dart';
 import 'package:mobile_ics_flutter/views/operator/components/tempdb.dart';
 import 'package:oktoast/oktoast.dart';
 import '../../controllers/operator_controllers/operator_controller.dart';
+import '../../core/utils/constants.dart';
 import 'components/component.dart';
+import 'pages/getNews.dart';
 import 'pages/pages.dart';
 
 class OperatorScreen extends GetWidget<OperatorController> {
@@ -91,11 +94,18 @@ class OperatorScreen extends GetWidget<OperatorController> {
                                             ? 'H_SELECT_NEWS'.tr
                                             : controller.newsSelected.value,
                                         style: textStyle3a,
+                                        overflow: TextOverflow.ellipsis,
                                       ),
                                       onTap: () {
+                                        Get.to(
+                                          transition: Transition.fade,
+                                          curve: Curves.easeInQuad,
+                                          duration: Constants.dur500,
+                                          () => const NewsGetter(),
+                                        );
                                         showToast('Lấy bản tin');
-                                        controller.newsSelected.value =
-                                            'Bản tin aaaa';
+                                        // controller.newsSelected.value =
+                                        //     'Bản tin aaaa';
                                       },
                                     ),
                                   ),
@@ -230,7 +240,16 @@ class OperatorScreen extends GetWidget<OperatorController> {
                                       icon: Icons.play_arrow_rounded,
                                       text: 'BTL_PLAY'.tr,
                                       onpress: () {
+                                        controller.playNewsCalender =
+                                            controller.addPlayNews(
+                                                controller
+                                                    .newsHiveSelected!.id!,
+                                                controller.volumeSelected.value,
+                                                controller.repeatSelected!,
+                                                controller.prioritySelected!,
+                                                controller.listDeviceSelected);
                                         controller.printNewsPlayed();
+                                        print(controller.playNewsCalender);
                                       },
                                     )),
                               ],
@@ -267,7 +286,12 @@ class OperatorScreen extends GetWidget<OperatorController> {
                                 Text1(text: 'OP_OPERATE_TODAY'.tr),
                                 InkWell(
                                   onTap: () {
-                                    Get.to(const NewsList());
+                                    Get.to(
+                                      transition: Transition.fade,
+                                      curve: Curves.easeInQuad,
+                                      duration: Constants.dur500,
+                                      () => const NewsList(),
+                                    );
                                   },
                                   child: const Icon(
                                     Icons.more_vert,
