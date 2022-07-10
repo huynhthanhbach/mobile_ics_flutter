@@ -2,8 +2,7 @@
 import 'dart:convert';
 
 import 'package:hive/hive.dart';
-
-import 'package:mobile_ics_flutter/controllers/dashboard_controllers/device_controller.dart';
+import 'package:mobile_ics_flutter/models/hive_models/hive_model.dart';
 
 part 'play_news_hmodel.g.dart';
 
@@ -37,7 +36,7 @@ class PlayNewsHiveModel extends HiveObject {
   String? area;
 
   @HiveField(9)
-  List<Device> listDevice = [];
+  List<DeviceHiveModel> listDevice = [];
 
   PlayNewsHiveModel({
     this.id,
