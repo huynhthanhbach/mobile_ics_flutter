@@ -30,7 +30,6 @@ List<DropdownMenuItem<String>> priorityList = const [
 //   const DropdownMenuItem(value: '2', child: PlayCustomTimeButton()),
 // ];
 
-var times = ['5h - 8h30', '11h - 12h', '16h - 19h30', '21h - 23h30'];
 var categories = [
   'Thể thao',
   'Đời sống',
@@ -39,7 +38,7 @@ var categories = [
   'Thời sự',
   'Thông tin',
 ];
-var calenders = ['Hôm nay', 'Trong tuần', 'Trong tháng'];
+var calenders = ['Hôm qua', 'Hôm nay', 'Trong tuần', 'Trong tháng'];
 var devices = [
   'Cụm loa 1',
   'Cụm loa 2',
@@ -53,51 +52,9 @@ var devices = [
   'Cụm loa 10'
 ];
 
-List<DropdownMenuItem<String>> timeList = [];
 List<DropdownMenuItem<String>> categoriesList = [];
 List<DropdownMenuItem<String>> calenderList = [];
 List<DropdownMenuItem<String>> deviceList = [];
-
-void initItem() {
-  int i = 0;
-  List<DropdownMenuItem<String>> listTemp = [];
-
-  listTemp.add(const DropdownMenuItem(value: '-1', child: Text('Tất cả')));
-
-  for (var item in categories) {
-    listTemp.add(DropdownMenuItem(value: '$i', child: Text(item)));
-    i++;
-  }
-  categoriesList = listTemp.toList();
-  listTemp = [];
-
-  i = 0;
-  listTemp.add(const DropdownMenuItem(value: '-1', child: Text('Tất cả')));
-  for (var item in times) {
-    listTemp.add(DropdownMenuItem(value: '$i', child: Text(item)));
-    i++;
-  }
-  timeList = listTemp.toList();
-  listTemp = [];
-
-  i = 0;
-  listTemp.add(const DropdownMenuItem(value: '-1', child: Text('Tất cả')));
-  for (var item in calenders) {
-    listTemp.add(DropdownMenuItem(value: '$i', child: Text(item)));
-    i++;
-  }
-  calenderList = listTemp.toList();
-  listTemp = [];
-
-  i = 0;
-  listTemp.add(const DropdownMenuItem(value: '-1', child: Text('Tất cả')));
-  for (var item in devices) {
-    listTemp.add(DropdownMenuItem(value: '$i', child: Text(item)));
-    i++;
-  }
-  deviceList = listTemp.toList();
-  listTemp = [];
-}
 
 List<DropdownMenuItem<String>> repeatList = [
   const DropdownMenuItem(value: '-1', child: Text('Tự thiết lập')),
@@ -158,13 +115,4 @@ class Time {
   });
 }
 
-final List<Time> Times = [
-  Time(id: '1', name: "5h - 8h30"),
-  Time(id: '2', name: "11h - 12h"),
-  Time(id: '3', name: "16h - 19h30"),
-  Time(id: '4', name: "21h - 23h30"),
-];
-final time_items =
-    Times.map((time) => MultiSelectItem<Time>(time, time.name)).toList();
-List<Time> listTimeSelected = [];
 TimeOfDay selectedCustomTime = TimeOfDay.now();

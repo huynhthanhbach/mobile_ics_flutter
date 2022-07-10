@@ -1,9 +1,11 @@
+import 'package:get/get.dart';
+import 'package:mobile_ics_flutter/models/hive_models/hive_model.dart';
+
 import 'component.dart';
-import 'tempdb.dart';
 
 class MyBottomSheet extends StatelessWidget {
-  const MyBottomSheet({Key? key}) : super(key: key);
-
+  const MyBottomSheet({Key? key, required this.news}) : super(key: key);
+  final NewsHiveModel news;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -20,8 +22,8 @@ class MyBottomSheet extends StatelessWidget {
             children: [
               Container(
                 padding: const EdgeInsets.symmetric(vertical: padding2),
-                child: const Text(
-                  newsTest1,
+                child: Text(
+                  news.name!,
                   style: textStyle2,
                 ),
               ),
@@ -37,30 +39,32 @@ class MyBottomSheet extends StatelessWidget {
                 vertical: padding2, horizontal: padding3),
             child: Column(
               children: [
-                const bottomSheetCard(
+                bottomSheetCard(
                     icon: iconCalender,
-                    name: bsTimeLabel,
-                    value: '17h00 - 01/06/2022'),
+                    name: 'BSL_TIME'.tr,
+                    value: news.createDate.toString()),
                 const SizedBox(
                   height: defaultPadding,
                 ),
-                const bottomSheetCard(
-                    icon: iconClock, name: bsDurationLabel, value: '15 phút'),
+                bottomSheetCard(
+                    icon: iconClock,
+                    name: 'BSL_DURATION'.tr,
+                    value: news.duration!),
                 const SizedBox(
                   height: defaultPadding,
                 ),
                 Row(
-                  children: const [
+                  children: [
                     bottomSheetCard(
                       icon: iconStatus,
-                      name: bsStatusLabel,
+                      name: 'BSL_STATUS'.tr,
                       value: 'Đang phát',
                       isPlaying: true,
                       paddingRight: padding3,
                     ),
                     bottomSheetCard(
                       icon: iconVolume,
-                      name: bsVolumeLabel,
+                      name: 'BSL_VOLUME'.tr,
                       value: '50%',
                     ),
                   ],
@@ -68,10 +72,10 @@ class MyBottomSheet extends StatelessWidget {
                 const SizedBox(
                   height: defaultPadding,
                 ),
-                const bottomSheetCard(
+                bottomSheetCard(
                   icon: iconNews,
-                  name: bsCategoriesLabel,
-                  value: 'Đời sống',
+                  name: 'BSL_CATEGORY'.tr,
+                  value: news.type!,
                 ),
                 const SizedBox(
                   height: defaultPadding - 5,
@@ -86,7 +90,7 @@ class MyBottomSheet extends StatelessWidget {
                       width: defaultPadding,
                     ),
                     Text(
-                      'Thiết bị phát: ',
+                      'BSL_DEVICE'.tr,
                       style: TextStyle(
                           fontSize: 16,
                           color: const Color(0xff4b4b4b).withOpacity(.7)),
@@ -94,15 +98,15 @@ class MyBottomSheet extends StatelessWidget {
                     DropdownButton<String>(
                       underline: Container(color: Colors.transparent),
                       value: '0',
-                      items: const [
+                      items: [
                         DropdownMenuItem(
                             value: '0',
                             child: PlayNewsCard(
-                              text: 'Danh sách thiết bị (3)',
+                              text: '${'BSL_DEVICE_SELECTED'.tr} (3)',
                               isGrey: true,
                               width: 145,
                             )),
-                        DropdownMenuItem(
+                        const DropdownMenuItem(
                             value: '1',
                             child: PlayNewsCard(
                               text: 'Loa 1',
@@ -118,16 +122,16 @@ class MyBottomSheet extends StatelessWidget {
                   height: padding1,
                 ),
                 Row(
-                  children: const [
+                  children: [
                     bottomSheetCard(
                       icon: iconRepeat,
-                      name: bsRepeatLabel,
+                      name: 'BSL_REPEAT'.tr,
                       value: 'Một lần',
                       paddingRight: padding3,
                     ),
                     bottomSheetCard(
                       icon: iconWarning,
-                      name: bsPriority,
+                      name: 'BSL_PRIORITY'.tr,
                       value: 'Cao',
                     ),
                   ],
