@@ -90,7 +90,7 @@ class OperatorController extends GetxController {
   void addTime(String time) {
     List<String> temp = times.toList();
     temp.add(time);
-    temp.sort();
+
     times = temp.toList();
     Times = initTime().toList();
     time_items =
@@ -501,7 +501,7 @@ class OperatorController extends GetxController {
   List<PlayNewsHiveModel> getListPlayNewsFilted() {
     List<PlayNewsHiveModel> temp = [];
     var category = filter[0];
-    // var time = filter[1];
+    var time = filter[1];
     // var calender = filter[2];
 
     for (var item in listPlayNews) {
@@ -514,6 +514,24 @@ class OperatorController extends GetxController {
       }
     }
 
+    List<PlayNewsHiveModel> temp2 = [];
+    for (var item in temp) {
+      switch (time) {
+        case 'Tất cả':
+          temp2 = temp.toList();
+          break;
+        case 'Khung giờ khác':
+          if (item.timeTitle!.length < 13) {
+            temp2.add(item);
+          }
+          break;
+        default:
+          if (item.timeTitle!.contains(time)) {
+            temp2.add(item);
+          }
+      }
+    }
+    temp = temp2.toList();
     temp.sort((a, b) {
       return b.createDate!.compareTo(a.createDate!);
     });
