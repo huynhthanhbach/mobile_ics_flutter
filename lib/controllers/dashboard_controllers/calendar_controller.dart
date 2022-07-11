@@ -62,10 +62,11 @@ class CalendarController extends GetxController {
     }
     print(timeBar.length);
     _getDataCharts(listCalendar);
-
-    listCalendar.last.descNews = DataDesc().desc.toList();
-    if (listCalendar.last.descNews.isNotEmpty) {
-      listTimeLine.value = listCalendar.last.descNews.toList();
+    if (listCalendar.isNotEmpty) {
+      listCalendar.last.descNews = DataDesc().desc.toList();
+      if (listCalendar.last.descNews.isNotEmpty) {
+        listTimeLine.value = listCalendar.last.descNews.toList();
+      }
     }
 
     seriesPie.value = [

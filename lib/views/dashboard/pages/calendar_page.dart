@@ -234,13 +234,10 @@ class CalendarPage extends StatelessWidget {
                       Obx(
                         () => Expanded(
                           child: (controller.listTimeLine.isEmpty)
-                              ? Container(
-                                  color: kBackgroundTag,
-                                  child: Center(
-                                    child: Text(
-                                      'CALENDAR_NONE'.tr,
-                                      style: KTextStyle.textAmountSubStyle,
-                                    ),
+                              ? Center(
+                                  child: Text(
+                                    'CALENDAR_NONE'.tr,
+                                    style: KTextStyle.textAmountSubStyle,
                                   ),
                                 )
                               : ScrollablePositionedList.builder(
@@ -325,16 +322,23 @@ class CalendarPage extends StatelessWidget {
                       ),
                       Obx(
                         () => Expanded(
-                          child: SfCircularChart(
-                            // ignore: invalid_use_of_protected_member
-                            series: controller.seriesPie.value,
-                            tooltipBehavior: controller.tooltipBehavior,
-                            legend: Legend(
-                              isVisible: true,
-                              overflowMode: LegendItemOverflowMode.wrap,
-                              textStyle: KTextStyle.textLegendStyle,
-                            ),
-                          ),
+                          child: (controller.listCalendar.isNotEmpty)
+                              ? SfCircularChart(
+                                  // ignore: invalid_use_of_protected_member
+                                  series: controller.seriesPie.value,
+                                  tooltipBehavior: controller.tooltipBehavior,
+                                  legend: Legend(
+                                    isVisible: true,
+                                    overflowMode: LegendItemOverflowMode.wrap,
+                                    textStyle: KTextStyle.textLegendStyle,
+                                  ),
+                                )
+                              : Center(
+                                  child: Text(
+                                    'NONE_DATA'.tr,
+                                    style: KTextStyle.textAmountSubStyle,
+                                  ),
+                                ),
                         ),
                       ),
                     ],
