@@ -3,12 +3,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:mobile_ics_flutter/views/news_management/newsmanagement_components/bottomsheet_itemaction.dart';
-import 'package:mobile_ics_flutter/views/operator/components/tempdb.dart';
 import 'package:path/path.dart' as pathlib;
 import 'package:provider/provider.dart';
 
 import 'package:mobile_ics_flutter/controllers/newsmanagement_controllers/newsmanagement_controller.dart';
-import 'package:mobile_ics_flutter/views/news_management/newsmanagement_components/add_file_dialog.dart';
 import 'package:mobile_ics_flutter/views/news_management/newsmanagement_components/category_provider.dart';
 import 'package:mobile_ics_flutter/views/news_management/newsmanagement_components/dir_item.dart';
 import 'package:mobile_ics_flutter/views/news_management/newsmanagement_components/file_item.dart';
@@ -119,9 +117,9 @@ class _FolderState extends State<Folder> with WidgetsBindingObserver {
             icon: const Icon(Icons.arrow_back, color: Colors.blue,),
             onPressed: () {
               if (paths.length == 1) {
-                Navigator.pop(context);
+                // Navigator.pop(context);
               } else {
-                navigateBack();
+                 navigateBack();
               }
             },
           ),
