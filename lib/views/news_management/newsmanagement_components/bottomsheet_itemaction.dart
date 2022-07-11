@@ -3,21 +3,28 @@
     - Xây dựng chức năng của các tùy chọn trên Bottom Sheet.
 */
 
-import 'package:file_manager/file_manager.dart';
+import 'dart:io';
+
+// import 'package:file_manager/file_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mobile_ics_flutter/views/news_management/utils/constants.dart';
+import 'package:mobile_ics_flutter/views/news_management/newsmanagement_components/rename_file_dialog.dart';
 import 'package:mobile_ics_flutter/views/news_management/utils/kcolors.dart';
+import 'package:mobile_ics_flutter/views/news_management/utils/utils.dart';
+import 'package:path/path.dart';
 
 // Lớp xây dựng bottom sheet hiện lên khi nhấn vào dấu 3 chấm trong mỗi file/folder
-class BottomSheetActionFolder extends StatelessWidget {
-  final FileManagerController controller = FileManagerController();
-  BottomSheetActionFolder({
-    Key? key,
-    required this.foldername,
-  }) : super(key: key);
+class BottomSheetItemAction extends StatelessWidget {
+  // final FileManagerController controller = FileManagerController();
+  // final TextEditingController name = TextEditingController();
+  final String path;
+  final FileSystemEntity file;
 
-  final String foldername;
+
+ const  BottomSheetItemAction({
+    Key? key,
+    required this.path, required this.file,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -42,28 +49,11 @@ class BottomSheetActionFolder extends StatelessWidget {
             padding: const EdgeInsets.only(left: 45, top: 20),
             child: Row(
               children: [
-                Text(foldername, style: textStyle1),
+                Text(basename(file.path), style: textStyle1),
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 45, top: 8.0),
-            child: Row(
-              children: const <Widget>[
-                Text(
-                  'Ngày tạo:',
-                  style: textStyle2,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 20.0),
-                  child: Text(
-                    '06/06/2022',
-                    style: textStyle2,
-                  ),
-                )
-              ],
-            ),
-          ),
+          
           Padding(
             padding: const EdgeInsets.only(left: 45, top: 8),
             child: Row(
@@ -97,7 +87,7 @@ class BottomSheetActionFolder extends StatelessWidget {
           // Đổi tên
           InkWell(
             onTap: () {
-              openDialogChangeName(context);
+              renameDialog(context, file.path, 'file');
             },
             child: Padding(
               padding: const EdgeInsets.only(left: 45, top: 35),
@@ -130,7 +120,7 @@ class BottomSheetActionFolder extends StatelessWidget {
           // Xóa
           InkWell(
             onTap: () {
-              openDialogDelete(context);
+              deleteFile(false, file);
             },
             child: Padding(
               padding: const EdgeInsets.only(left: 45, top: 35),
@@ -151,87 +141,31 @@ class BottomSheetActionFolder extends StatelessWidget {
   }
 
   // Chức năng đổi tên
-  Future openDialogChangeName(BuildContext context) => showDialog(
-        context: context,
-        builder: (context) {
-          TextEditingController folderName = TextEditingController();
-          return AlertDialog(
-            title: Text(foldername, style: textStyle1),
-            content: TextField(
-              autofocus: true,
-              decoration: InputDecoration(
-                icon: Image.asset('assets/icons/nm_changename.png'),
-                fillColor: kShadow,
-                filled: true,
-                hintText: 'Nhập tên mới',
-              ),
-            ),
-            actions: [
-              Padding(
-                padding: const EdgeInsets.only(left: 40, right: 40),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    TextButton(
-                        onPressed: () async {
-                          try {
-                            // Create Folder
-                            await FileManager.createFolder(
-                                controller.getCurrentPath, folderName.text);
-                            // Open Created Folder
-                            controller.setCurrentPath =
-                                controller.getCurrentPath + "/" + folderName.text;
-                          // ignore: empty_catches
-                          } catch (e) {}
-                          
-                          Navigator.pop(context);
-                        },
-                        child: const Text('Xong', style: textStyle11)),
-                    TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: const Text('Hủy', style: textStyle11)),
-                  ],
-                ),
-              )
-            ],
-            backgroundColor: kWhite,
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(15.0))
-            )
-          );
-        }
-      );
+  renameDialog(BuildContext context, String path, String type) async {
+    await showDialog(
+      context: context,
+      builder: (context) => RenameFileDialog(path: path, type: type),
+    );
+    // getFiles();
+  }
        
 
   // Chức năng xóa
-  Future openDialogDelete(BuildContext context) => showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text(foldername, style: textStyle1),
-          content: const Text('Bạn có chắc chắn muốn xóa ?', style: textStyle1, textAlign: TextAlign.center),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(left: 40, right: 40),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextButton(
-                      onPressed: () {},
-                      child: const Text('Xóa', style: textStyle11)),
-                  TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: const Text('Hủy', style: textStyle11)),
-                ],
-              ),
-            )
-          ],
-          backgroundColor: kWhite,
-          shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(15.0))),
-        ),
-      );
+  deleteFile(bool directory, var file) async {
+    try {
+      if (directory) {
+        await Directory(file.path).delete(recursive: true);
+      } else {
+        await File(file.path).delete(recursive: true);
+      }
+      Dialogs.showToast('Delete Successful');
+    } catch (e) {
+      // ignore: avoid_print
+      print(e.toString());
+      if (e.toString().contains('Permission denied')) {
+        Dialogs.showToast('Cannot write to this Storage device!');
+      }
+    }
+    // getFiles();
+  }
 }

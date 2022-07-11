@@ -11,8 +11,10 @@ import 'package:mobile_ics_flutter/core/theme/theme_config.dart';
 import 'package:mobile_ics_flutter/core/utils/constants.dart';
 import 'package:mobile_ics_flutter/models/hive_models/hive_model.dart';
 import 'package:mobile_ics_flutter/views/home/home_screen.dart';
+import 'package:mobile_ics_flutter/views/news_management/newsmanagement_components/category_provider.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,7 +35,15 @@ void main() async {
   Hive.registerAdapter(PlayNewsHiveModelAdapter());
   await BoxesService().openBox();
 
-  runApp(const MyApp());
+  // runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => CategoryProvider()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

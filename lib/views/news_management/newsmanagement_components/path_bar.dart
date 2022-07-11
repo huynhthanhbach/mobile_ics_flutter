@@ -37,7 +37,7 @@ class PathBar extends StatelessWidget implements PreferredSizeWidget {
             }
             return InkWell(
               onTap: () => onChanged(index),
-              child: Container(
+              child: SizedBox(
                 height: 40,
                 child: Center(
                   child: Padding(
@@ -48,7 +48,7 @@ class PathBar extends StatelessWidget implements PreferredSizeWidget {
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: index == paths.length - 1
-                            ? Theme.of(context).accentColor
+                            ? Colors.blue
                             : Theme.of(context).textTheme.headline6!.color,
                       ),
                     ),
@@ -58,7 +58,7 @@ class PathBar extends StatelessWidget implements PreferredSizeWidget {
             );
           },
           separatorBuilder: (BuildContext context, int index) {
-            return const Icon(Icons.warehouse);
+            return const Icon(Icons.arrow_right, color: Colors.black87,);
           },
         ),
       ),
@@ -66,5 +66,5 @@ class PathBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(40.0);
+  Size get preferredSize => const Size.fromHeight(40.0);
 }

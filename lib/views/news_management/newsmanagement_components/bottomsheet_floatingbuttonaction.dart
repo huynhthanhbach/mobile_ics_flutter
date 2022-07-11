@@ -6,14 +6,14 @@
     - Xây dựng chức năng của các tùy chọn trên Bottom Sheet.
 */
 
-import 'package:file_manager/file_manager.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:mobile_ics_flutter/controllers/newsmanagement_controllers/newsmanagement_controller.dart';
-import 'package:mobile_ics_flutter/views/news_management/utils/constants.dart';
+import 'package:mobile_ics_flutter/views/news_management/newsmanagement_components/add_file_dialog.dart';
 import 'package:mobile_ics_flutter/views/news_management/utils/kcolors.dart';
+import 'package:mobile_ics_flutter/views/news_management/utils/utils.dart';
 
 //Hàm xây dựng FloatingButton
 Widget bottomSheetFloatingButton(
@@ -34,10 +34,10 @@ floatingButtonAction(BuildContext context, NewsManagementController controller) 
     Container(
       height: Get.mediaQuery.size.height * .3,
       padding: const EdgeInsets.only(
-        top: Constants.dkp * .75,
-        left: Constants.dkp * .75,
-        right: Constants.dkp * .75,
-        bottom: Constants.dkp * .5,
+        top: 15,
+        left: 15,
+        right: 15,
+        bottom: 10,
       ),
       decoration: const BoxDecoration(
         color: kWhite,
@@ -72,9 +72,7 @@ floatingButtonAction(BuildContext context, NewsManagementController controller) 
         Padding(
           padding: const EdgeInsets.only(left: 45, top: 0),
           child: InkWell(
-            onTap: () {
-              createNewFolder(context);
-            },
+            onTap: () => addDialog(context, controller.path!),
             child: Row(
               children: [
                 Padding(
@@ -108,6 +106,14 @@ floatingButtonAction(BuildContext context, NewsManagementController controller) 
   );
 }
 
+addDialog(BuildContext context, String path) async {
+    await showDialog(
+      context: context,
+      builder: (context) => AddFileDialog(path: path),
+    );
+    // getFiles();
+  }
+
 void pickFiless() async {
   List<PlatformFile>? paths;
 
@@ -134,55 +140,56 @@ void pickFiless() async {
   userAborted = paths == null;
 }
 
-Future createNewFolder(BuildContext context) => showDialog(
-  context: context,
-  builder: (context) {
-    final FileManagerController controller = FileManagerController();
-    TextEditingController folderName = TextEditingController();
-    return AlertDialog(
-      title: const Text('Tạo thư mục mới', style: textStyle1),
-      content: TextField(
-        autofocus: true,
-        decoration: InputDecoration(
-          icon: Image.asset('assets/icons/nm_changename.png'),
-          fillColor: kShadow,
-          filled: true,
-          hintText: 'Nhập tên thư mục',
-        ),
-      ),
-      actions: [
-        Padding(
-          padding: const EdgeInsets.only(left: 40, right: 40),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              TextButton(
-                  onPressed: () async {
-                    try {
-                      // Create Folder
-                      await FileManager.createFolder(
-                        controller.getCurrentPath, folderName.text
-                      );
-                      // Open Created Folder
-                      controller.setCurrentPath =
-                          controller.getCurrentPath + "/" + folderName.text;
-                    } catch (e) {}
+// Future createNewFolder(BuildContext context) => showDialog(
+//   context: context,
+//   builder: (context) {
+//     final FileManagerController controller = FileManagerController();
+//     TextEditingController folderName = TextEditingController();
+//     return AlertDialog(
+//       title: const Text('Tạo thư mục mới', style: textStyle1),
+//       content: TextField(
+//         autofocus: true,
+//         decoration: InputDecoration(
+//           icon: Image.asset('assets/icons/nm_changename.png'),
+//           fillColor: kShadow,
+//           filled: true,
+//           hintText: 'Nhập tên thư mục',
+//         ),
+//       ),
+//       actions: [
+//         Padding(
+//           padding: const EdgeInsets.only(left: 40, right: 40),
+//           child: Row(
+//             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//             children: [
+//               TextButton(
+//                   onPressed: () async {
+//                     try {
+//                       // Create Folder
+//                       await FileManager.createFolder(
+//                         controller.getCurrentPath, folderName.text
+//                       );
+//                       // Open Created Folder
+//                       controller.setCurrentPath =
+//                           "${controller.getCurrentPath}/${folderName.text}";
+//                     } catch (e) {}
 
-                    Navigator.pop(context);
-                  },
-                  child: const Text('Tạo', style: textStyle11)),
-              TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('Hủy', style: textStyle11)),
-            ],
-          ),
-        )
-      ],
-      backgroundColor: kWhite,
-      shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(15.0))),
-    );
-  }
-);
+//                     // ignore: use_build_context_synchronously
+//                     Navigator.pop(context);
+//                   },
+//                   child: const Text('Tạo', style: textStyle11)),
+//               TextButton(
+//                   onPressed: () {
+//                     Navigator.of(context).pop();
+//                   },
+//                   child: const Text('Hủy', style: textStyle11)),
+//             ],
+//           ),
+//         )
+//       ],
+//       backgroundColor: kWhite,
+//       shape: const RoundedRectangleBorder(
+//           borderRadius: BorderRadius.all(Radius.circular(15.0))),
+//     );
+//   }
+// );

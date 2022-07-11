@@ -23,7 +23,7 @@ class AddFileDialog extends StatelessWidget {
           children: <Widget>[
             const SizedBox(height: 15),
             const Text(
-              'Add New Folder',
+              'Tạo thư mục mới',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             ),
             const SizedBox(height: 25),
@@ -35,46 +35,37 @@ class AddFileDialog extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Container(
+                SizedBox(
                   height: 40,
                   width: 130,
                   child: OutlinedButton(
-                    child: Text(
-                      'Cancel',
-                      style: TextStyle(
-                        color: Theme.of(context).accentColor,
-                      ),
-                    ),
                     onPressed: () => Navigator.pop(context),
                     style: ButtonStyle(
                       backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.white),
+                          MaterialStateProperty.all<Color>(Colors.black12),
                       shape: MaterialStateProperty.all(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5.0),
                         ),
                       ),
-                      side: MaterialStateProperty.all(
-                        BorderSide(color: Theme.of(context).accentColor),
-                      ),
+
+                    ),
+                    child: const Text(
+                      'Hủy',
+                      style: textStyle1
                     ),
                   ),
                 ),
-                Container(
+                SizedBox(
                   height: 40,
                   width: 130,
                   child: ElevatedButton(
-                    child: const Text(
-                      'Create',
-                      style: TextStyle(color: Colors.white),
-                    ),
                     onPressed: () async {
                       if (name.text.isNotEmpty) {
-                        if (!Directory(path + '/${name.text}').existsSync()) {
-                          await Directory(path + '/${name.text}')
+                        if (!Directory('$path/${name.text}').existsSync()) {
+                          await Directory('$path/${name.text}')
                               .create()
                               .catchError((e) {
-                            print(e.toString());
                             if (e.toString().contains('Permission denied')) {
                               Dialogs.showToast(
                                   'Cannot write to this Storage  device!');
@@ -82,25 +73,30 @@ class AddFileDialog extends StatelessWidget {
                           });
                         } else {
                           Dialogs.showToast(
-                              'A Folder with that name already exists!');
+                              'Tên thư mục này đã tồn tại!');
                         }
+                        // ignore: use_build_context_synchronously
                         Navigator.pop(context);
                       }
                     },
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(
-                          Theme.of(context).accentColor),
+                          Colors.blue.shade100),
                       shape: MaterialStateProperty.all(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5.0),
                         ),
                       ),
                     ),
+                    child: const Text(
+                      'Tạo',
+                      style: textStyle1,
+                    ),
                   ),
                 ),
               ],
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
           ],
         ),
       ),

@@ -15,13 +15,13 @@ class FileIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     File f = File(file.path);
-    String _extension = extension(f.path).toLowerCase();
+    String extens = extension(f.path).toLowerCase();
     String mimeType = mime(basename(file.path).toLowerCase()) ?? '';
     String type = mimeType.isEmpty ? '' : mimeType.split('/')[0];
-    if (_extension == '.epub' ||
-        _extension == '.pdf' ||
-        _extension == '.mobi') {
-      return const Icon(Icons.document_scanner_rounded, color: Colors.orangeAccent);
+    if (extens == '.epub' ||
+        extens == '.pdf' ||
+        extens == '.mobi') {
+      return const Icon(Icons.book, color: Colors.orangeAccent);
     } else {
       switch (type) {
         case 'image':
@@ -37,11 +37,11 @@ class FileIcon extends StatelessWidget {
             ),
           );
         case 'audio':
-          return const Icon(Icons.music_note, color: Colors.blue);
+          return Image.asset('assets/icons/nm_folder.png', width: 60, height: 60, fit: BoxFit.fitWidth);
         case 'text':
           return const Icon(Icons.document_scanner_outlined, color: Colors.orangeAccent);
         default:
-          return const Icon(Icons.question_mark);
+          return const Icon(Icons.question_mark_outlined);
       }
     }
   }

@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile_ics_flutter/views/news_management/utils/constants.dart';
+import 'package:mobile_ics_flutter/views/news_management/utils/utils.dart';
 
 class AudioPlayerBar extends StatefulWidget {
   const AudioPlayerBar({Key? key}) : super(key: key);

@@ -11,7 +11,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class CategoryProvider extends ChangeNotifier {
   CategoryProvider() {
-    getHidden();
     getSort();
   }
 
@@ -26,78 +25,18 @@ class CategoryProvider extends ChangeNotifier {
   List<String> audioTabs = <String>[];
   List<FileSystemEntity> currentFiles = [];
 
-  bool showHidden = false;
   int sort = 0;
   final isolates = IsolateHandler();
 
-  getDownloads() async {
-    setLoading(true);
-    downloadTabs.clear();
-    downloads.clear();
-    downloadTabs.add('All');
-    List<Directory> storages = await FileUtils.getStorageList();
-    storages.forEach((dir) {
-      if (Directory(dir.path + 'Download').existsSync()) {
-        List<FileSystemEntity> files =
-            Directory(dir.path + 'Download').listSync();
-        print(files);
-        files.forEach((file) {
-          if (FileSystemEntity.isFileSync(file.path)) {
-            downloads.add(file);
-            downloadTabs
-                .add(file.path.split('/')[file.path.split('/').length - 2]);
-            downloadTabs = downloadTabs.toSet().toList();
-            notifyListeners();
-          }
-        });
-      }
-    });
-    setLoading(false);
-  }
-
-  getImages(String type) async {
-    setLoading(true);
-    imageTabs.clear();
-    images.clear();
-    imageTabs.add('All');
-    String isolateName = type;
-    isolates.spawn<String>(
-      getAllFilesWithIsolate,
-      name: isolateName,
-      onReceive: (val) {
-        print(val);
-        isolates.kill(isolateName);
-      },
-      onInitialized: () => isolates.send('hey', to: isolateName),
-    );
-    ReceivePort _port = ReceivePort();
-    IsolateNameServer.registerPortWithName(_port.sendPort, '${isolateName}_2');
-    _port.listen((files) {
-      print('RECEIVED SERVER PORT');
-      print(files);
-      files.forEach((file) {
-        String mimeType = mime(file.path) ?? '';
-        if (mimeType.split('/')[0] == type) {
-          images.add(file);
-          imageTabs
-              .add('${file.path.split('/')[file.path.split('/').length - 2]}');
-          imageTabs = imageTabs.toSet().toList();
-        }
-        notifyListeners();
-      });
-      currentFiles = images;
-      setLoading(false);
-      _port.close();
-      IsolateNameServer.removePortNameMapping('${isolateName}_2');
-    });
-  }
-
   static getAllFilesWithIsolate(Map<String, dynamic> context) async {
+    // ignore: avoid_print
     print(context);
     String isolateName = context['name'];
+    // ignore: avoid_print
     print('Get files');
     List<FileSystemEntity> files =
         await FileUtils.getAllFiles(showHidden: false);
+    // ignore: avoid_print
     print('Files $files');
     final messenger = HandledIsolate.initialize(context);
     try {
@@ -105,7 +44,9 @@ class CategoryProvider extends ChangeNotifier {
           IsolateNameServer.lookupPortByName('${isolateName}_2');
       send!.send(files);
     } catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     }
     messenger.send('done');
   }
@@ -120,21 +61,27 @@ class CategoryProvider extends ChangeNotifier {
       getAllFilesWithIsolate,
       name: isolateName,
       onReceive: (val) {
-        print(val);
+        if (kDebugMode) {
+          print(val);
+        }
         isolates.kill(isolateName);
       },
       onInitialized: () => isolates.send('hey', to: isolateName),
     );
-    ReceivePort _port = ReceivePort();
-    IsolateNameServer.registerPortWithName(_port.sendPort, '${isolateName}_2');
-    _port.listen((files) async {
-      print('RECEIVED SERVER PORT');
-      print(files);
+    ReceivePort port = ReceivePort();
+    IsolateNameServer.registerPortWithName(port.sendPort, '${isolateName}_2');
+    port.listen((files) async {
+      if (kDebugMode) {
+        print('RECEIVED SERVER PORT');
+      }
+      if (kDebugMode) {
+        print(files);
+      }
       List tabs = await compute(separateAudios, {'files': files, 'type': type});
       audio = tabs[0];
       audioTabs = tabs[1];
       setLoading(false);
-      _port.close();
+      port.close();
       IsolateNameServer.removePortNameMapping('${isolateName}_2');
     });
   }
@@ -149,11 +96,11 @@ class CategoryProvider extends ChangeNotifier {
     List items = item[0];
     String label = item[1];
     List<FileSystemEntity> files = [];
-    items.forEach((file) {
+    for (var file in items) {
       if ('${file.path.split('/')[file.path.split('/').length - 2]}' == label) {
         files.add(file);
       }
-    });
+    }
     return files;
   }
 
@@ -164,7 +111,9 @@ class CategoryProvider extends ChangeNotifier {
     List<String> audioTabs = [];
     for (File file in files) {
       String mimeType = mime(file.path) ?? '';
-      print(extension(file.path));
+      if (kDebugMode) {
+        print(extension(file.path));
+      }
       if (type == 'text' && docExtensions.contains(extension(file.path))) {
         audio.add(file);
       }
@@ -172,7 +121,7 @@ class CategoryProvider extends ChangeNotifier {
         if (mimeType.split('/')[0] == type) {
           audio.add(file);
           audioTabs
-              .add('${file.path.split('/')[file.path.split('/').length - 2]}');
+              .add(file.path.split('/')[file.path.split('/').length - 2]);
           audioTabs = audioTabs.toSet().toList();
         }
       }
@@ -195,7 +144,6 @@ class CategoryProvider extends ChangeNotifier {
   setHidden(value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('hidden', value);
-    showHidden = value;
     notifyListeners();
   }
 

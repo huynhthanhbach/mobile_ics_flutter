@@ -4,10 +4,9 @@ import 'package:get/get.dart';
 class NewsManagementController extends GetxController {
   bool isFbVisible = false;
 
-  @override
-  void onInit() {
-    
-  }
+   String? path;
+
+
 
   void updateIsFbVisible(bool check) {
     isFbVisible = check;

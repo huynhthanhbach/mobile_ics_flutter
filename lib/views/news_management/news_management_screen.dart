@@ -2,11 +2,9 @@ import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 
 import 'package:flutter/material.dart';
-import 'package:mobile_ics_flutter/views/news_management/utils/constants.dart';
+import 'package:mobile_ics_flutter/views/news_management/newsmanagement_components/folder.dart';
 import 'package:mobile_ics_flutter/views/news_management/utils/kcolors.dart';
-import 'package:mobile_ics_flutter/views/news_management/newsmanagement_components/bottomsheet_itemaction.dart';
 import 'package:mobile_ics_flutter/views/news_management/newsmanagement_components/bottomsheet_floatingbuttonaction.dart';
-import 'package:mobile_ics_flutter/views/news_management/newsmanagement_components/item.dart';
 
 import 'package:mobile_ics_flutter/controllers/newsmanagement_controllers/newsmanagement_controller.dart';
 
@@ -18,6 +16,7 @@ class NewsManagementScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Bắt đầu từ đây nè
+    
     return GetBuilder<NewsManagementController>(
       init: NewsManagementController(),
       builder: (controller) => Scaffold(
@@ -51,7 +50,7 @@ class NewsManagementScreen extends StatelessWidget {
                               // Icon tiêu đề
                               Image.asset('assets/icons/nm_folder-title.png'),
                               const SizedBox(
-                                width: Constants.dkp,
+                                width: 20,
                               ),
                               // Tiêu đề
                               const Text(
@@ -90,63 +89,12 @@ class NewsManagementScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    
-                //     // Container tên folder
-                //     child: Stack(
-                //       children: <Widget>[
-                //         Positioned(
-                //           top: 0,
-                //           left: 10,
-                //           right: 10,
-                //           // Đường lai màu xanh
-                //           child: Container(
-                //               padding: const EdgeInsets.only(top: 20, bottom: 14),
-                //               width: double.infinity,
-                //               decoration: const BoxDecoration(
-                //                 border: Border(
-                //                   bottom: BorderSide(width: 1.0, color: kBlue),
-                //                 ),
-                //               ),
-                //               // Container tên folder
-                //               child: const Padding(
-                //                 padding: EdgeInsets.only(left: 35),
-                //                 child: Text(
-                //                     //'$foldername',
-                //                     'Tất cả',
-                //                     style: textStyleTitleNameFolder),
-                //               )),
-                //         ),
-                //         // Container(
-                //         //   padding:
-                //         //       const EdgeInsets.only(left: 15, right: 15, top: 70),
-                //         //   child: GridView.builder(
-                //         //     gridDelegate:
-                //         //         const SliverGridDelegateWithMaxCrossAxisExtent(
-                //         //             maxCrossAxisExtent: 180,
-                //         //             childAspectRatio: 3 / 2,
-                //         //             crossAxisSpacing: 0,
-                //         //             mainAxisSpacing: 0),
-                //         //     // Dữ liệu giả
-                //         //     itemCount: 100,
-                //         //     itemBuilder: (context, foldername) => Item(
-                //         //       name: "$foldername",
-                //         //       itemAction: () {
-                //         //         //Gọi đến BottomSheetFolder để hiện bottom sheet chứa các chức năng Đổi tên, di chuyển, xóa khi nhấn vào dấu 3 chấm
-                //         //         controller.showBottomSheet(
-                //         //           context,
-                //         //           BottomSheetActionFolder(
-                //         //             foldername: foldername.toString(),
-                //         //           ),
-                //         //         );
-                //         //       },
-                //         //       // datecreate: '06/06/2022',
-                //         //       // usercreate: 'Nguyễn Văn A',
-                //         //       // type: 'folder'
-                //         //     ),
-                //         //   ),
-                //         // ),
-                //       ],
-                //     ),
+                    child: 
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Folder(title: 'Name',path: '/storage/emulated/0/', controller: controller,),
+                      ),
+
                   ),
                 ),
               ],

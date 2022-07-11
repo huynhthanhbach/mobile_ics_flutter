@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:io';
 import 'dart:math';
 
@@ -141,7 +143,7 @@ class FileUtils {
     } else if (dateFormat == yesterday) {
       return 'Yesterday ${DateFormat('HH:mm').format(DateTime.parse(iso))}';
     } else {
-      return '${DateFormat('MMM dd, HH:mm').format(DateTime.parse(iso))}';
+      return DateFormat('MMM dd, HH:mm').format(DateTime.parse(iso));
     }
   }
 

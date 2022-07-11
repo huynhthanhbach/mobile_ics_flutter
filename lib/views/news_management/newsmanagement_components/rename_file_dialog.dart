@@ -9,10 +9,11 @@ class RenameFileDialog extends StatefulWidget {
   final String path;
   final String type;
 
-  const RenameFileDialog({required this.path, required this.type});
+  const RenameFileDialog({super.key, required this.path, required this.type});
 
   @override
-  _RenameFileDialogState createState() => _RenameFileDialogState();
+  
+  State<RenameFileDialog> createState() => _RenameFileDialogState();
 }
 
 class _RenameFileDialogState extends State<RenameFileDialog> {
@@ -44,6 +45,7 @@ class _RenameFileDialogState extends State<RenameFileDialog> {
             ),
             const SizedBox(height: 25),
             TextField(
+              autofocus: true,
               controller: name,
               keyboardType: TextInputType.text,
             ),
@@ -55,79 +57,70 @@ class _RenameFileDialogState extends State<RenameFileDialog> {
                   height: 40,
                   width: 130,
                   child: OutlinedButton(
-                    child: Text(
-                      'Hủy',
-                      style: TextStyle(
-                        color: Theme.of(context).accentColor,
-                      ),
-                    ),
                     onPressed: () => Navigator.pop(context),
                     style: ButtonStyle(
                       backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.white),
+                          MaterialStateProperty.all<Color>(Colors.black12),
                       shape: MaterialStateProperty.all(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5.0),
                         ),
                       ),
-                      side: MaterialStateProperty.all(
-                        BorderSide(color: Theme.of(context).accentColor),
-                      ),
+
+                    ),
+                    child: const Text(
+                      'Hủy',
+                      style: textStyle1
                     ),
                   ),
                 ),
-                Container(
+                SizedBox(
                   height: 40,
                   width: 130,
                   child: ElevatedButton(
-                    child: Text(
-                      'Xong',
-                      style: const TextStyle(color: Colors.white),
-                    ),
                     onPressed: () async {
                       if (name.text.isNotEmpty) {
                         if (widget.type == 'file') {
-                          if (!File(widget.path.replaceAll(
-                                      pathlib.basename(widget.path), '') +
-                                  '${name.text}')
+                          if (!File('${widget.path.replaceAll(
+                                      pathlib.basename(widget.path), '')}${name.text}')
                               .existsSync()) {
                             await File(widget.path)
-                                .rename(widget.path.replaceAll(
-                                        pathlib.basename(widget.path), '') +
-                                    '${name.text}')
+                                .rename('${widget.path.replaceAll(
+                                        pathlib.basename(widget.path), '')}${name.text}')
                                 .catchError((e) {
-                              print("Lỗi 2");
                             });
                           } else {
-                            Dialogs.showToast('Trùng tên file!');
+                            Dialogs.showToast('Tên file này bị trùng!');
                           }
                         } else {
-                          if (Directory(widget.path.replaceAll(
-                                      pathlib.basename(widget.path), '') +
-                                  '${name.text}')
+                          if (Directory('${widget.path.replaceAll(
+                                      pathlib.basename(widget.path), '')}${name.text}')
                               .existsSync()) {
                             Dialogs.showToast('Trùng tên thư mục!');
                           } else {
                             await Directory(widget.path)
-                                .rename(widget.path.replaceAll(
-                                        pathlib.basename(widget.path), '') +
-                                    '${name.text}')
+                                .rename('${widget.path.replaceAll(
+                                        pathlib.basename(widget.path), '')}${name.text}')
                                 .catchError((e) {
-                              print("Lỗi 3");
                             });
                           }
                         }
+                        // ignore: use_build_context_synchronously
                         Navigator.pop(context);
                       }
                     },
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(
-                          Theme.of(context).accentColor),
+                          Colors.blue.shade100),
                       shape: MaterialStateProperty.all(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5.0),
                         ),
                       ),
+                    ),
+                    child: const Text(
+                      'Xong',
+                      style: textStyle1,
                     ),
                   ),
                 ),
