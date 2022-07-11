@@ -15,6 +15,7 @@ class PlayNews extends StatelessWidget {
   final bool? full;
   final double height;
   final String text;
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -48,7 +49,7 @@ class PlayNews extends StatelessWidget {
           SizedBox(
             width: full == null
                 ? MediaQuery.of(context).size.width * .3
-                : MediaQuery.of(context).size.width * .55,
+                : MediaQuery.of(context).size.width * .65,
             child: content,
           )
         ],

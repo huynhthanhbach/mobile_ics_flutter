@@ -52,9 +52,16 @@ class OperatorScreen extends GetWidget<OperatorController> {
                 const SizedBox(
                   width: padding2,
                 ),
-                Image.asset(
-                  iconAvatar,
-                  width: avatarSize,
+                ClipRRect(
+                  child: InkWell(
+                    onTap: () async {
+                      // controller.addPlayNewsData();
+                    },
+                    child: Image.asset(
+                      iconAvatar,
+                      width: avatarSize,
+                    ),
+                  ),
                 )
               ],
             ),
@@ -152,7 +159,7 @@ class OperatorScreen extends GetWidget<OperatorController> {
                                       hint: Obx(
                                         () => Text(
                                           '${'H_TIME'.tr} (${controller.timeCounter.value.toString()})',
-                                          style: textStyle3a,
+                                          style: textStyle4,
                                         ),
                                       ),
                                       underline:
@@ -240,16 +247,15 @@ class OperatorScreen extends GetWidget<OperatorController> {
                                       icon: Icons.play_arrow_rounded,
                                       text: 'BTL_PLAY'.tr,
                                       onpress: () {
-                                        controller.playNewsCalender =
-                                            controller.addPlayNews(
-                                                controller
-                                                    .newsHiveSelected!.id!,
-                                                controller.volumeSelected.value,
-                                                controller.repeatSelected!,
-                                                controller.prioritySelected!,
-                                                controller.listDeviceSelected);
-                                        controller.printNewsPlayed();
-                                        print(controller.playNewsCalender);
+                                        if (controller.checkPlayNews()) {
+                                          controller.addPlayNews();
+                                          controller.addPlayNewsData();
+                                          showToast('Thêm thành công');
+                                          controller.updateListPlayNewsToday();
+                                          //controller.clearSelect();
+                                        } else {
+                                          showToast('Xin chọn đủ các trường!');
+                                        }
                                       },
                                     )),
                               ],
@@ -303,24 +309,37 @@ class OperatorScreen extends GetWidget<OperatorController> {
                         Expanded(
                           child: Obx(
                             () => ListView.builder(
-                              itemCount: (controller.listNews.length >= 10)
-                                  ? 10
-                                  : controller.listNews.length,
+                              itemCount: controller.listPlayNewsToday.length,
                               itemBuilder: (context, index) => InkWell(
                                 onTap: () async {
                                   controller.showBottomSheet(
                                       context,
                                       MyBottomSheet(
-                                        news: controller.listNews[index],
+                                        news: controller.getNews(controller
+                                            .listPlayNewsToday[index].idNews!),
+                                        playNews:
+                                            controller.listPlayNewsToday[index],
                                       ));
                                 },
                                 child: HistoryContentCard(
-                                  titleName: controller.listNews[index].name!,
+                                  titleName: controller
+                                      .getNews(controller
+                                          .listPlayNewsToday[index].idNews!)
+                                      .name!,
                                   titleType:
-                                      "Loại: ${controller.listNews[index].type!}",
+                                      "Loại: ${controller.getNews(controller.listPlayNewsToday[index].idNews!).type!}",
                                   titleTime:
-                                      "Thời gian: ${controller.listNews[index].createDate!}",
-                                  statusCode: 0,
+                                      "Thời gian: ${controller.listPlayNewsToday[index].createDate!.toString().substring(0, 16)}",
+                                  statusCode: controller
+                                              .listPlayNewsToday[index]
+                                              .status ==
+                                          'Đã phát'
+                                      ? 0
+                                      : (controller.listPlayNewsToday[index]
+                                                  .status ==
+                                              'Đang phát'
+                                          ? 1
+                                          : 2),
                                 ),
                               ),
                             ),

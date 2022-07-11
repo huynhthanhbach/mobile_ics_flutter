@@ -25,8 +25,8 @@ class NewsList extends StatelessWidget {
           padding: const EdgeInsets.all(defaultPadding),
           child: Column(
             children: [
-              GetBuilder<OperatorController>(
-                builder: (_) => CustomContainer(
+              Obx(
+                () => CustomContainer(
                   height:
                       controller.flag.value ? buttonHeightOn : buttonHeightOff,
 
@@ -37,7 +37,7 @@ class NewsList extends StatelessWidget {
                         height: buttonHeightOff,
                         child: CustomTextButton(
                           onpress: () {
-                            _.pressButton();
+                            controller.pressButton();
                           },
                           icon: controller.flag.value
                               ? null
@@ -148,27 +148,18 @@ class NewsList extends StatelessWidget {
                                   children: [
                                     Expanded(
                                       child: PlayNews(
+                                        height: 28,
                                         icon: iconDevice,
-                                        //full: true,
-                                        text: 'NFL_DEVICE'.tr,
-                                        content: GetBuilder<OperatorController>(
-                                          builder: (_) =>
-                                              DropdownButton<String>(
-                                            isDense: true,
-                                            style: TextStyle(
-                                              color: opBlack.withOpacity(.6),
-                                              fontSize: text3,
-                                            ),
-                                            isExpanded: true,
-                                            value: _.deviceFilter,
-                                            onChanged: (value) =>
-                                                _.Filt('deviceFilter', value),
-                                            underline: Container(
-                                                color: Colors.transparent),
-                                            items: deviceList,
+                                        content: InkWell(
+                                          child: Text(
+                                            '${'H_SELECT_DEVICE'.tr} (${controller.filtDeviceCounter.value.toString()})',
+                                            style: textStyle3a,
                                           ),
+                                          onTap: () {
+                                            showFiltDeviceSelect(
+                                                context, controller);
+                                          },
                                         ),
-                                        //value: '',
                                       ),
                                     ),
                                   ],
@@ -179,23 +170,22 @@ class NewsList extends StatelessWidget {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    GetBuilder<OperatorController>(
-                                      builder: (_) => Container(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: defaultPadding),
-                                          child: CustomButton1(
-                                            padding: padding4,
-                                            space: defaultPadding,
-                                            icon: Icons.filter_list_rounded,
-                                            text: 'BTL_FILT'.tr,
-                                            background: true,
-                                            onpress: () {
-                                              _.addFilter();
-                                              _.pressButton();
-                                              _.checkFilter();
-                                            },
-                                          )),
-                                    )
+                                    Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: defaultPadding),
+                                        child: CustomButton1(
+                                          padding: padding4,
+                                          space: defaultPadding,
+                                          icon: Icons.filter_list_rounded,
+                                          text: 'BTL_FILT'.tr,
+                                          background: true,
+                                          onpress: () {
+                                            controller.addFilter();
+                                            controller.pressButton();
+                                            controller.checkFilter();
+                                            controller.filt();
+                                          },
+                                        ))
                                   ],
                                 )
                               ],
@@ -239,22 +229,37 @@ class NewsList extends StatelessWidget {
                         Expanded(
                           child: Obx(
                             () => ListView.builder(
-                              itemCount: controller.listNews.length,
+                              itemCount: controller.listPlayNewsFilted.length,
                               itemBuilder: (context, index) => InkWell(
                                 onTap: () async {
                                   controller.showBottomSheet(
                                       context,
                                       MyBottomSheet(
-                                        news: controller.listNews[index],
+                                        news: controller.getNews(controller
+                                            .listPlayNewsFilted[index].idNews!),
+                                        playNews: controller
+                                            .listPlayNewsFilted[index],
                                       ));
                                 },
                                 child: HistoryContentCard(
-                                  titleName: controller.listNews[index].name!,
+                                  titleName: controller
+                                      .getNews(controller
+                                          .listPlayNews[index].idNews!)
+                                      .name!,
                                   titleType:
-                                      "Loại: ${controller.listNews[index].type!}",
+                                      "Loại: ${controller.getNews(controller.listPlayNewsFilted[index].idNews!).type!}",
                                   titleTime:
-                                      "Thời gian: ${controller.listNews[index].createDate!}",
-                                  statusCode: 0,
+                                      "Thời gian: ${controller.listPlayNewsFilted[index].createDate!.toString().substring(0, 16)}",
+                                  statusCode: controller
+                                              .listPlayNewsFilted[index]
+                                              .status ==
+                                          'Đã phát'
+                                      ? 0
+                                      : (controller.listPlayNewsFilted[index]
+                                                  .status ==
+                                              'Đang phát'
+                                          ? 1
+                                          : 2),
                                 ),
                               ),
                             ),

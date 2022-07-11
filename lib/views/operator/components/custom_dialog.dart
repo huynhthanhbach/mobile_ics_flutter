@@ -29,6 +29,10 @@ void showFixedSchdule(
         onConfirm: (List<Time> results) {
           controller.listTimeSelected = results;
           controller.countTime();
+          controller.timeSelected = [];
+          for (var item in results) {
+            controller.timeSelected!.add(item.name);
+          }
         },
         height: 250,
         width: 200,
@@ -68,6 +72,41 @@ void showDeviceSelect(
           controller.countDevice();
         },
         width: 200,
+      );
+    },
+  );
+}
+
+void showFiltDeviceSelect(
+    BuildContext context, OperatorController controller) async {
+  await showDialog(
+    context: context,
+    builder: (ctx) {
+      return MultiSelectDialog(
+        searchable: true,
+        title: Text(
+          'DEVICE_SELECT_TITLE'.tr,
+          style: textStyle1,
+        ),
+        confirmText: Text(
+          'CONFIRM_TEXT'.tr,
+          style: textStyle2,
+        ),
+        cancelText: Text(
+          'CANCEL_TEXT'.tr,
+          style: textStyle2,
+        ),
+        // items: device_items,
+        // initialValue: listDeviceSelected,
+        // onConfirm: (List<Device> results) {
+        //   listDeviceSelected = results;
+        items: controller.filtDeviceItem,
+        initialValue: controller.listFiltDeviceSelected,
+        onConfirm: (List<DeviceHiveModel> results) {
+          controller.listFiltDeviceSelected = results;
+          controller.countFiltDevice();
+        },
+        width: 250,
       );
     },
   );

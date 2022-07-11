@@ -44,7 +44,12 @@ class NewsGetter extends StatelessWidget {
                         titleType: "Loại: ${controller.listNews[index].type!}",
                         titleTime:
                             "Thời gian: ${controller.listNews[index].createDate!}",
-                        statusCode: 0,
+                        statusCode: controller.listNews[index].status ==
+                                'Đã phát'
+                            ? 0
+                            : (controller.listNews[index].status == 'Đang phát'
+                                ? 1
+                                : 2),
                       ),
                     ),
                   ),
