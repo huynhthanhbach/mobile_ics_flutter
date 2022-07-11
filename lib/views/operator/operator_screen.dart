@@ -1,9 +1,12 @@
 import 'package:get/get.dart';
+import 'package:mobile_ics_flutter/core/services/hive_calendar.dart';
 import 'package:mobile_ics_flutter/views/dashboard/components/history_content_card.dart';
 import 'package:mobile_ics_flutter/views/operator/components/tempdb.dart';
 import 'package:oktoast/oktoast.dart';
 import '../../controllers/operator_controllers/operator_controller.dart';
+import '../../core/utils/constants.dart';
 import 'components/component.dart';
+import 'pages/getNews.dart';
 import 'pages/pages.dart';
 
 class OperatorScreen extends GetWidget<OperatorController> {
@@ -49,9 +52,16 @@ class OperatorScreen extends GetWidget<OperatorController> {
                 const SizedBox(
                   width: padding2,
                 ),
-                Image.asset(
-                  iconAvatar,
-                  width: avatarSize,
+                ClipRRect(
+                  child: InkWell(
+                    onTap: () async {
+                      // controller.addPlayNewsData();
+                    },
+                    child: Image.asset(
+                      iconAvatar,
+                      width: avatarSize,
+                    ),
+                  ),
                 )
               ],
             ),
@@ -91,11 +101,18 @@ class OperatorScreen extends GetWidget<OperatorController> {
                                             ? 'H_SELECT_NEWS'.tr
                                             : controller.newsSelected.value,
                                         style: textStyle3a,
+                                        overflow: TextOverflow.ellipsis,
                                       ),
                                       onTap: () {
+                                        Get.to(
+                                          transition: Transition.fade,
+                                          curve: Curves.easeInQuad,
+                                          duration: Constants.dur500,
+                                          () => const NewsGetter(),
+                                        );
                                         showToast('Lấy bản tin');
-                                        controller.newsSelected.value =
-                                            'Bản tin aaaa';
+                                        // controller.newsSelected.value =
+                                        //     'Bản tin aaaa';
                                       },
                                     ),
                                   ),
@@ -142,7 +159,7 @@ class OperatorScreen extends GetWidget<OperatorController> {
                                       hint: Obx(
                                         () => Text(
                                           '${'H_TIME'.tr} (${controller.timeCounter.value.toString()})',
-                                          style: textStyle3a,
+                                          style: textStyle4,
                                         ),
                                       ),
                                       underline:
@@ -230,7 +247,15 @@ class OperatorScreen extends GetWidget<OperatorController> {
                                       icon: Icons.play_arrow_rounded,
                                       text: 'BTL_PLAY'.tr,
                                       onpress: () {
-                                        controller.printNewsPlayed();
+                                        if (controller.checkPlayNews()) {
+                                          controller.addPlayNews();
+                                          controller.addPlayNewsData();
+                                          showToast('Thêm thành công');
+                                          controller.updateListPlayNewsToday();
+                                          //controller.clearSelect();
+                                        } else {
+                                          showToast('Xin chọn đủ các trường!');
+                                        }
                                       },
                                     )),
                               ],
@@ -267,7 +292,12 @@ class OperatorScreen extends GetWidget<OperatorController> {
                                 Text1(text: 'OP_OPERATE_TODAY'.tr),
                                 InkWell(
                                   onTap: () {
-                                    Get.to(const NewsList());
+                                    Get.to(
+                                      transition: Transition.fade,
+                                      curve: Curves.easeInQuad,
+                                      duration: Constants.dur500,
+                                      () => const NewsList(),
+                                    );
                                   },
                                   child: const Icon(
                                     Icons.more_vert,
@@ -279,24 +309,37 @@ class OperatorScreen extends GetWidget<OperatorController> {
                         Expanded(
                           child: Obx(
                             () => ListView.builder(
-                              itemCount: (controller.listNews.length >= 10)
-                                  ? 10
-                                  : controller.listNews.length,
+                              itemCount: controller.listPlayNewsToday.length,
                               itemBuilder: (context, index) => InkWell(
                                 onTap: () async {
                                   controller.showBottomSheet(
                                       context,
                                       MyBottomSheet(
-                                        news: controller.listNews[index],
+                                        news: controller.getNews(controller
+                                            .listPlayNewsToday[index].idNews!),
+                                        playNews:
+                                            controller.listPlayNewsToday[index],
                                       ));
                                 },
                                 child: HistoryContentCard(
-                                  titleName: controller.listNews[index].name!,
+                                  titleName: controller
+                                      .getNews(controller
+                                          .listPlayNewsToday[index].idNews!)
+                                      .name!,
                                   titleType:
-                                      "Loại: ${controller.listNews[index].type!}",
+                                      "Loại: ${controller.getNews(controller.listPlayNewsToday[index].idNews!).type!}",
                                   titleTime:
-                                      "Thời gian: ${controller.listNews[index].createDate!}",
-                                  statusCode: 0,
+                                      "Thời gian: ${controller.listPlayNewsToday[index].createDate!.toString().substring(0, 16)}",
+                                  statusCode: controller
+                                              .listPlayNewsToday[index]
+                                              .status ==
+                                          'Đã phát'
+                                      ? 0
+                                      : (controller.listPlayNewsToday[index]
+                                                  .status ==
+                                              'Đang phát'
+                                          ? 1
+                                          : 2),
                                 ),
                               ),
                             ),

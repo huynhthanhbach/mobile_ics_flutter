@@ -1,11 +1,69 @@
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:mobile_ics_flutter/models/hive_models/hive_model.dart';
 
 import 'component.dart';
 
 class MyBottomSheet extends StatelessWidget {
-  const MyBottomSheet({Key? key, required this.news}) : super(key: key);
+  const MyBottomSheet({Key? key, required this.news, required this.playNews})
+      : super(key: key);
   final NewsHiveModel news;
+  final PlayNewsHiveModel playNews;
+  List<DropdownMenuItem<String>> dropdown() {
+    List<DropdownMenuItem<String>> temp = [];
+    temp.add(
+      DropdownMenuItem(
+          value: '0',
+          child: PlayNewsCard(
+            text: '${'BSL_DEVICE_SELECTED'.tr} (${playNews.listDevice.length})',
+            isGrey: false,
+            width: 145,
+          )),
+    );
+    for (var item in playNews.listDevice) {
+      temp.add(DropdownMenuItem(
+          value: '',
+          child: PlayNewsCard(
+            text: item.name!,
+            isGrey: true,
+            width: 145,
+          )));
+    }
+    return temp;
+  }
+
+  List<DropdownMenuItem<String>> playTime() {
+    List<DropdownMenuItem<String>> temp = [];
+    List<String> times = playNews.timeTitle!
+        .substring(1, playNews.timeTitle!.length - 1)
+        .split(',');
+
+    temp.add(
+      DropdownMenuItem(
+        value: '0',
+        child: PlayNewsCard(
+          text: '${'BSL_TIME'.tr}(${times.length})',
+          isGrey: false,
+          width: 145,
+        ),
+      ),
+    );
+    for (var time in times) {
+      temp.add(
+        DropdownMenuItem(
+          value: '',
+          child: PlayNewsCard(
+            text: time,
+            isGrey: false,
+            width: 145,
+          ),
+        ),
+      );
+    }
+
+    return temp;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -36,15 +94,26 @@ class MyBottomSheet extends StatelessWidget {
           ),
           Container(
             padding: const EdgeInsets.symmetric(
-                vertical: padding2, horizontal: padding3),
+                vertical: padding1, horizontal: padding3),
             child: Column(
               children: [
-                bottomSheetCard(
-                    icon: iconCalender,
-                    name: 'BSL_TIME'.tr,
-                    value: news.createDate.toString()),
+                Row(children: [
+                  Image.asset(
+                    'assets/icons/op_calender.png',
+                    width: 25,
+                  ),
+                  const SizedBox(
+                    width: defaultPadding,
+                  ),
+                  DropdownButton<String>(
+                    underline: Container(color: Colors.transparent),
+                    value: '0',
+                    items: playTime(),
+                    onChanged: (value) {},
+                  ),
+                ]),
                 const SizedBox(
-                  height: defaultPadding,
+                  height: padding1,
                 ),
                 bottomSheetCard(
                     icon: iconClock,
@@ -58,14 +127,14 @@ class MyBottomSheet extends StatelessWidget {
                     bottomSheetCard(
                       icon: iconStatus,
                       name: 'BSL_STATUS'.tr,
-                      value: 'Đang phát',
+                      value: playNews.status!,
                       isPlaying: true,
                       paddingRight: padding3,
                     ),
                     bottomSheetCard(
                       icon: iconVolume,
                       name: 'BSL_VOLUME'.tr,
-                      value: '50%',
+                      value: '${playNews.volume}%',
                     ),
                   ],
                 ),
@@ -98,22 +167,7 @@ class MyBottomSheet extends StatelessWidget {
                     DropdownButton<String>(
                       underline: Container(color: Colors.transparent),
                       value: '0',
-                      items: [
-                        DropdownMenuItem(
-                            value: '0',
-                            child: PlayNewsCard(
-                              text: '${'BSL_DEVICE_SELECTED'.tr} (3)',
-                              isGrey: true,
-                              width: 145,
-                            )),
-                        const DropdownMenuItem(
-                            value: '1',
-                            child: PlayNewsCard(
-                              text: 'Loa 1',
-                              isGrey: true,
-                              width: 145,
-                            )),
-                      ],
+                      items: dropdown(),
                       onChanged: (value) {},
                     ),
                   ],
@@ -121,20 +175,22 @@ class MyBottomSheet extends StatelessWidget {
                 const SizedBox(
                   height: padding1,
                 ),
-                Row(
-                  children: [
-                    bottomSheetCard(
-                      icon: iconRepeat,
-                      name: 'BSL_REPEAT'.tr,
-                      value: 'Một lần',
-                      paddingRight: padding3,
-                    ),
-                    bottomSheetCard(
-                      icon: iconWarning,
-                      name: 'BSL_PRIORITY'.tr,
-                      value: 'Cao',
-                    ),
-                  ],
+                bottomSheetCard(
+                  icon: iconRepeat,
+                  name: 'BSL_REPEAT'.tr,
+                  value: (playNews.repeatMode!.substring(0, 10) ==
+                          playNews.repeatMode!.substring(13, 23)
+                      ? playNews.repeatMode!.substring(0, 10)
+                      : playNews.repeatMode!),
+                  paddingRight: padding3,
+                ),
+                const SizedBox(
+                  height: padding1,
+                ),
+                bottomSheetCard(
+                  icon: iconWarning,
+                  name: 'BSL_PRIORITY'.tr,
+                  value: playNews.prioritized!,
                 ),
               ],
             ),

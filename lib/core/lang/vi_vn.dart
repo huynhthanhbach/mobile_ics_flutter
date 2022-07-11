@@ -78,7 +78,7 @@ const Map<String, String> viVN = {
   'WARNING_LEVEL_SMALL': 'Mức độ nhẹ',
   'WARNING_LEVEL_MEDIUM': 'Mức độ trung bình',
   'WARNING_LEVEL_HARD': 'Mức độ nặng',
-  
+
   //Operator
   //Title
   'OP_TITLE': 'Điều hành',
@@ -113,7 +113,7 @@ const Map<String, String> viVN = {
   'H_REPEAT': 'Chế độ lặp',
 
   //bottomsheet label
-  'BSL_TIME': 'Thời gian: ',
+  'BSL_TIME': 'Khung giờ phát ',
   'BSL_DURATION': 'Thời lượng: ',
   'BSL_STATUS': 'Trạng thái: ',
   'BSL_VOLUME': '',

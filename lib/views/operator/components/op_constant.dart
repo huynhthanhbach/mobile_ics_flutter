@@ -40,7 +40,7 @@ const header2 = 20.0;
 const text1 = 20.0;
 const text2 = 18.0;
 const text3 = 16.0;
-const text4 = 12.0;
+const text4 = 15.0;
 
 //textstyle
 const operatorTitle = TextStyle(color: opWhite, fontSize: header1);
@@ -49,9 +49,10 @@ const textStyle2 = TextStyle(fontSize: text2, color: primaryColor);
 const textStyle3a = TextStyle(fontSize: text3, color: opGray1);
 const textStyle3b = TextStyle(fontSize: text3, color: opGray2);
 const textStyle3c = TextStyle(fontSize: text3, color: primaryColor);
+const textStyle4 = TextStyle(fontSize: text4, color: opGray1);
 
 //bottom sheet
-const bottomSheetHeight = 365.0;
+const bottomSheetHeight = 405.0;
 
 //image
 const icon = 'assets/icons';
