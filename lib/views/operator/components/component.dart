@@ -9,3 +9,4 @@ export 'package:mobile_ics_flutter/views/operator/components/bottom_sheet_card.d
 export 'package:mobile_ics_flutter/views/operator/components/op_constant.dart';
 export 'custom_dialog.dart';
 export 'custom_chip.dart';
+export 'ktext.dart';

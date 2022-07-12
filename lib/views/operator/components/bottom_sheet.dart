@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:mobile_ics_flutter/models/hive_models/hive_model.dart';
 
 import 'component.dart';

@@ -1,10 +1,10 @@
 import 'package:get/get.dart';
 import 'package:mobile_ics_flutter/views/dashboard/components/history_content_card.dart';
 import '../../../controllers/operator_controllers/operator_controller.dart';
+import '../../../core/widgets/ktext_style.dart';
 import '../components/component.dart';
-import '../components/tempdb.dart';
 
-class NewsList extends StatelessWidget {
+class NewsList extends GetWidget<OperatorController> {
   const NewsList({Key? key}) : super(key: key);
 
   @override
@@ -69,7 +69,7 @@ class NewsList extends StatelessWidget {
                                                 'categoriesFilter', value),
                                             underline: Container(
                                                 color: Colors.transparent),
-                                            items: categoriesList,
+                                            items: controller.categoriesList,
                                           ),
                                         ),
                                         //value: '',
@@ -133,7 +133,7 @@ class NewsList extends StatelessWidget {
                                                 _.Filt('calenderFilter', value),
                                             underline: Container(
                                                 color: Colors.transparent),
-                                            items: calenderList,
+                                            items: controller.calenderList,
                                           ),
                                         ),
                                         //value: '',
@@ -227,43 +227,55 @@ class NewsList extends StatelessWidget {
                           ),
                         ),
                         Expanded(
-                          child: Obx(
-                            () => ListView.builder(
-                              itemCount: controller.listPlayNewsFilted.length,
-                              itemBuilder: (context, index) => InkWell(
-                                onTap: () async {
-                                  controller.showBottomSheet(
-                                      context,
-                                      MyBottomSheet(
-                                        news: controller.getNews(controller
-                                            .listPlayNewsFilted[index].idNews!),
-                                        playNews: controller
-                                            .listPlayNewsFilted[index],
-                                      ));
-                                },
-                                child: HistoryContentCard(
-                                  titleName: controller
-                                      .getNews(controller
-                                          .listPlayNews[index].idNews!)
-                                      .name!,
-                                  titleType:
-                                      "Loại: ${controller.getNews(controller.listPlayNewsFilted[index].idNews!).type!}",
-                                  titleTime:
-                                      "Thời gian: ${controller.listPlayNewsFilted[index].createDate!.toString().substring(0, 16)}",
-                                  statusCode: controller
-                                              .listPlayNewsFilted[index]
-                                              .status ==
-                                          'Đã phát'
-                                      ? 0
-                                      : (controller.listPlayNewsFilted[index]
-                                                  .status ==
-                                              'Đang phát'
-                                          ? 1
-                                          : 2),
+                          child: controller.listPlayNewsFilted.isEmpty
+                              ? Center(
+                                  child: Text(
+                                    'NONE_DATA'.tr,
+                                    style: KTextStyle.textAmountSubStyle,
+                                  ),
+                                )
+                              : Obx(
+                                  () => ListView.builder(
+                                    itemCount:
+                                        controller.listPlayNewsFilted.length,
+                                    itemBuilder: (context, index) => InkWell(
+                                      onTap: () async {
+                                        controller.showBottomSheet(
+                                            context,
+                                            MyBottomSheet(
+                                              news: controller.getNews(
+                                                  controller
+                                                      .listPlayNewsFilted[index]
+                                                      .idNews!),
+                                              playNews: controller
+                                                  .listPlayNewsFilted[index],
+                                            ));
+                                      },
+                                      child: HistoryContentCard(
+                                        titleName: controller
+                                            .getNews(controller
+                                                .listPlayNews[index].idNews!)
+                                            .name!,
+                                        titleType:
+                                            "Loại: ${controller.getNews(controller.listPlayNewsFilted[index].idNews!).type!}",
+                                        titleTime:
+                                            "Thời gian: ${controller.listPlayNewsFilted[index].createDate!.toString().substring(0, 16)}",
+                                        statusCode: controller
+                                                    .listPlayNewsFilted[index]
+                                                    .status ==
+                                                'Đã phát'
+                                            ? 0
+                                            : (controller
+                                                        .listPlayNewsFilted[
+                                                            index]
+                                                        .status ==
+                                                    'Đang phát'
+                                                ? 1
+                                                : 2),
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                          ),
                         ),
                         const SizedBox(
                           height: 10,

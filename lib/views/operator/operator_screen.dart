@@ -1,7 +1,5 @@
 import 'package:get/get.dart';
-import 'package:mobile_ics_flutter/core/services/hive_calendar.dart';
 import 'package:mobile_ics_flutter/views/dashboard/components/history_content_card.dart';
-import 'package:mobile_ics_flutter/views/operator/components/tempdb.dart';
 import 'package:oktoast/oktoast.dart';
 import '../../controllers/operator_controllers/operator_controller.dart';
 import '../../core/utils/constants.dart';
@@ -203,7 +201,7 @@ class OperatorScreen extends GetWidget<OperatorController> {
                                         hint: Text('H_REPEAT'.tr),
                                         underline: Container(
                                             color: Colors.transparent),
-                                        items: repeatList,
+                                        items: controller.repeatList,
                                       ),
                                     ),
                                   ),
@@ -224,7 +222,7 @@ class OperatorScreen extends GetWidget<OperatorController> {
                                         hint: Text('H_SELECT_PRIORITY'.tr),
                                         underline: Container(
                                             color: Colors.transparent),
-                                        items: priorityList,
+                                        items: controller.priorityList,
                                       ),
                                     ),
                                     //value: '',
@@ -250,7 +248,8 @@ class OperatorScreen extends GetWidget<OperatorController> {
                                         if (controller.checkPlayNews()) {
                                           controller.addPlayNews();
                                           controller.addPlayNewsData();
-                                          showToast('Thêm thành công');
+                                          showToast(
+                                              'Thêm thành công "${controller.newsHiveSelected!.name}"');
                                           controller.updateListPlayNewsToday();
                                           //controller.clearSelect();
                                         } else {
@@ -268,89 +267,86 @@ class OperatorScreen extends GetWidget<OperatorController> {
             ),
           ),
           Expanded(
-            child: GetBuilder<OperatorController>(
-              builder: (_) => Container(
-                //color: Colors.white,
-                padding: const EdgeInsets.fromLTRB(0, 15, 0, 30),
-                child: CustomContainer(
-                    marginHorizontal: 0,
-                    marginVertical: 0,
-                    paddingHorizontal: defaultPadding * 2 / 3,
-                    child: Column(
-                      children: [
-                        Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 25,
-                            ),
-                            height: 50,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const SizedBox(
-                                  width: 25,
-                                ),
-                                Text1(text: 'OP_OPERATE_TODAY'.tr),
-                                InkWell(
-                                  onTap: () {
-                                    Get.to(
-                                      transition: Transition.fade,
-                                      curve: Curves.easeInQuad,
-                                      duration: Constants.dur500,
-                                      () => const NewsList(),
-                                    );
-                                  },
-                                  child: const Icon(
-                                    Icons.more_vert,
-                                    size: 25,
-                                  ),
-                                ),
-                              ],
-                            )),
-                        Expanded(
-                          child: Obx(
-                            () => ListView.builder(
-                              itemCount: controller.listPlayNewsToday.length,
-                              itemBuilder: (context, index) => InkWell(
-                                onTap: () async {
-                                  controller.showBottomSheet(
-                                      context,
-                                      MyBottomSheet(
-                                        news: controller.getNews(controller
-                                            .listPlayNewsToday[index].idNews!),
-                                        playNews:
-                                            controller.listPlayNewsToday[index],
-                                      ));
+            child: Container(
+              //color: Colors.white,
+              padding: const EdgeInsets.fromLTRB(0, 15, 0, 30),
+              child: CustomContainer(
+                  marginHorizontal: 0,
+                  marginVertical: 0,
+                  paddingHorizontal: defaultPadding * 2 / 3,
+                  child: Column(
+                    children: [
+                      Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 25,
+                          ),
+                          height: 50,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const SizedBox(
+                                width: 25,
+                              ),
+                              Text1(text: 'OP_OPERATE_TODAY'.tr),
+                              InkWell(
+                                onTap: () {
+                                  Get.to(
+                                    transition: Transition.fade,
+                                    curve: Curves.easeInQuad,
+                                    duration: Constants.dur500,
+                                    () => const NewsList(),
+                                  );
                                 },
-                                child: HistoryContentCard(
-                                  titleName: controller
-                                      .getNews(controller
-                                          .listPlayNewsToday[index].idNews!)
-                                      .name!,
-                                  titleType:
-                                      "Loại: ${controller.getNews(controller.listPlayNewsToday[index].idNews!).type!}",
-                                  titleTime:
-                                      "Thời gian: ${controller.listPlayNewsToday[index].createDate!.toString().substring(0, 16)}",
-                                  statusCode: controller
-                                              .listPlayNewsToday[index]
-                                              .status ==
-                                          'Đã phát'
-                                      ? 0
-                                      : (controller.listPlayNewsToday[index]
-                                                  .status ==
-                                              'Đang phát'
-                                          ? 1
-                                          : 2),
+                                child: const Icon(
+                                  Icons.more_vert,
+                                  size: 25,
                                 ),
+                              ),
+                            ],
+                          )),
+                      Expanded(
+                        child: Obx(
+                          () => ListView.builder(
+                            itemCount: controller.listPlayNewsToday.length,
+                            itemBuilder: (context, index) => InkWell(
+                              onTap: () async {
+                                controller.showBottomSheet(
+                                    context,
+                                    MyBottomSheet(
+                                      news: controller.getNews(controller
+                                          .listPlayNewsToday[index].idNews!),
+                                      playNews:
+                                          controller.listPlayNewsToday[index],
+                                    ));
+                              },
+                              child: HistoryContentCard(
+                                titleName: controller
+                                    .getNews(controller
+                                        .listPlayNewsToday[index].idNews!)
+                                    .name!,
+                                titleType:
+                                    "Loại: ${controller.getNews(controller.listPlayNewsToday[index].idNews!).type!}",
+                                titleTime:
+                                    "Thời gian: ${controller.listPlayNewsToday[index].createDate!.toString().substring(0, 16)}",
+                                statusCode: controller
+                                            .listPlayNewsToday[index].status ==
+                                        'Đã phát'
+                                    ? 0
+                                    : (controller.listPlayNewsToday[index]
+                                                .status ==
+                                            'Đang phát'
+                                        ? 1
+                                        : 2),
                               ),
                             ),
                           ),
                         ),
-                        const SizedBox(
-                          height: defaultPadding,
-                        ),
-                      ],
-                    )),
-              ),
+                      ),
+                      const SizedBox(
+                        height: defaultPadding,
+                      ),
+                    ],
+                  )),
             ),
           ),
         ],

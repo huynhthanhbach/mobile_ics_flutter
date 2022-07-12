@@ -2,9 +2,7 @@ import 'package:get/get.dart';
 import 'package:mobile_ics_flutter/models/hive_models/device_hmodel.dart';
 import 'package:mobile_ics_flutter/views/operator/components/component.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
-
 import '../../../controllers/operator_controllers/operator_controller.dart';
-import 'tempdb.dart';
 
 void showFixedSchdule(
     BuildContext context, OperatorController controller) async {
