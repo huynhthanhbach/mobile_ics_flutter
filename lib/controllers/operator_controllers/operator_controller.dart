@@ -7,8 +7,7 @@ import 'package:mobile_ics_flutter/core/services/hive_calendar.dart';
 import 'package:mobile_ics_flutter/core/services/hive_device.dart';
 import 'package:mobile_ics_flutter/core/services/hive_play_news.dart';
 import 'package:mobile_ics_flutter/views/operator/components/component.dart';
-import 'package:mobile_ics_flutter/views/operator/components/tempdb.dart';
-import 'package:multi_select_flutter/multi_select_flutter.dart';
+import 'package:multi_select_flutter/util/multi_select_item.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:uuid/uuid.dart';
 import '../../core/services/hive_news.dart';
@@ -27,7 +26,7 @@ class OperatorController extends GetxController {
   String? repeatSelected;
   String? prioritySelected;
   String? timeRepeat;
-  List<String>? timeSelected;
+  List<String> timeSelected = [];
   RxDouble volumeSelected = 70.0.obs;
   String calenderFilter = '-1';
   String timeFilter = '-1';
@@ -39,6 +38,31 @@ class OperatorController extends GetxController {
     '16h00 - 19h30',
     '21h00 - 23h30'
   ];
+  List<DropdownMenuItem<String>> priorityList = const [
+    DropdownMenuItem(value: '0', child: Text('Khẩn cấp')),
+    DropdownMenuItem(value: '1', child: Text('Ưu tiên cao')),
+    DropdownMenuItem(value: '2', child: Text('Ưu tiên thấp')),
+  ];
+  var categories = [
+    'Thể thao',
+    'Đời sống',
+    'Pháp luật',
+    'Cảnh báo',
+    'Thời sự',
+    'Thông tin',
+  ];
+  var calenders = ['Hôm qua', 'Hôm nay', 'Trong tuần', 'Trong tháng'];
+  List<DropdownMenuItem<String>> categoriesList = [];
+  List<DropdownMenuItem<String>> calenderList = [];
+  List<DropdownMenuItem<String>> deviceList = [];
+
+  List<DropdownMenuItem<String>> repeatList = [
+    const DropdownMenuItem(value: '-1', child: Text('Tự thiết lập')),
+    const DropdownMenuItem(value: '0', child: Text('Một lần hôm nay')),
+    const DropdownMenuItem(value: '1', child: Text('Một lần ngày mai')),
+    const DropdownMenuItem(value: '2', child: Text('Trong 1 tuần')),
+    const DropdownMenuItem(value: '3', child: Text('Trong 1 tháng')),
+  ];
   List<DropdownMenuItem<String>> timeList = [];
   List<MultiSelectItem<Time>> time_items = [];
   List<MultiSelectItem<DeviceHiveModel>> deviceItem = [];
@@ -47,12 +71,7 @@ class OperatorController extends GetxController {
   List<DeviceHiveModel> listFiltDeviceSelected = [];
 
   List<Time> listTimeSelected = [];
-  // Map<String, String> filterValue = {
-  //   'categories': '-1',
-  //   'calenders': '-1',
-  //   'devices': '-1',
-  //   'times': '-1'
-  // };
+
   RxList<NewsHiveModel> listNews = <NewsHiveModel>[].obs;
   List<DeviceHiveModel> listDevice = <DeviceHiveModel>[];
   RxList<PlayNewsHiveModel> listPlayNews = <PlayNewsHiveModel>[].obs;
@@ -68,12 +87,6 @@ class OperatorController extends GetxController {
   RxInt filtDeviceCounter = 0.obs;
   RxInt timeCounter = 0.obs;
 
-  // final List<Time> Times = [
-  //   Time(id: '0', name: "5h - 8h30"),
-  //   Time(id: '1', name: "11h - 12h"),
-  //   Time(id: '2', name: "16h - 19h30"),
-  //   Time(id: '3', name: "21h - 23h30"),
-  // ];
   List<Time> Times = [];
 
   List<Time> initTime() {
@@ -138,14 +151,6 @@ class OperatorController extends GetxController {
 
   @override
   Future<void> onInit() async {
-    Times = initTime().toList();
-    time_items =
-        Times.map((time) => MultiSelectItem<Time>(time, time.name)).toList();
-
-    //Khoi tao cac dropdownbuttonitem list
-    initListItem();
-    //khoi tao multiselect item
-
     //lay data news
     List<NewsHiveModel> listN = await hiveNews.get();
     if (listN.isNotEmpty) {
@@ -161,6 +166,14 @@ class OperatorController extends GetxController {
     if (listP.isNotEmpty) {
       listPlayNews.value = listP.toList();
     }
+    listPlayNewsToday.value = getListPlayNewsToday();
+    Times = initTime().toList();
+    time_items =
+        Times.map((time) => MultiSelectItem<Time>(time, time.name)).toList();
+
+    //Khoi tao cac dropdownbuttonitem list
+    initListItem();
+    //khoi tao multiselect item
 
     deviceItem = getDeviceList().toList();
     filtDeviceItem = getDeviceList().toList();
@@ -198,7 +211,7 @@ class OperatorController extends GetxController {
     if (repeatSelected == null) check = false;
     if (prioritySelected == null) check = false;
     if (timeRepeat == null) check = false;
-    if (timeSelected == [] || timeSelected == null) check = false;
+    if (timeSelected.isEmpty) check = false;
 
     return check;
   }
@@ -338,7 +351,6 @@ class OperatorController extends GetxController {
           style: textStyle4,
         )));
     calenderList = initItem(calenders).toList();
-    deviceList = initItem(devices).toList();
   }
 
   List<DropdownMenuItem<String>> initItem(List<String> list) {
@@ -374,20 +386,25 @@ class OperatorController extends GetxController {
   }
 
   void addPlayNews() {
-    playNewsCalender = _addPlayNews(newsHiveSelected!.id!, volumeSelected.value,
-        timeRepeat!, prioritySelected!, listDeviceSelected);
+    playNewsCalender = _addPlayNews(
+        newsHiveSelected!.id!,
+        volumeSelected.value,
+        timeSelected.toString(),
+        timeRepeat!,
+        prioritySelected!,
+        listDeviceSelected);
     // print(playNewsCalender);
     // print(playNewsCalender!.listDevice);
   }
 
-  PlayNewsHiveModel _addPlayNews(String newsId, double volume, String repeat,
-      String priority, List<DeviceHiveModel> device) {
+  PlayNewsHiveModel _addPlayNews(String newsId, double volume, String time,
+      String repeat, String priority, List<DeviceHiveModel> device) {
     const uid = Uuid();
     var i = Random().nextBool();
     var obj = PlayNewsHiveModel(
       id: uid.v1(),
       idNews: newsId,
-      timeTitle: timeSelected.toString(),
+      timeTitle: time,
       status: 'Chưa phát',
       volume: volume.round().toString(),
       repeatMode: repeat,
@@ -502,8 +519,9 @@ class OperatorController extends GetxController {
     List<PlayNewsHiveModel> temp = [];
     var category = filter[0];
     var time = filter[1];
-    // var calender = filter[2];
+    var calender = filter[2];
 
+    //loc category
     for (var item in listPlayNews) {
       if (category != 'Tất cả') {
         if (getNews(item.idNews!).type == category) {
@@ -514,6 +532,7 @@ class OperatorController extends GetxController {
       }
     }
 
+    //loc khung gio
     List<PlayNewsHiveModel> temp2 = [];
     for (var item in temp) {
       switch (time) {
@@ -532,9 +551,123 @@ class OperatorController extends GetxController {
       }
     }
     temp = temp2.toList();
+    temp2 = [];
+
+    //loc thoi gian
+
+    for (var item in temp) {
+      switch (calender) {
+        case 'Tất cả':
+          temp2.add(item);
+          break;
+        case 'Hôm nay':
+          DateTime start = DateTime.parse(
+              '${DateTime.now().toString().substring(0, 10)} 00:00:00.000');
+          DateTime end = DateTime.parse(
+              '${DateTime.now().toString().substring(0, 10)} 00:00:00.000');
+          if (checkTimeOverlap(start, end, item)) {
+            temp2.add(item);
+          }
+          break;
+        case 'Hôm qua':
+          DateTime start = DateTime.parse(
+              '${DateTime.now().subtract(const Duration(days: 1)).toString().substring(0, 10)} 00:00:00.000');
+          DateTime end = DateTime.parse(
+              '${DateTime.now().subtract(const Duration(days: 1)).toString().substring(0, 10)} 00:00:00.000');
+          if (checkTimeOverlap(start, end, item)) {
+            temp2.add(item);
+          }
+          break;
+        case 'Trong tuần':
+          DateTime start = DateTime.parse(
+              '${DateTime.now().subtract(const Duration(days: 7)).toString().substring(0, 10)} 00:00:00.000');
+          DateTime end = DateTime.parse(
+              '${DateTime.now().toString().substring(0, 10)} 00:00:00.000');
+          if (checkTimeOverlap(start, end, item)) {
+            temp2.add(item);
+          }
+          break;
+
+        case 'Trong tháng':
+          DateTime start = DateTime.parse(
+              '${DateTime.now().subtract(const Duration(days: 30)).toString().substring(0, 10)} 00:00:00.000');
+          DateTime end = DateTime.parse(
+              '${DateTime.now().toString().substring(0, 10)} 00:00:00.000');
+          if (checkTimeOverlap(start, end, item)) {
+            temp2.add(item);
+          }
+          break;
+        default:
+      }
+    }
+    temp = temp2.toList();
+    temp2 = [];
+
+    //loc theo thiet bi
+
+    if (filtDeviceCounter.value == 0) {
+      temp2 = temp.toList();
+    } else {
+      for (var device in listFiltDeviceSelected) {
+        for (var item in temp) {
+          if (checkDeviceInList(device, item.listDevice)) {
+            temp2.add(item);
+          }
+        }
+      }
+    }
+    temp = temp2.toList();
+    temp2 = [];
+
+    //sap xep theo ngay tao
     temp.sort((a, b) {
       return b.createDate!.compareTo(a.createDate!);
     });
     return temp;
   }
+
+  bool checkDeviceInList(DeviceHiveModel device, List<DeviceHiveModel> list) {
+    bool check = false;
+    for (var item in list) {
+      if (item.id == device.id) {
+        check = true;
+        break;
+      }
+    }
+    return check;
+  }
+
+  bool checkTimeOverlap(
+      DateTime start1, DateTime end1, PlayNewsHiveModel item) {
+    // var start1 = DateTime.parse('${calender.substring(0, 10)} 00:00:00.000');
+    // var end1 = DateTime.parse('${calender.substring(13, 23)} 00:00:00.000');
+
+    var start2 =
+        DateTime.parse('${item.repeatMode!.substring(0, 10)} 00:00:00.000');
+    var end2 =
+        DateTime.parse('${item.repeatMode!.substring(13, 23)} 00:00:00.000');
+// print('$start $end $today');
+    // print((start.isBefore(today) && end.isAfter(today)));
+    // print(start.isAtSameMomentAs(today) || end.isAtSameMomentAs(today));
+    bool check = (start1.isAtSameMomentAs(end2) || start1.isBefore(end2)) &&
+        (end1.isAtSameMomentAs(start2) || end1.isAfter(start2));
+    return check;
+  }
+}
+
+class Time {
+  final String id;
+  final String name;
+  String getId() {
+    return id;
+  }
+
+  String getName() {
+    return name;
+  }
+
+  Time({
+    required this.id,
+    required this.name,
+  });
 }
