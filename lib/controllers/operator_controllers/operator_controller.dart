@@ -77,7 +77,7 @@ class OperatorController extends GetxController {
   RxList<PlayNewsHiveModel> listPlayNews = <PlayNewsHiveModel>[].obs;
   RxList<PlayNewsHiveModel> listPlayNewsToday = <PlayNewsHiveModel>[].obs;
   RxList<PlayNewsHiveModel> listPlayNewsFilted = <PlayNewsHiveModel>[].obs;
-  RxList<PlayNewsHiveModel> filtedPlayNews = <PlayNewsHiveModel>[].obs;
+  //RxList<PlayNewsHiveModel> filtedPlayNews = <PlayNewsHiveModel>[].obs;
   bool filted = false;
   List<String> selectedTime = <String>[];
   List<String> filter = ['Tất cả', 'Tất cả', 'Tất cả', 'Tất cả'];
@@ -143,10 +143,12 @@ class OperatorController extends GetxController {
         : temp.add('Thiết bị: ${listFiltDeviceSelected.length}');
     filter = temp.toList();
     // filter = getFilterList().toList();
-    // print(filter);
-    update();
+    //print(filter);
+    //print(listFiltDeviceSelected);
+
     listPlayNewsFilted.value = getListPlayNewsFilted().toList();
-    print(listPlayNewsFilted);
+    update();
+    //print(listPlayNewsFilted);
   }
 
   @override
@@ -335,7 +337,7 @@ class OperatorController extends GetxController {
     categoriesFilter = '-1';
     deviceFilter = '-1';
     filted = false;
-
+    listPlayNewsFilted.value = listPlayNews;
     update();
   }
 
@@ -511,7 +513,7 @@ class OperatorController extends GetxController {
   }
 
   void filt() {
-    filtedPlayNews.value = getListPlayNewsFilted().toList();
+    listPlayNewsFilted.value = getListPlayNewsFilted().toList();
     filted = true;
   }
 
@@ -609,7 +611,7 @@ class OperatorController extends GetxController {
       temp2 = temp.toList();
     } else {
       for (var device in listFiltDeviceSelected) {
-        for (var item in temp) {
+        for (var item in temp2) {
           if (checkDeviceInList(device, item.listDevice)) {
             temp2.add(item);
           }
