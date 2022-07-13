@@ -58,6 +58,7 @@ class BackupDataController extends GetxController {
         })
         .asFuture()
         .then((_) {
+        
           return frameworkFilePaths;
         });
   }

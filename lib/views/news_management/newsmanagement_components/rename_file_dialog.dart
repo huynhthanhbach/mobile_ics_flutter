@@ -1,15 +1,27 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first, avoid_print
 import 'dart:io';
 
-import 'package:mobile_ics_flutter/views/news_management/newsmanagement_components/custom_alert.dart';
-import 'package:mobile_ics_flutter/views/news_management/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:path/path.dart' as pathlib;
+
+import 'package:mobile_ics_flutter/controllers/newsmanagement_controllers/newsmanagement_controller.dart';
+import 'package:mobile_ics_flutter/views/news_management/newsmanagement_components/custom_alert.dart';
+import 'package:mobile_ics_flutter/views/news_management/utils/kcolors.dart';
+import 'package:mobile_ics_flutter/views/news_management/utils/utils.dart';
 
 class RenameFileDialog extends StatefulWidget {
   final String path;
   final String type;
 
-  const RenameFileDialog({super.key, required this.path, required this.type});
+  final NewsManagementController controller;
+
+  const RenameFileDialog({
+    Key? key,
+    required this.path,
+    required this.type,
+    required this.controller,
+  }) : super(key: key);
 
   @override
   
@@ -44,10 +56,19 @@ class _RenameFileDialogState extends State<RenameFileDialog> {
               ),
             ),
             const SizedBox(height: 25),
-            TextField(
-              autofocus: true,
-              controller: name,
-              keyboardType: TextInputType.text,
+            Container(
+              padding: const EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                color: kWhite,
+                  border: Border.all(width: 1, color: kShadow),
+                  borderRadius: BorderRadius.circular(15),
+              ),
+              child: TextField(
+                autofocus: true,
+                controller: name,
+                keyboardType: TextInputType.text,
+                cursorColor: Colors.blue,
+              ),
             ),
             const SizedBox(height: 40),
             Row(
@@ -66,7 +87,6 @@ class _RenameFileDialogState extends State<RenameFileDialog> {
                           borderRadius: BorderRadius.circular(5.0),
                         ),
                       ),
-
                     ),
                     child: const Text(
                       'Hủy',
@@ -84,11 +104,14 @@ class _RenameFileDialogState extends State<RenameFileDialog> {
                           if (!File('${widget.path.replaceAll(
                                       pathlib.basename(widget.path), '')}${name.text}')
                               .existsSync()) {
-                            await File(widget.path)
+                           var nameFile = await File(widget.path)
                                 .rename('${widget.path.replaceAll(
                                         pathlib.basename(widget.path), '')}${name.text}')
                                 .catchError((e) {
                             });
+                            await widget.controller.onUpdateNameFile('file',widget.path,nameFile);
+
+                            // print(nameFile);//code tiep o day
                           } else {
                             Dialogs.showToast('Tên file này bị trùng!');
                           }
@@ -98,15 +121,19 @@ class _RenameFileDialogState extends State<RenameFileDialog> {
                               .existsSync()) {
                             Dialogs.showToast('Trùng tên thư mục!');
                           } else {
-                            await Directory(widget.path)
+                           var nameDir= await Directory(widget.path)
                                 .rename('${widget.path.replaceAll(
                                         pathlib.basename(widget.path), '')}${name.text}')
                                 .catchError((e) {
                             });
+
+
+                            widget.controller.onUpdateNameDir(nameDir);
+                            // print(nameDir);//
                           }
                         }
-                        // ignore: use_build_context_synchronously
-                        Navigator.pop(context);
+                       
+                     Get.back();
                       }
                     },
                     style: ButtonStyle(

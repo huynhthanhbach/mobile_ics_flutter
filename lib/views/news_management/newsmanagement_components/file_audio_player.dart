@@ -1,12 +1,18 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:io';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+
 import 'package:mobile_ics_flutter/views/news_management/utils/utils.dart';
 
 class AudioPlayerBar extends StatefulWidget {
-  const AudioPlayerBar({Key? key}) : super(key: key);
+  const AudioPlayerBar({
+    Key? key,
+    required this.file,
+  }) : super(key: key);
+  final File file;
 
   @override
   State<AudioPlayerBar> createState() => _AudioPlayerBarState();
@@ -49,12 +55,15 @@ class _AudioPlayerBarState extends State<AudioPlayerBar> {
   Future setAudio() async {
     audioPlayer.setReleaseMode(ReleaseMode.loop);
 
-    final result = await FilePicker.platform.pickFiles();
+    // final result = await FilePicker.platform.pickFiles();
 
-    if (result != null) {
-      final file = File(result.files.single.path!);
-      audioPlayer.setSourceUrl(file.path);
-    }
+    // if (result != null) {
+    //   final file = File(result.files.single.path!);
+    //   audioPlayer.setSourceUrl(file.path);
+    // }
+    audioPlayer.setSourceUrl(widget.file.path);
+    audioPlayer.resume();
+   
   }
 
   @override

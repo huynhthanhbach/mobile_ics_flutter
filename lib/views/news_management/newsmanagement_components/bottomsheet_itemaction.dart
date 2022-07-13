@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 /* 
     - Xây dựng giao diện Bottom Sheet khi nhấn vào dấu 3 chấm trên file/folder.
     - Xây dựng chức năng của các tùy chọn trên Bottom Sheet.
@@ -8,10 +9,12 @@ import 'dart:io';
 // import 'package:file_manager/file_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mobile_ics_flutter/controllers/newsmanagement_controllers/newsmanagement_controller.dart';
 import 'package:mobile_ics_flutter/views/news_management/newsmanagement_components/rename_file_dialog.dart';
 import 'package:mobile_ics_flutter/views/news_management/utils/kcolors.dart';
 import 'package:mobile_ics_flutter/views/news_management/utils/utils.dart';
 import 'package:path/path.dart';
+import 'package:path/path.dart' as pathlib;
 
 // Lớp xây dựng bottom sheet hiện lên khi nhấn vào dấu 3 chấm trong mỗi file/folder
 class BottomSheetItemAction extends StatelessWidget {
@@ -19,15 +22,20 @@ class BottomSheetItemAction extends StatelessWidget {
   // final TextEditingController name = TextEditingController();
   final String path;
   final FileSystemEntity file;
+  final String type;
+  final Function press;
 
-
- const  BottomSheetItemAction({
+  const BottomSheetItemAction({
     Key? key,
-    required this.path, required this.file,
+    required this.path,
+    required this.file,
+    required this.type,
+    required this.press,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final NewsManagementController controller = Get.find<NewsManagementController>();
     return Container(
       height: Get.mediaQuery.size.height * .5,
       padding: const EdgeInsets.only(
@@ -53,7 +61,7 @@ class BottomSheetItemAction extends StatelessWidget {
               ],
             ),
           ),
-          
+
           Padding(
             padding: const EdgeInsets.only(left: 45, top: 8),
             child: Row(
@@ -87,7 +95,13 @@ class BottomSheetItemAction extends StatelessWidget {
           // Đổi tên
           InkWell(
             onTap: () {
-              renameDialog(context, file.path, 'file');
+              
+              if (type == 'file') {
+                renameDialog(context, file.path, 'file', press,controller);
+                
+              } else {
+                renameDialog(context, file.path, 'dir',press,controller);
+              }
             },
             child: Padding(
               padding: const EdgeInsets.only(left: 45, top: 35),
@@ -120,7 +134,14 @@ class BottomSheetItemAction extends StatelessWidget {
           // Xóa
           InkWell(
             onTap: () {
-              deleteFile(false, file);
+
+               if (type == 'file') {
+               deleteFile(false, file, press,controller);
+                
+              } else {
+                deleteFile(true, file, press,controller);
+              }
+              
             },
             child: Padding(
               padding: const EdgeInsets.only(left: 45, top: 35),
@@ -141,22 +162,25 @@ class BottomSheetItemAction extends StatelessWidget {
   }
 
   // Chức năng đổi tên
-  renameDialog(BuildContext context, String path, String type) async {
+  renameDialog(BuildContext context, String path, String type, Function press,NewsManagementController controller) async {
     await showDialog(
       context: context,
-      builder: (context) => RenameFileDialog(path: path, type: type),
+      builder: (context) => RenameFileDialog(path: path, type: type,controller: controller,),
     );
-    // getFiles();
+    Get.back();
+    press();
   }
-       
 
   // Chức năng xóa
-  deleteFile(bool directory, var file) async {
+  deleteFile(bool directory, var file, Function press, NewsManagementController controller) async {
     try {
       if (directory) {
+        await controller.onDeleteFileAndModel(directory,file);
         await Directory(file.path).delete(recursive: true);
       } else {
+        await controller.onDeleteFileAndModel(directory,file);
         await File(file.path).delete(recursive: true);
+        
       }
       Dialogs.showToast('Delete Successful');
     } catch (e) {
@@ -166,6 +190,7 @@ class BottomSheetItemAction extends StatelessWidget {
         Dialogs.showToast('Cannot write to this Storage device!');
       }
     }
-    // getFiles();
+    press();
+    Get.back();
   }
 }

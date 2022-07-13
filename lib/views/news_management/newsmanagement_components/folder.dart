@@ -1,8 +1,14 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, avoid_print
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:mobile_ics_flutter/core/utils/extension.dart';
+import 'package:mobile_ics_flutter/views/news_management/newsmanagement_components/bottomsheet_add_news.dart';
 import 'package:mobile_ics_flutter/views/news_management/newsmanagement_components/bottomsheet_itemaction.dart';
+import 'package:mobile_ics_flutter/views/news_management/newsmanagement_components/create_folder_dialog.dart';
+import 'package:mobile_ics_flutter/views/news_management/utils/kcolors.dart';
 import 'package:path/path.dart' as pathlib;
 import 'package:provider/provider.dart';
 
@@ -11,7 +17,6 @@ import 'package:mobile_ics_flutter/views/news_management/newsmanagement_componen
 import 'package:mobile_ics_flutter/views/news_management/newsmanagement_components/dir_item.dart';
 import 'package:mobile_ics_flutter/views/news_management/newsmanagement_components/file_item.dart';
 import 'package:mobile_ics_flutter/views/news_management/newsmanagement_components/path_bar.dart';
-import 'package:mobile_ics_flutter/views/news_management/newsmanagement_components/rename_file_dialog.dart';
 import 'package:mobile_ics_flutter/views/news_management/newsmanagement_components/sort_sheet.dart';
 import 'package:mobile_ics_flutter/views/news_management/utils/utils.dart';
 
@@ -45,7 +50,7 @@ class _FolderState extends State<Folder> with WidgetsBindingObserver {
     }
   }
 
-  getFiles() async {
+  Future getFiles() async {
     try {
       var provider = Provider.of<CategoryProvider>(context, listen: false);
       Directory dir = Directory(path);
@@ -64,6 +69,7 @@ class _FolderState extends State<Folder> with WidgetsBindingObserver {
         }
       }
       widget.controller.path = dir.path;
+      widget.controller.update();
 
       files = FileUtils.sortList(files, provider.sort);
     } catch (e) {
@@ -114,12 +120,12 @@ class _FolderState extends State<Folder> with WidgetsBindingObserver {
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.blue,),
+            icon: const Icon(Icons.arrow_back, color: Colors.blue),
             onPressed: () {
               if (paths.length == 1) {
                 // Navigator.pop(context);
               } else {
-                 navigateBack();
+                navigateBack();
               }
             },
           ),
@@ -142,7 +148,6 @@ class _FolderState extends State<Folder> with WidgetsBindingObserver {
             paths: paths,
             icon: Icons.home,
             onChanged: (index) {
-              // ignore: avoid_print
               print(paths[index]);
               path = paths[index];
               paths.removeRange(index + 1, paths.length);
@@ -170,10 +175,9 @@ class _FolderState extends State<Folder> with WidgetsBindingObserver {
           child: GridView.builder(
             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                 maxCrossAxisExtent: 200,
-                childAspectRatio: 3/2,
+                childAspectRatio: 3 / 2,
                 crossAxisSpacing: 0,
-                mainAxisSpacing: 0
-              ),
+                mainAxisSpacing: 0),
             itemCount: files.length,
             itemBuilder: (BuildContext context, int index) {
               FileSystemEntity file = files[index];
@@ -186,57 +190,153 @@ class _FolderState extends State<Folder> with WidgetsBindingObserver {
                       setState(() {});
                       getFiles();
                     },
-                    threedotsTab: () => widget.controller.showBottomSheet(context, BottomSheetItemAction(path: path, file: file,),)
-                  );
+                    threedotsTab: () => widget.controller.showBottomSheet(
+                          context,
+                          BottomSheetItemAction(
+                            path: path,
+                            file: file,
+                            type: 'dir',
+                            press: () {
+                              getFiles();
+                            },
+                          ),
+                        ));
               }
               return FileItem(
-                  file: file,
-                  threedotsTab: () => widget.controller.showBottomSheet(context, BottomSheetItemAction(path: path, file: file)
-                )
+                file: file,
+                threedotsTab: () => widget.controller.showBottomSheet(
+                  context,
+                  BottomSheetItemAction(
+                    path: path,
+                    file: file,
+                    type: 'file',
+                    press: () {
+                      getFiles();
+                    },
+                  ),
+                ),
               );
             },
           ),
         ),
-        // floatingActionButton: FloatingActionButton(
-        //   onPressed: () => addDialog(context, path),
-        //   tooltip: 'Add Folder',
-        //   child: const Icon(Icons.add),
-        // ),
+        floatingActionButton: Visibility(
+            child: bottomSheetFloatingButton(context, widget.controller)),
       ),
     );
   }
 
-  deleteFile(bool directory, var file) async {
-    try {
-      if (directory) {
-        await Directory(file.path).delete(recursive: true);
-      } else {
-        await File(file.path).delete(recursive: true);
-      }
-      Dialogs.showToast('Delete Successful');
-    } catch (e) {
-      // ignore: avoid_print
-      print(e.toString());
-      if (e.toString().contains('Permission denied')) {
-        Dialogs.showToast('Cannot write to this Storage device!');
-      }
-    }
-    getFiles();
+  Widget bottomSheetFloatingButton(
+    BuildContext context,
+    NewsManagementController controller,
+  ) =>
+      FloatingActionButton(
+        backgroundColor: Colors.blue.withOpacity(.7),
+        child: const Icon(Icons.add, color: Colors.white, size: 35),
+        onPressed: () {
+          floatingButtonAction(context, controller);
+        },
+      );
+
+  floatingButtonAction(
+    BuildContext context,
+    NewsManagementController controller,
+  ) {
+    controller.showBottomSheet(
+      context,
+      Container(
+        height: Get.mediaQuery.size.height * .3,
+        padding: const EdgeInsets.only(
+          top: 15,
+          left: 15,
+          right: 15,
+          bottom: 10,
+        ),
+        decoration: const BoxDecoration(
+          color: kWhite,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(35),
+            topRight: Radius.circular(35),
+          ),
+        ),
+        child: Column(children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Text('Tất cả',
+                    //'$foldername',
+                    style: textStyle1),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 10.0, bottom: 30),
+            child: Container(
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(width: 1.0, color: kBlue),
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 45, top: 0),
+            child: InkWell(
+              onTap: () {
+                addDialog(context, controller.path!);
+              },
+              child: Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 20),
+                    child: Image.asset('assets/icons/nm_newfolder.png'),
+                  ),
+                  const Text('Tạo thư mục mới', style: textStyle1),
+                ],
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 45, top: 20),
+            child: InkWell(
+              onTap: () {
+                getFiles();
+                widget.controller.update();
+                widget.controller.showBottomSheet(
+                  context,
+                  BottomSheetAddNews(
+                    pathDir: widget.controller.path!,
+                    press: () {
+                      getFiles();
+                    },
+                  ),
+                );
+              },
+              child: Row(
+                children: const [
+                  Padding(
+                    padding: EdgeInsets.only(right: 20),
+                    child: Icon(Icons.upload, size: 50, color: kBlue),
+                  ),
+                  Text('Tải lên', style: textStyle1),
+                ],
+              ),
+            ),
+          ),
+        ]),
+      ),
+    );
   }
 
-  // addDialog(BuildContext context, String path) async {
-  //   await showDialog(
-  //     context: context,
-  //     builder: (context) => AddFileDialog(path: path),
-  //   );
-  //   getFiles();
-  // }
-
-  renameDialog(BuildContext context, String path, String type) async {
+  addDialog(BuildContext context, String path) async {
     await showDialog(
       context: context,
-      builder: (context) => RenameFileDialog(path: path, type: type),
+      builder: (context) => CreateFolderDialog(path: path),
     );
     getFiles();
+    Get.back();
   }
+ 
 }

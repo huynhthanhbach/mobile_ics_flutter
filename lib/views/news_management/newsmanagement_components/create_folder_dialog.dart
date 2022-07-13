@@ -1,13 +1,14 @@
 import 'dart:io';
 
+import 'package:mobile_ics_flutter/views/news_management/utils/kcolors.dart';
 import 'package:mobile_ics_flutter/views/news_management/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_ics_flutter/views/news_management/newsmanagement_components/custom_alert.dart';
 
-class AddFileDialog extends StatelessWidget {
+class CreateFolderDialog extends StatelessWidget {
   final String path;
 
-  AddFileDialog({Key? key, required this.path}) : super(key: key);
+  CreateFolderDialog({Key? key, required this.path}) : super(key: key);
 
   final TextEditingController name = TextEditingController();
 
@@ -27,9 +28,19 @@ class AddFileDialog extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             ),
             const SizedBox(height: 25),
-            TextField(
-              controller: name,
-              keyboardType: TextInputType.text,
+           Container(
+              padding: const EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                color: kWhite,
+                  border: Border.all(width: 1, color: kShadow),
+                  borderRadius: BorderRadius.circular(15),
+              ),
+              child: TextField(
+                autofocus: true,
+                controller: name,
+                keyboardType: TextInputType.text,
+                cursorColor: Colors.blue,
+              ),
             ),
             const SizedBox(height: 40),
             Row(
@@ -48,12 +59,8 @@ class AddFileDialog extends StatelessWidget {
                           borderRadius: BorderRadius.circular(5.0),
                         ),
                       ),
-
                     ),
-                    child: const Text(
-                      'Hủy',
-                      style: textStyle1
-                    ),
+                    child: const Text('Hủy', style: textStyle1),
                   ),
                 ),
                 SizedBox(
@@ -72,8 +79,7 @@ class AddFileDialog extends StatelessWidget {
                             }
                           });
                         } else {
-                          Dialogs.showToast(
-                              'Tên thư mục này đã tồn tại!');
+                          Dialogs.showToast('Tên thư mục này đã tồn tại!');
                         }
                         // ignore: use_build_context_synchronously
                         Navigator.pop(context);
