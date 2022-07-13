@@ -10,11 +10,18 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mobile_ics_flutter/controllers/newsmanagement_controllers/newsmanagement_controller.dart';
+import 'package:mobile_ics_flutter/controllers/operator_controllers/operator_controller.dart';
+import 'package:mobile_ics_flutter/models/hive_models/hive_model.dart';
+import 'package:mobile_ics_flutter/views/news_management/news_management_screen.dart';
 import 'package:mobile_ics_flutter/views/news_management/newsmanagement_components/rename_file_dialog.dart';
 import 'package:mobile_ics_flutter/views/news_management/utils/kcolors.dart';
 import 'package:mobile_ics_flutter/views/news_management/utils/utils.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:path/path.dart';
 import 'package:path/path.dart' as pathlib;
+
+import '../../../core/routes/pages.dart';
+import '../../operator/operator_screen.dart';
 
 // Lớp xây dựng bottom sheet hiện lên khi nhấn vào dấu 3 chấm trong mỗi file/folder
 class BottomSheetItemAction extends StatelessWidget {
@@ -35,7 +42,11 @@ class BottomSheetItemAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final NewsManagementController controller = Get.find<NewsManagementController>();
+    final NewsManagementController controller =
+        Get.find<NewsManagementController>();
+    OperatorController operatorController = Get.put(OperatorController());
+    NewsHiveModel obj = getNewsModal(controller);
+
     return Container(
       height: Get.mediaQuery.size.height * .5,
       padding: const EdgeInsets.only(
@@ -92,15 +103,49 @@ class BottomSheetItemAction extends StatelessWidget {
             ),
           ),
 
+          InkWell(
+            onTap: () {
+              if (operatorController.choosingNews) {
+                if (obj.id != null) {
+                  operatorController.newsSelected.value = obj.name!;
+                  operatorController.newsHiveSelected = obj;
+                  operatorController.choosingNews = false;
+                  Get.back();
+                  Get.back();
+                } else {
+                  showToast('Đây không phải bản tin!');
+                }
+              }
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(left: 45, top: 35),
+              child: Row(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(right: 30),
+                    child: Image.asset(
+                      'assets/icons/op_status.png',
+                      color: operatorController.choosingNews
+                          ? Colors.black
+                          : const Color.fromARGB(255, 217, 217, 217),
+                    ),
+                  ),
+                  Text('Điều hành phát',
+                      style: operatorController.choosingNews
+                          ? textStyle1
+                          : textStyle1gray),
+                ],
+              ),
+            ),
+          ),
+
           // Đổi tên
           InkWell(
             onTap: () {
-              
               if (type == 'file') {
-                renameDialog(context, file.path, 'file', press,controller);
-                
+                renameDialog(context, file.path, 'file', press, controller);
               } else {
-                renameDialog(context, file.path, 'dir',press,controller);
+                renameDialog(context, file.path, 'dir', press, controller);
               }
             },
             child: Padding(
@@ -117,31 +162,28 @@ class BottomSheetItemAction extends StatelessWidget {
             ),
           ),
 
-          // Di chuyển
-          Padding(
-            padding: const EdgeInsets.only(left: 45, top: 35),
-            child: Row(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(right: 30),
-                  child: Image.asset('assets/icons/nm_move.png'),
-                ),
-                const Text('Di chuyển', style: textStyle1)
-              ],
-            ),
-          ),
+          // // Di chuyển
+          // Padding(
+          //   padding: const EdgeInsets.only(left: 45, top: 35),
+          //   child: Row(
+          //     children: <Widget>[
+          //       Padding(
+          //         padding: const EdgeInsets.only(right: 30),
+          //         child: Image.asset('assets/icons/nm_move.png'),
+          //       ),
+          //       const Text('Di chuyển', style: textStyle1)
+          //     ],
+          //   ),
+          // ),
 
           // Xóa
           InkWell(
             onTap: () {
-
-               if (type == 'file') {
-               deleteFile(false, file, press,controller);
-                
+              if (type == 'file') {
+                deleteFile(false, file, press, controller);
               } else {
-                deleteFile(true, file, press,controller);
+                deleteFile(true, file, press, controller);
               }
-              
             },
             child: Padding(
               padding: const EdgeInsets.only(left: 45, top: 35),
@@ -162,25 +204,30 @@ class BottomSheetItemAction extends StatelessWidget {
   }
 
   // Chức năng đổi tên
-  renameDialog(BuildContext context, String path, String type, Function press,NewsManagementController controller) async {
+  renameDialog(BuildContext context, String path, String type, Function press,
+      NewsManagementController controller) async {
     await showDialog(
       context: context,
-      builder: (context) => RenameFileDialog(path: path, type: type,controller: controller,),
+      builder: (context) => RenameFileDialog(
+        path: path,
+        type: type,
+        controller: controller,
+      ),
     );
     Get.back();
     press();
   }
 
   // Chức năng xóa
-  deleteFile(bool directory, var file, Function press, NewsManagementController controller) async {
+  deleteFile(bool directory, var file, Function press,
+      NewsManagementController controller) async {
     try {
       if (directory) {
-        await controller.onDeleteFileAndModel(directory,file);
+        await controller.onDeleteFileAndModel(directory, file);
         await Directory(file.path).delete(recursive: true);
       } else {
-        await controller.onDeleteFileAndModel(directory,file);
+        await controller.onDeleteFileAndModel(directory, file);
         await File(file.path).delete(recursive: true);
-        
       }
       Dialogs.showToast('Delete Successful');
     } catch (e) {
@@ -192,5 +239,17 @@ class BottomSheetItemAction extends StatelessWidget {
     }
     press();
     Get.back();
+  }
+
+  getNewsModal(NewsManagementController controller) {
+    NewsHiveModel kq = NewsHiveModel();
+    controller.getNewsList();
+    String url = '$path/${basename(file.path)}';
+    for (var item in controller.listNews) {
+      if (item.url == url) {
+        kq = item;
+      }
+    }
+    return kq;
   }
 }
