@@ -3,6 +3,7 @@ import 'package:flutter/animation.dart';
 import 'package:get/get.dart';
 import 'package:mobile_ics_flutter/views/dashboard/dashboard_screen.dart';
 import 'package:mobile_ics_flutter/views/home/home_screen.dart';
+import 'package:mobile_ics_flutter/views/news_management/news_management_screen.dart';
 import 'package:mobile_ics_flutter/views/operator/operator_screen.dart';
 
 part 'routes.dart';
@@ -31,5 +32,12 @@ class Pages {
         transition: Transition.fadeIn,
         curve: Curves.easeIn,
         transitionDuration: _timeAnimation),
+         GetPage(
+        name: Routes.newsmanagement,
+        page: () => const NewsManagementScreen(),
+        transition: Transition.fadeIn,
+        curve: Curves.easeIn,
+        transitionDuration: _timeAnimation),
+        
   ];
 }

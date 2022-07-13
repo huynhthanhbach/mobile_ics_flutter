@@ -4,26 +4,22 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_ics_flutter/views/news_management/newsmanagement_components/folder.dart';
 import 'package:mobile_ics_flutter/views/news_management/utils/kcolors.dart';
-import 'package:mobile_ics_flutter/views/news_management/newsmanagement_components/bottomsheet_floatingbuttonaction.dart';
+
 
 import 'package:mobile_ics_flutter/controllers/newsmanagement_controllers/newsmanagement_controller.dart';
 
-class NewsManagementScreen extends StatelessWidget {
+class NewsManagementScreen extends GetWidget<NewsManagementController> {
   const NewsManagementScreen({Key? key}) : super(key: key);
-  
-  
 
   @override
   Widget build(BuildContext context) {
-    // Bắt đầu từ đây nè
-    
-    return GetBuilder<NewsManagementController>(
-      init: NewsManagementController(),
-      builder: (controller) => Scaffold(
-        body: NotificationListener <UserScrollNotification> (
+    return Scaffold(
+        body: NotificationListener<UserScrollNotification>(
           onNotification: (notification) {
-            if(notification.direction == ScrollDirection.forward) {
-              if (!controller.isFbVisible) {controller.updateIsFbVisible(true);}
+            if (notification.direction == ScrollDirection.forward) {
+              if (!controller.isFbVisible) {
+                controller.updateIsFbVisible(true);
+              }
             } else if (notification.direction == ScrollDirection.reverse) {
               controller.updateIsFbVisible(false);
             }
@@ -89,23 +85,25 @@ class NewsManagementScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    child: 
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Folder(title: 'Name',path: '/storage/emulated/0/', controller: controller,),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Folder(
+                        title: 'Các thư mục và tập tin',
+                        path: controller.root,
+                        controller: controller,
                       ),
-
+                    ),
                   ),
                 ),
               ],
             ),
           ),
         ),
-        floatingActionButton: Visibility(
-          visible: controller.isFbVisible,
-          child: bottomSheetFloatingButton(context, controller)
-        ),
-      ),
-    );
+        // floatingActionButton: Visibility(
+        //   visible: controller.isFbVisible,
+        //   child: bottomSheetFloatingButton(context, controller)
+        // ),
+      )
+    ;
   }
 }

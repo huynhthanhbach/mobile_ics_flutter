@@ -175,17 +175,6 @@ class FileUtils {
             f2.statSync().modified.compareTo(f1.statSync().modified));
         break;
 
-      /// sort by size
-      case 4:
-        list.sort((FileSystemEntity f1, FileSystemEntity f2) =>
-            f2.statSync().size.compareTo(f1.statSync().size));
-        break;
-
-      case 5:
-        list.sort((FileSystemEntity f1, FileSystemEntity f2) =>
-            f1.statSync().size.compareTo(f2.statSync().size));
-        break;
-
       default:
         list.sort();
     }

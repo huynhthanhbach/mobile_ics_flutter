@@ -41,27 +41,6 @@ class Constants {
     return result;
   }
 
-  static List categories = [
-    {
-      'title': 'Videos',
-      'icon': Icons.play_circle,
-      'path': '',
-      'color': Colors.red
-    },
-    {
-      'title': 'Audio',
-      'icon': Icons.music_note,
-      'path': '',
-      'color': Colors.teal
-    },
-    {
-      'title': 'Documents & Others',
-      'icon': Icons.book,
-      'path': '',
-      'color': Colors.pink
-    },
-  ];
-
   static List sortList = [
     'File name (A to Z)',
     'File name (Z to A)',

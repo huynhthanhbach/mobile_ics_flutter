@@ -37,7 +37,7 @@ class FileIcon extends StatelessWidget {
             ),
           );
         case 'audio':
-          return Image.asset('assets/icons/nm_folder.png', width: 60, height: 60, fit: BoxFit.fitWidth);
+          return Image.asset('assets/icons/nm_audio_file.png', width: 60, height: 60);
         case 'text':
           return const Icon(Icons.document_scanner_outlined, color: Colors.orangeAccent);
         default:

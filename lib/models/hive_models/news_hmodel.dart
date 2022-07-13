@@ -8,13 +8,13 @@ part 'news_hmodel.g.dart';
 @HiveType(typeId: 0)
 class NewsHiveModel extends HiveObject {
   @HiveField(0)
-  String? id;
+  String? id; //
 
   @HiveField(1)
-  String? name;
+  String? name; //
 
   @HiveField(2)
-  String? type;
+  String? type; //
 
   @HiveField(3)
   String? author;
@@ -23,16 +23,16 @@ class NewsHiveModel extends HiveObject {
   String? content;
 
   @HiveField(5)
-  DateTime? createDate;
+  DateTime? createDate; //NOW
 
   @HiveField(6)
   String? duration;
 
   @HiveField(7)
-  String? status;
+  String? status; //
 
   @HiveField(8)
-  String? area;
+  String? area;  //
 
   @HiveField(9)
   String? url;
