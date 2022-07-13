@@ -1,4 +1,3 @@
-// ignore: file_names
 import 'package:get/get.dart';
 import 'package:mobile_ics_flutter/controllers/operator_controllers/operator_controller.dart';
 import 'package:mobile_ics_flutter/views/dashboard/components/history_content_card.dart';

@@ -4,7 +4,7 @@ import 'package:oktoast/oktoast.dart';
 import '../../controllers/operator_controllers/operator_controller.dart';
 import '../../core/utils/constants.dart';
 import 'components/component.dart';
-import 'pages/getNews.dart';
+import 'pages/get_news.dart';
 import 'pages/pages.dart';
 
 class OperatorScreen extends GetWidget<OperatorController> {

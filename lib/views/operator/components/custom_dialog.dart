@@ -29,7 +29,7 @@ void showFixedSchdule(
           controller.countTime();
           controller.timeSelected = [];
           for (var item in results) {
-            controller.timeSelected!.add(item.name);
+            controller.timeSelected.add(item.name);
           }
         },
         height: 250,
