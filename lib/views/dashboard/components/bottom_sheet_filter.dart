@@ -49,6 +49,14 @@ class BottomSheetFilter extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              const SizedBox(
+                height: 40,
+                width: 40,
+              ),
+              Text(
+                "Lọc",
+                style: KTextStyle.textButtonStyle,
+              ),
               ClipRRect(
                 borderRadius: const BorderRadius.all(
                   Radius.circular(10),
@@ -65,32 +73,6 @@ class BottomSheetFilter extends StatelessWidget {
                       icon: Icon(
                         Icons.close_rounded,
                         color: kBackgroundTitle.withOpacity(.8),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              Text(
-                "Lọc",
-                style: KTextStyle.textButtonStyle,
-              ),
-              Tooltip(
-                message: "Thiết lập lại",
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(10)),
-                  child: Material(
-                    color: const Color(0xFFF6F7FB),
-                    child: SizedBox(
-                      height: 40,
-                      width: 40,
-                      child: IconButton(
-                        onPressed: () async {
-                          // dashBoardController.updateCheckSize();
-                        },
-                        icon: const Icon(
-                          Icons.change_circle_rounded,
-                          color: Color(0xFFBCBEC3),
-                        ),
                       ),
                     ),
                   ),

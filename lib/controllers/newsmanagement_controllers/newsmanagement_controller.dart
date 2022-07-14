@@ -102,11 +102,12 @@ class NewsManagementController extends GetxController {
     areaFilter = _changeArea();
 
     var flag = await _copyFile(filePicker!, path);
+    var nameNews = pathlib.basename(filePicker!.path.toString());
     if (flag) {
       const uid = Uuid();
       final news = NewsHiveModel(
         id: uid.v1(),
-        name: 'name',
+        name: nameNews,
         type: typeTag.value,
         author: 'Mobile ICS',
         content: typeTag.value,
