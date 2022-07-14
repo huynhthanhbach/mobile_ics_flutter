@@ -5,6 +5,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mobile_ics_flutter/controllers/home_controller.dart';
+import 'package:mobile_ics_flutter/controllers/operator_controllers/operator_controller.dart';
 import 'package:mobile_ics_flutter/core/services/boxes_service.dart';
 import 'package:mobile_ics_flutter/core/services/hive_news.dart';
 import 'package:mobile_ics_flutter/core/utils/extension.dart';
@@ -13,6 +14,7 @@ import 'package:uuid/uuid.dart';
 import 'package:path/path.dart' as pathlib;
 
 class NewsManagementController extends GetxController {
+  var opController = Get.find<OperatorController>();
   HiveNews hiveNews = HiveNews();
   bool isFbVisible = false;
 
@@ -99,35 +101,31 @@ class NewsManagementController extends GetxController {
     areaTag.value = _changeLocation();
     areaFilter = _changeArea();
 
-    if (true) {
-      var flag = await _copyFile(filePicker!, path);
-      if (flag) {
-        const uid = Uuid();
-        final news = NewsHiveModel(
-          id: uid.v1(),
-          name: 'name',
-          type: typeTag.value,
-          author: 'Mobile ICS',
-          content: typeTag.value,
-          createDate: DateTime.now(),
-          duration: 'duration',
-          status: 'Chưa phát',
-          area: areaFilter,
-          url: getUrlUpload,
-        );
-        print(news);
-        var upL = await hiveNews.addNewsToHive(news);
-        if (upL) {
-          'Thành công'.toast();
-          Get.back();
-        } else {
-          'Thất bại'.toast();
-        }
+    var flag = await _copyFile(filePicker!, path);
+    if (flag) {
+      const uid = Uuid();
+      final news = NewsHiveModel(
+        id: uid.v1(),
+        name: 'name',
+        type: typeTag.value,
+        author: 'Mobile ICS',
+        content: typeTag.value,
+        createDate: DateTime.now(),
+        duration: 'duration',
+        status: 'Chưa phát',
+        area: areaFilter,
+        url: getUrlUpload,
+      );
+      print(news);
+      var upL = await hiveNews.addNewsToHive(news);
+      if (upL) {
+        'Thành công'.toast();
+        Get.back();
       } else {
-        print('copy that bai');
+        'Thất bại'.toast();
       }
     } else {
-      return;
+      print('copy that bai');
     }
   }
 
