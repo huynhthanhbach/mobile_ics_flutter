@@ -1,10 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, avoid_print
 import 'dart:io';
 
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mobile_ics_flutter/core/utils/extension.dart';
 import 'package:mobile_ics_flutter/views/news_management/newsmanagement_components/bottomsheet_add_news.dart';
 import 'package:mobile_ics_flutter/views/news_management/newsmanagement_components/bottomsheet_itemaction.dart';
 import 'package:mobile_ics_flutter/views/news_management/newsmanagement_components/create_folder_dialog.dart';
@@ -244,7 +242,7 @@ class _FolderState extends State<Folder> with WidgetsBindingObserver {
     controller.showBottomSheet(
       context,
       Container(
-        height: Get.mediaQuery.size.height * .3,
+        height: Get.mediaQuery.size.height * .35,
         padding: const EdgeInsets.only(
           top: 15,
           left: 15,
@@ -258,74 +256,76 @@ class _FolderState extends State<Folder> with WidgetsBindingObserver {
             topRight: Radius.circular(35),
           ),
         ),
-        child: Column(children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Text('Tất cả',
-                    //'$foldername',
-                    style: textStyle1),
-              ],
+        child: SingleChildScrollView(
+          child: Column(children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Text('Tất cả',
+                      //'$foldername',
+                      style: textStyle1)
+                ],
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 10.0, bottom: 30),
-            child: Container(
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(width: 1.0, color: kBlue),
+            Padding(
+              padding: const EdgeInsets.only(top: 10.0, bottom: 30),
+              child: Container(
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(width: 1.0, color: kBlue),
+                  ),
                 ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 45, top: 0),
-            child: InkWell(
-              onTap: () {
-                addDialog(context, controller.path!);
-              },
-              child: Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 20),
-                    child: Image.asset('assets/icons/nm_newfolder.png'),
-                  ),
-                  const Text('Tạo thư mục mới', style: textStyle1),
-                ],
+            Padding(
+              padding: const EdgeInsets.only(left: 45, top: 0),
+              child: InkWell(
+                onTap: () {
+                  addDialog(context, controller.path!);
+                },
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 20),
+                      child: Image.asset('assets/icons/nm_newfolder.png'),
+                    ),
+                    const Text('Tạo thư mục mới', style: textStyle1),
+                  ],
+                ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 45, top: 20),
-            child: InkWell(
-              onTap: () {
-                getFiles();
-                widget.controller.update();
-                widget.controller.showBottomSheet(
-                  context,
-                  BottomSheetAddNews(
-                    pathDir: widget.controller.path!,
-                    press: () {
-                      getFiles();
-                    },
-                  ),
-                );
-              },
-              child: Row(
-                children: const [
-                  Padding(
-                    padding: EdgeInsets.only(right: 20),
-                    child: Icon(Icons.upload, size: 50, color: kBlue),
-                  ),
-                  Text('Tải lên', style: textStyle1),
-                ],
+            Padding(
+              padding: const EdgeInsets.only(left: 45, top: 20),
+              child: InkWell(
+                onTap: () {
+                  getFiles();
+                  widget.controller.update();
+                  widget.controller.showBottomSheet(
+                    context,
+                    BottomSheetAddNews(
+                      pathDir: widget.controller.path!,
+                      press: () {
+                        getFiles();
+                      },
+                    ),
+                  );
+                },
+                child: Row(
+                  children: const [
+                    Padding(
+                      padding: EdgeInsets.only(right: 20),
+                      child: Icon(Icons.upload, size: 50, color: kBlue),
+                    ),
+                    Text('Tải lên', style: textStyle1),
+                  ],
+                ),
               ),
             ),
-          ),
-        ]),
+          ]),
+        ),
       ),
     );
   }
@@ -338,5 +338,4 @@ class _FolderState extends State<Folder> with WidgetsBindingObserver {
     getFiles();
     Get.back();
   }
- 
 }

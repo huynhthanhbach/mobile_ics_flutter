@@ -12,16 +12,11 @@ import 'package:get/get.dart';
 import 'package:mobile_ics_flutter/controllers/newsmanagement_controllers/newsmanagement_controller.dart';
 import 'package:mobile_ics_flutter/controllers/operator_controllers/operator_controller.dart';
 import 'package:mobile_ics_flutter/models/hive_models/hive_model.dart';
-import 'package:mobile_ics_flutter/views/news_management/news_management_screen.dart';
 import 'package:mobile_ics_flutter/views/news_management/newsmanagement_components/rename_file_dialog.dart';
 import 'package:mobile_ics_flutter/views/news_management/utils/kcolors.dart';
 import 'package:mobile_ics_flutter/views/news_management/utils/utils.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:path/path.dart';
-import 'package:path/path.dart' as pathlib;
-
-import '../../../core/routes/pages.dart';
-import '../../operator/operator_screen.dart';
 
 // Lớp xây dựng bottom sheet hiện lên khi nhấn vào dấu 3 chấm trong mỗi file/folder
 class BottomSheetItemAction extends StatelessWidget {

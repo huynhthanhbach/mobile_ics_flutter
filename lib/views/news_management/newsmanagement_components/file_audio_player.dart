@@ -2,7 +2,6 @@
 import 'dart:io';
 
 import 'package:audioplayers/audioplayers.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
 import 'package:mobile_ics_flutter/views/news_management/utils/utils.dart';
@@ -63,7 +62,6 @@ class _AudioPlayerBarState extends State<AudioPlayerBar> {
     // }
     audioPlayer.setSourceUrl(widget.file.path);
     audioPlayer.resume();
-   
   }
 
   @override
@@ -122,15 +120,13 @@ class _AudioPlayerBarState extends State<AudioPlayerBar> {
       ]),
     );
   }
-  
+
   String formatTime(Duration position) {
     String twoDigits(int n) => n.toString().padLeft(2, '0');
     final hours = twoDigits(duration.inHours);
     final minutes = twoDigits(duration.inMinutes.remainder(60));
     final seconds = twoDigits(duration.inSeconds.remainder(60));
 
-    return [
-      if (duration.inHours > 0) hours, minutes, seconds
-    ].join(':');
+    return [if (duration.inHours > 0) hours, minutes, seconds].join(':');
   }
 }

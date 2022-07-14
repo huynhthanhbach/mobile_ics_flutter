@@ -1,9 +1,7 @@
-import 'package:get/get.dart';
 import 'package:mobile_ics_flutter/views/news_management/newsmanagement_components/category_provider.dart';
 import 'package:mobile_ics_flutter/views/news_management/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 
 class SortSheet extends StatelessWidget {
   const SortSheet({Key? key}) : super(key: key);
@@ -20,10 +18,7 @@ class SortSheet extends StatelessWidget {
             const SizedBox(
               height: 15,
             ),
-            Text(
-              'Sort by'.toUpperCase(),
-              style: textStyle1
-            ),
+            Text('Sort by'.toUpperCase(), style: textStyle1),
             const SizedBox(
               height: 10,
             ),
@@ -36,8 +31,8 @@ class SortSheet extends StatelessWidget {
                       await Provider.of<CategoryProvider>(context,
                               listen: false)
                           .setSort(index);
-                     // ignore: use_build_context_synchronously
-                     Navigator.pop(context);
+                      // ignore: use_build_context_synchronously
+                      Navigator.pop(context);
                     },
                     contentPadding: const EdgeInsets.all(0),
                     trailing: index ==
