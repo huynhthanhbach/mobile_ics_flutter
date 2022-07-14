@@ -14,6 +14,7 @@ import '../../core/services/hive_news.dart';
 import '../../models/hive_models/hive_model.dart';
 
 class OperatorController extends GetxController {
+  bool choosingNews = false;
   HiveNews hiveNews = HiveNews();
   HiveDevice hiveDevice = HiveDevice();
   HiveCalendar hiveCalender = HiveCalendar();

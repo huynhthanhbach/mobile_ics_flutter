@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:mobile_ics_flutter/views/dashboard/components/history_content_card.dart';
+import 'package:mobile_ics_flutter/views/news_management/news_management_screen.dart';
 import 'package:oktoast/oktoast.dart';
 import '../../controllers/operator_controllers/operator_controller.dart';
 import '../../core/utils/constants.dart';
@@ -102,11 +103,12 @@ class OperatorScreen extends GetWidget<OperatorController> {
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                       onTap: () {
+                                        controller.choosingNews = true;
                                         Get.to(
                                           transition: Transition.fade,
                                           curve: Curves.easeInQuad,
                                           duration: Constants.dur500,
-                                          () => const NewsGetter(),
+                                          () => const NewsManagementScreen(),
                                         );
                                         showToast('Lấy bản tin');
                                         // controller.newsSelected.value =

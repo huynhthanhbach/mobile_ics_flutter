@@ -9,27 +9,31 @@ const textTitle = TextStyle(
 
 // Kiểu chữ hiển thị tên folder trên đầu
 const textStyleTitleNameFolder = TextStyle(
-    fontWeight: FontWeight.bold,
-    fontSize: 20,
-    color: kBlack,
+  fontWeight: FontWeight.bold,
+  fontSize: 20,
+  color: kBlack,
 );
 
 // Cỡ chữ 16 in đậm màu đen
 const textStyle1 = TextStyle(
-    fontWeight: FontWeight.bold,
-    fontSize: 16,
-    color: kBlack,
+  fontWeight: FontWeight.bold,
+  fontSize: 16,
+  color: kBlack,
+);
+const textStyle1gray = TextStyle(
+  fontWeight: FontWeight.bold,
+  fontSize: 16,
+  color: Color.fromARGB(255, 217, 217, 217),
 );
 
 const textStyle11 = TextStyle(
-    fontWeight: FontWeight.bold,
-    fontSize: 16,
-    color: kBlue,
+  fontWeight: FontWeight.bold,
+  fontSize: 16,
+  color: kBlue,
 );
 
 // Cỡ chữ 16 màu đen không in đậm
 const textStyle2 = TextStyle(fontSize: 16, color: kBlack);
-
 
 class Constants {
   static List<T> map<T>(List list, Function handler) {
@@ -47,6 +51,4 @@ class Constants {
     'Date (oldest first)',
     'Date (newest first)',
   ];
-
-  
 }

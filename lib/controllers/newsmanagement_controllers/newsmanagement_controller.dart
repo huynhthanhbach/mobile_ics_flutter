@@ -31,6 +31,8 @@ class NewsManagementController extends GetxController {
   var areaTag = ''.obs;
   var typeTag = ''.obs;
 
+  List<NewsHiveModel> listNews = <NewsHiveModel>[];
+
   @override
   void onInit() async {
     root = Get.find<HomeController>().rootDirectory;
@@ -97,7 +99,7 @@ class NewsManagementController extends GetxController {
     areaTag.value = _changeLocation();
     areaFilter = _changeArea();
 
-    if (filePicker != null) {
+    if (true) {
       var flag = await _copyFile(filePicker!, path);
       if (flag) {
         const uid = Uuid();
@@ -109,7 +111,7 @@ class NewsManagementController extends GetxController {
           content: typeTag.value,
           createDate: DateTime.now(),
           duration: 'duration',
-          status: 'Vừa được khởi tạo',
+          status: 'Chưa phát',
           area: areaFilter,
           url: getUrlUpload,
         );
@@ -200,6 +202,13 @@ class NewsManagementController extends GetxController {
           }
         }
       }
+    }
+  }
+
+  getNewsList() async {
+    List<NewsHiveModel> listN = await hiveNews.get();
+    if (listN.isNotEmpty) {
+      listNews = listN.toList();
     }
   }
 
