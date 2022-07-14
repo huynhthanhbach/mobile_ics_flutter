@@ -276,17 +276,14 @@ class BandwidthController extends GetxController {
       area: _location,
       total: value,
     );
-    // var flag = await hiveBandwidth.addBandwidthToHive(bandwidthHiveModel);
-    // if (flag) {
-    //   print(
-    //       '${bandwidthHiveModel.createDate} - ${bandwidthHiveModel.total} -- Success');
-    // } else {
-    //   print(
-    //       '${bandwidthHiveModel.createDate} - ${bandwidthHiveModel.total}-- Failed');
-    // }
-
-    print(
-        '${bandwidthHiveModel.createDate} - ${bandwidthHiveModel.total} -- None add');
+    var flag = await hiveBandwidth.addBandwidthToHive(bandwidthHiveModel);
+    if (flag) {
+      print(
+          '${bandwidthHiveModel.createDate} - ${bandwidthHiveModel.total} -- Success');
+    } else {
+      print(
+          '${bandwidthHiveModel.createDate} - ${bandwidthHiveModel.total}-- Failed');
+    }
   }
 
   Future<void> _changeFilter() async {

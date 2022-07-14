@@ -7,6 +7,8 @@ import 'package:get/get.dart';
 import 'package:mobile_ics_flutter/controllers/newsmanagement_controllers/newsmanagement_controller.dart';
 import 'package:mobile_ics_flutter/core/widgets/kcolors.dart';
 import 'package:mobile_ics_flutter/core/widgets/ktext_style.dart';
+import 'package:open_file/open_file.dart';
+import 'package:path/path.dart';
 
 class BottomSheetAddNews extends StatelessWidget {
   const BottomSheetAddNews({
@@ -21,7 +23,7 @@ class BottomSheetAddNews extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: Get.mediaQuery.size.height * .70,
+      height: Get.mediaQuery.size.height * .9,
       padding: const EdgeInsets.only(
         top: 35,
         left: 35,
@@ -83,15 +85,21 @@ class BottomSheetAddNews extends StatelessWidget {
           Expanded(
             child: Column(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Text(
-                      // basename(file.path),
-                      'name',
-                      style: KTextStyle.textDefaultStyle,
-                    )
-                  ],
+                GetBuilder<NewsManagementController>(
+                  builder: (controller) => Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      (controller.checkPick)
+                          ? Text(
+                              basename(controller.filePicker!.path.toString()),
+                              style: KTextStyle.textDefaultStyle,
+                            )
+                          : const Text(
+                              'name file',
+                              style: KTextStyle.textDefaultStyle,
+                            ),
+                    ],
+                  ),
                 ),
                 const SizedBox(height: 20),
                 GetBuilder<NewsManagementController>(
@@ -110,7 +118,8 @@ class BottomSheetAddNews extends StatelessWidget {
                                   width: 50,
                                   child: IconButton(
                                     onPressed: () {
-                                      // OpenFile.open(file.path);
+                                      OpenFile.open(
+                                          controller.filePicker!.path);
                                     },
                                     icon: Icon(
                                       Icons.play_arrow,

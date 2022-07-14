@@ -17,7 +17,7 @@ class FileItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+      margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
       child: Column(children: <Widget>[
         InkWell(
           // Nhấn vào folder

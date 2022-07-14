@@ -8,19 +8,13 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile_ics_flutter/controllers/dashboard_controllers/dashboard_controller.dart';
 import 'package:mobile_ics_flutter/core/services/boxes_service.dart';
-import 'package:mobile_ics_flutter/core/services/hive_calendar.dart';
 import 'package:mobile_ics_flutter/core/utils/constants.dart';
-import 'package:mobile_ics_flutter/models/hive_models/hive_model.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-// ignore: depend_on_referenced_packages
 import 'package:path/path.dart' as p;
-import 'package:uuid/uuid.dart';
 
 class BackupDataController extends GetxController {
   late Directory directory;
-
-  HiveCalendar hiveCalendar = HiveCalendar();
 
   bool isLoading = false;
 
@@ -58,7 +52,6 @@ class BackupDataController extends GetxController {
         })
         .asFuture()
         .then((_) {
-        
           return frameworkFilePaths;
         });
   }
@@ -277,47 +270,6 @@ class BackupDataController extends GetxController {
         ),
       ),
     );
-  }
-
-  Future<void> addDataFakeToHive() async {
-    const uid = Uuid();
-    var id = "";
-    var name = "";
-    for (var i = 0; i < 35; i++) {
-      if (id == "") {
-        id = uid.v1();
-        name = getRandomString(2);
-
-        // Audio_box  Gateway
-
-        // Phát bản tin Phát trực tuyến
-
-        // Được khởi tạo  Đang chờ phê duyệt  Đã duyệt  Đã phát
-
-        final calendarHiveModel = CalendarHiveModel(
-          id: id,
-          name: 'Lịch phát đài $name',
-          createDate: DateTime.now(),
-          status: 'Được khởi tạo',
-          area: 'Đài truyền thanh cấp xã',
-        );
-        // var flag = await hiveCalendar.addCalendarToHive(calendarHiveModel);
-        // if (flag) {
-        //   print('${calendarHiveModel.id} -- Success');
-        // } else {
-        //   print('${calendarHiveModel.id} -- Failed');
-        // }
-
-        print(calendarHiveModel.id);
-        print(calendarHiveModel.createDate);
-        print(calendarHiveModel.area);
-
-        print('-----------------------');
-      }
-      id = "";
-      name = "";
-    }
-    // Get.find<DashboardController>().onRefreshNews();
   }
 
   Future<void> clearAllNewsData() async {

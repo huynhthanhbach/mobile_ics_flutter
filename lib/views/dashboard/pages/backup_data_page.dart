@@ -133,7 +133,6 @@ class BackupDataPage extends StatelessWidget {
                       ElevatedButton(
                         onPressed: () async {
                           await controller.backupDatabase();
-                          // print("null");
                         },
                         child: const Text(
                           "Backup Data",
@@ -143,37 +142,12 @@ class BackupDataPage extends StatelessWidget {
                           ? ElevatedButton(
                               onPressed: () async {
                                 await controller.restoreDatabase();
-                                // print("null");
                               },
                               child: const Text(
                                 "Restore Data",
                               ),
                             )
                           : const SizedBox(),
-                    ],
-                  ),
-                  Constants.sizedBoxH20,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () async {
-                          await controller.addDataFakeToHive();
-                          // print("null");
-                        },
-                        child: const Text(
-                          "Add News Data",
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () async {
-                          // await controller.clearAllNewsData();
-                          print("null");
-                        },
-                        child: const Text(
-                          "Clear All Data",
-                        ),
-                      ),
                     ],
                   ),
                 ],

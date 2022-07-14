@@ -30,7 +30,7 @@ class PlayNews extends StatelessWidget {
             width: defaultIconSize,
           ),
           const SizedBox(
-            width: defaultPadding,
+            width: padding1,
           ),
           (text == '')
               ? const SizedBox(
